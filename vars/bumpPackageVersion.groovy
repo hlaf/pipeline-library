@@ -5,8 +5,11 @@ def call(String git_repo_creds,
     
     tag_name = 'latest'
   
+	println "The version file is located at ${version_file}"
+	
     sshagent([git_repo_creds]) {
         sh """
+            echo "The version file is ${version_file}"
             current_version=\$(grep __version__ $version_file | awk -F\\   '{print \$3 }' | sed "s/'//g")
             source master_venv/bin/activate
             \\pip install semver --upgrade
