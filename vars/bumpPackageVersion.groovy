@@ -5,8 +5,6 @@ def call(String git_repo_creds,
     
     tag_name = 'latest'
   
-	println "The version file is located at ${version_file}"
-	
     sshagent([git_repo_creds]) {
         sh """
             echo "The version file is ${version_file}"
