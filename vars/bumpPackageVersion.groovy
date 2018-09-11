@@ -1,21 +1,21 @@
 def call(String git_repo_creds,
          String author,
-         String author_email) {
+         String author_email,
+		 String version_file = "src/${env.JOB_NAME}/__init__.py") {
     
     tag_name = 'latest'
   
     sshagent([git_repo_creds]) {
         sh """
-            version_file="src/${env.JOB_NAME}/__init__.py"
-            current_version=\$(grep __version__ \$version_file | awk -F\\   '{print \$3 }' | sed "s/'//g")
+            current_version=\$(grep __version__ $version_file | awk -F\\   '{print \$3 }' | sed "s/'//g")
             source master_venv/bin/activate
             \\pip install semver --upgrade
             new_version=\$(python -c "import semver; print semver.bump_patch(\'\${current_version}\')")
         
             # Update the __init__.py file with the new version.
-            sed -i s/\$current_version/\$new_version/ \$version_file
+            sed -i s/\$current_version/\$new_version/ $version_file
             
-            git commit --author '${author} <${author_email}>' -m "Bump version to \${new_version}." \$version_file
+            git commit --author '${author} <${author_email}>' -m "Bump version to \${new_version}." $version_file
             git push --set-upstream origin master
             
             git tag -fa \$new_version -m \"Create tag for version \${new_version}.\"
