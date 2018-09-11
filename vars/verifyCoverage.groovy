@@ -1,9 +1,17 @@
 def call() {
     
     // Copy the latest successful build's coverage.xml
-    copyArtifacts(projectName: "${env.JOB_NAME}", selector: lastSuccessful(), 
-                  target: 'previous_build', filter: '**/coverage.xml',
-                  flatten: true);
+	try {
+		copyArtifacts(projectName: "${env.JOB_NAME}", selector: lastSuccessful(),
+					  target: 'previous_build', filter: '**/coverage.xml',
+			          flatten: true);
+	} catch (Exception e) {
+		if (e.message.contains('Failed to copy artifacts')) {
+			echo "Couldn't find prior coverage results - assuming new project"
+			return
+		}
+		throw e
+	}
     
     def xml_old = readFile "${env.WORKSPACE}/previous_build/coverage.xml"
     def coverage_old = new XmlParser().parseText(xml_old)
