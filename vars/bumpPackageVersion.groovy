@@ -16,7 +16,10 @@ def call(String git_repo_creds,
             # Update the __init__.py file with the new version.
             sed -i s/\$current_version/\$new_version/ $version_file
             
-            git commit --author '${author} <${author_email}>' -m "Bump version to \${new_version}." $version_file
+			git config --global user.name $author
+			git config --global user.email $author_email
+			
+            git commit -m "Bump version to \${new_version}." $version_file
             git push --set-upstream origin master
             
             git tag -fa \$new_version -m \"Create tag for version \${new_version}.\"
