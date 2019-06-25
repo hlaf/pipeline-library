@@ -1,5 +1,5 @@
-def call(String environment = null) {
-	if (environment != null) {
+def call(String environment = '') {
+	if (environment?.trim()) {
         environment = "-e ${environment}"
 	}
 
