@@ -4,14 +4,14 @@ def call(String environment = null) {
 	}
 
 	try {
-		sh '''
+		sh """
 	        source master_venv/bin/activate
 	
 	        # NOTE: Ignore aliases
 	        \\pip install tox --upgrade
 	
 	        tox ${environment}
-	    '''
+	    """
 	} finally {
 		publishJUnitReport()
 	}
