@@ -1,4 +1,8 @@
-def call() {
+def call(String environment = null) {
+	if (environment != null) {
+        environment = "-e ${environment}"
+	}
+
 	try {
 		sh '''
 	        source master_venv/bin/activate
@@ -6,7 +10,7 @@ def call() {
 	        # NOTE: Ignore aliases
 	        \\pip install tox --upgrade
 	
-	        tox -e coverage
+	        tox ${environment}
 	    '''
 	} finally {
 		publishJUnitReport()
