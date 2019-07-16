@@ -28,6 +28,7 @@ def call() {
 	def latest_build = run_wrapper.getNumber()
 
 	echo "Current coverage metrics:"
+	echo coverage_old['@branch-rate']
 	echo "  Branch rate: ${branch_rate_old}"
 	echo "  Line rate  : ${line_rate_old}"
 	
