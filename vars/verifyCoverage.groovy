@@ -28,13 +28,12 @@ def call() {
 	def latest_build = run_wrapper.getNumber()
 
 	echo "Current coverage metrics:"
-	echo coverage_old['@branch-rate']
-	echo "  Branch rate: ${branch_rate_old}"
-	echo "  Line rate  : ${line_rate_old}"
+	echo "  Branch rate: ${coverage_old['@branch-rate']}"
+	echo "  Line rate  : ${coverage_old['@line-rate']}"
 	
 	echo "New build's coverage metrics:"
-	echo "  Branch rate: ${branch_rate_new}"
-	echo "  Line rate  : ${line_rate_new}"
+	echo "  Branch rate: ${coverage_new['@branch-rate']}"
+	echo "  Line rate  : ${coverage_new['@line-rate']}"
 
 	// Fail the job if coverage decreases
 	if (branch_rate_new < branch_rate_old || line_rate_new < line_rate_old) {
