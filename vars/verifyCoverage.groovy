@@ -27,6 +27,14 @@ def call() {
 								selector: permalink('lastSuccessfulBuild')
 	def latest_build = run_wrapper.getNumber()
 
+	echo "Current coverage metrics:"
+	echo "  Branch rate: ${branch_rate_old}"
+	echo "  Line rate  : ${line_rate_old}"
+	
+	echo "New build's coverage metrics:"
+	echo "  Branch rate: ${branch_rate_new}"
+	echo "  Line rate  : ${line_rate_new}"
+
 	// Fail the job if coverage decreases
 	if (branch_rate_new < branch_rate_old || line_rate_new < line_rate_old) {
 		error "Code coverage decreased from build ${latest_build} to build ${env.BUILD_NUMBER}"
