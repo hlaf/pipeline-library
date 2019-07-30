@@ -16,13 +16,13 @@ def call() {
     
     def xml_old = readFile "${env.WORKSPACE}/previous_build/coverage.xml"
     def coverage_old = new XmlParser().parseText(xml_old)
-    def branch_rate_old = coverage_old['@branch-rate'].toDouble().trunc()
-    def line_rate_old = coverage_old['@line-rate'].toDouble().trunc()
+    def branch_rate_old = new BigDecimal(coverage_old['@branch-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
+    def line_rate_old = new BigDecimal(coverage_old['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
     
     def xml_new = readFile "${env.WORKSPACE}/coverage.xml"
     def coverage_new = new XmlParser().parseText(xml_new)
-    def branch_rate_new = coverage_new['@branch-rate'].toDouble().trunc()
-    def line_rate_new = coverage_new['@line-rate'].toDouble().trunc()
+    def branch_rate_new = new BigDecimal(coverage_new['@branch-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
+    def line_rate_new = new BigDecimal(coverage_new['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
     
 	def run_wrapper = selectRun job: "${env.JOB_NAME}",
 								selector: permalink('lastSuccessfulBuild')
