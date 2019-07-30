@@ -2,7 +2,8 @@ def call() {
     
     // Copy the latest successful build's coverage.xml
 	try {
-		copyArtifacts(projectName: "${env.JOB_NAME}", selector: lastSuccessful(),
+		copyArtifacts(projectName: "${env.JOB_NAME}",
+			          selector: [$class: 'LastBuildWithArtifactSelector'],
 					  target: 'previous_build', filter: '**/coverage.xml',
 			          flatten: true);
 	} catch (Exception e) {
