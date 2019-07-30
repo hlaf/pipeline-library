@@ -12,7 +12,6 @@ def call(String image_name,
 		image_fqdn = image_name + '.dockerbuilder.' + domain_name
 	
 		createPuppetDockerfile(image_name)
-		echo "The manager_node is ${manager_node}"
 		node(manager_node) {
 			deletePuppetCertificate(image_fqdn, manager_node=manager_node)
 		}
