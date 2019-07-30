@@ -12,7 +12,7 @@ def call(String image_name,
 		image_fqdn = image_name + '.dockerbuilder.' + domain_name
 	
 		createPuppetDockerfile(image_name)
-		deletePuppetCertificate(image_fqdn, manager_node=manager_node)
+		deletePuppetCertificate(image_fqdn, manager_node)
 		image = docker.build(image_name)
 
 		return image
