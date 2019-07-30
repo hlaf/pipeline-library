@@ -3,7 +3,7 @@ def call(String certificate_name,
 		 String master='puppet',
 		 String environment='production') {
 
-  //node(manager_node) {
+  node(manager_node) {
 
     sh """
     curl -ss --insecure --cert /var/lib/puppet/ssl/certs/\${HOSTNAME} \
@@ -14,6 +14,6 @@ def call(String certificate_name,
          --key /var/lib/puppet/ssl/private_keys/\${HOSTNAME} \
          -X DELETE https://${master}:8140/${environment}/certificate_status/${certificate_name}
     """
-  //}
+  }
 
 }
