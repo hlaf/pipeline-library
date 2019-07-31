@@ -1,9 +1,11 @@
 def call() {
     
     // Copy the latest successful build's coverage.xml
+	def previous_build = getLatestSuccessfulBuildWithArtifacts()
+	
 	try {
 		copyArtifacts(projectName: "${env.JOB_NAME}",
-			          selector: [$class: 'LastBuildWithArtifactSelector'],
+			          selector: specific("${previous_build.number}"),
 					  target: 'previous_build', filter: '**/coverage.xml',
 			          flatten: true);
 	} catch (Exception e) {
@@ -24,10 +26,6 @@ def call() {
     def branch_rate_new = new BigDecimal(coverage_new['@branch-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
     def line_rate_new = new BigDecimal(coverage_new['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
     
-	def run_wrapper = selectRun job: "${env.JOB_NAME}",
-								selector: permalink('lastSuccessfulBuild')
-	def latest_build = run_wrapper.getNumber()
-
 	echo "Current coverage metrics:"
 	echo "  Branch rate: ${coverage_old['@branch-rate']}"
 	echo "  Line rate  : ${coverage_old['@line-rate']}"
@@ -38,7 +36,20 @@ def call() {
 
 	// Fail the job if coverage decreases
 	if (branch_rate_new < branch_rate_old || line_rate_new < line_rate_old) {
-		error "Code coverage decreased from build ${latest_build} to build ${env.BUILD_NUMBER}"
+		error "Code coverage decreased from build ${previous_build.number} to build ${env.BUILD_NUMBER}"
 	}
 
 }
+
+@NonCPS
+def getLatestSuccessfulBuildWithArtifacts() {
+	b = currentBuild
+	while (b.getPreviousBuild() != null) {
+		b = b.getPreviousBuild()
+		if (b.getRawBuild().result == Result.SUCCESS && b.getRawBuild().getHasArtifacts()) {
+			return b;
+		}
+	};
+	return null;
+}
+
