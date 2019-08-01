@@ -6,9 +6,9 @@ def call(String image_name,
 	node('docker-slave') {
 		if (dockerImageExists(image_name)) {
 			echo "The image ${image_name} already exists. Skipping build."
-			return
+			return docker.image(image_name)
 		}
-		
+
 		echo "Building image ${image_name}"
 		image_fqdn = image_name + '.dockerbuilder.' + domain_name
 	
