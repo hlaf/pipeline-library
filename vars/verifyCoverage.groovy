@@ -37,7 +37,7 @@ def call() {
 
 	// Fail the job if coverage decreases
 	if (branch_rate_new < branch_rate_old || line_rate_new < line_rate_old) {
-		if previous_build != null {
+		if (previous_build != null) {
 			error "Code coverage decreased from build ${previous_build.number} to build ${env.BUILD_NUMBER}"
 		} else {
 			error "Code coverage is too low"
