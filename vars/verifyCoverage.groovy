@@ -3,12 +3,14 @@ def call() {
     // Copy the latest successful build's coverage.xml
 	def previous_build = getLatestSuccessfulBuildWithArtifacts()
 	def default_baseline_coverage = '0.85'
-
+	def branch_rate_old
+	def line_rate_old
+	
 	if (previous_build == null) {
 		echo "Couldn't find prior coverage results - using the default baseline for new projects"
 
-		def branch_rate_old = new BigDecimal(default_baseline_coverage).setScale(2, java.math.RoundingMode.HALF_UP)
-		def line_rate_old = new BigDecimal(default_baseline_coverage).setScale(2, java.math.RoundingMode.HALF_UP)
+		branch_rate_old = new BigDecimal(default_baseline_coverage).setScale(2, java.math.RoundingMode.HALF_UP)
+		line_rate_old = new BigDecimal(default_baseline_coverage).setScale(2, java.math.RoundingMode.HALF_UP)
 
 	} else {
 		copyArtifacts(projectName: "${env.JOB_NAME}",
@@ -18,8 +20,8 @@ def call() {
 
 		def xml_old = readFile "${env.WORKSPACE}/previous_build/coverage.xml"
 		def coverage_old = new XmlParser().parseText(xml_old)
-		def branch_rate_old = new BigDecimal(coverage_old['@branch-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
-		def line_rate_old = new BigDecimal(coverage_old['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
+		branch_rate_old = new BigDecimal(coverage_old['@branch-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
+		line_rate_old = new BigDecimal(coverage_old['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
 	}
 
     def xml_new = readFile "${env.WORKSPACE}/coverage.xml"
@@ -28,7 +30,7 @@ def call() {
     def line_rate_new = new BigDecimal(coverage_new['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
     
 	echo "Baseline coverage metrics:"
-	echo "  Branch rate: ${branch_rate_old}"
+	echo "  Branch rate: ${branch_rate_old}" FIXME: Variable scoping issue!!!!
 	echo "  Line rate  : ${line_rate_old}"
 	
 	echo "Current build's coverage metrics:"
