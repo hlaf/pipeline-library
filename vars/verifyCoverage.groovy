@@ -30,7 +30,7 @@ def call() {
     def line_rate_new = new BigDecimal(coverage_new['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
     
 	echo "Baseline coverage metrics:"
-	echo "  Branch rate: ${branch_rate_old}" FIXME: Variable scoping issue!!!!
+	echo "  Branch rate: ${branch_rate_old}"
 	echo "  Line rate  : ${line_rate_old}"
 	
 	echo "Current build's coverage metrics:"
