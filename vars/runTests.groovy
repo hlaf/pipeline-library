@@ -15,7 +15,7 @@ def call(String environment = '') {
 			"""
 		} else {
 			bat """
-			master_venv/Scripts/activate.bat
+			master_venv\\Scripts\\activate.bat
 			pip install tox --upgrade
 			tox ${environment}
 			"""
