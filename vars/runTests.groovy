@@ -4,19 +4,19 @@ def call(String environment = '') {
 	}
 
 	try {
-		if (System.properties['os.name'].toLowerCase().contains('windows')) {
-			bat """
-			master_venv/Scripts/activate.bat
-			pip install tox --upgrade
-			tox ${environment}
-			"""
-		} else {
+		if (isUnix()) {
 			sh """
 			source master_venv/bin/activate
 			
 			# NOTE: Ignore aliases
 			\\pip install tox --upgrade
 			
+			tox ${environment}
+			"""
+		} else {
+			bat """
+			master_venv/Scripts/activate.bat
+			pip install tox --upgrade
 			tox ${environment}
 			"""
 		}
