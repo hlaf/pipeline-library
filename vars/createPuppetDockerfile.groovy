@@ -1,7 +1,7 @@
 def call(String image_name,
-	     String from_image_name='hlaf/puppet',
 	     String environment='production',
-		 String master='puppet') {
+	     String master='puppet',
+	     String from_image_name='hlaf/puppet') {
 
     // Create the Dockerfile
     sh """docker run \
