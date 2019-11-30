@@ -1,4 +1,5 @@
 def call(String image_name,
+	     String from_image_name='hlaf/puppet',
 	     String environment='production',
 		 String master='puppet') {
 
@@ -19,7 +20,7 @@ EOF
                                  --image-name puppet/${image_name} \
                                  --skip-puppet-install \
                                  --modulepath modules \
-                                 --from hlaf/puppet \
+                                 --from ${from_image_name} \
                                  --os centos \
                                  --no-inventory \
                                  --no-timestamp \
