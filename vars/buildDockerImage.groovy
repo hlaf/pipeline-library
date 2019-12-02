@@ -1,10 +1,12 @@
 def call(String image_name,
 		 String manager_node,
 		 String environment='dockerbuilder') {
-		 
-	domain_name = sh(script: 'dnsdomainname', returnStdout: true).trim()
-	if (!domain_name) {
-		error "Could not determine the DNS domain name"
+
+	node ('linux') {	 
+		domain_name = sh(script: 'dnsdomainname', returnStdout: true).trim()
+		if (!domain_name) {
+			error "Could not determine the DNS domain name"
+		}
 	}
 
 	node('docker-slave') {
