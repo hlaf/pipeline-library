@@ -1,7 +1,7 @@
 def call(String image_name,
 	     String domain_name,
 		 String manager_node,
-		 String environment='production') {
+		 String environment='dockerbuilder') {
 		 
 	node('docker-slave') {
 		if (dockerImageExists(image_name)) {
