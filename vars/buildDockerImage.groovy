@@ -21,7 +21,7 @@ def call(String image_name,
 	
 		createPuppetDockerfile(image_name, environment)
 		deletePuppetCertificate(image_fqdn, manager_node)
-		image = docker.build(image_name)
+		image = docker.build(image_name, "--no-cache .")
 
 		return image
 	}
