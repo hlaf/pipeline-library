@@ -7,7 +7,9 @@ def call(String git_repo_creds,
   
 	// TODO: Replace the hyphens with underscores in env.JOB_NAME when building 
 	// the default version_file path
-	
+
+	initializeVirtualEnv()
+
     sshagent([git_repo_creds]) {
         sh """
             echo "The version file is ${version_file}"
