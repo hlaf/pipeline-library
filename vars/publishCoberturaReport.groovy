@@ -3,7 +3,11 @@ def call(results=[]) {
 	def report_location
 	if (results.size() > 0) {
 	    for (String k: results) {
-		    dir("./coverage_results/${k}") { unstash k }
+			try {
+				dir("./coverage_results/${k}") { unstash k }
+			} catch (hudson.AbortException e) { // Ignore 'No such saved stash'
+		        println "Warning: ${e.message}" // errors
+			}
 	    }
 		report_location = 'coverage_results/**/coverage.xml'
 	} else {
