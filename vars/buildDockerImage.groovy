@@ -1,7 +1,10 @@
-def call(String image_name,
-		 String manager_node,
-		 String environment='dockerbuilder') {
+def call(Map parameters=[:]) {
 
+	String image_name = parameters.image_name
+	String manager_node = parameters.manager_node
+	String environment = parameters.environment ?: 'dockerbuilder'
+	boolean force = parameters.force ?: false
+		 
 	node ('linux') {	 
 		domain_name = sh(script: 'dnsdomainname', returnStdout: true).trim()
 		if (!domain_name) {
@@ -10,7 +13,7 @@ def call(String image_name,
 	}
 
 	node('docker-slave') {
-		if (dockerImageExists(image_name)) {
+		if (!force && dockerImageExists(parameters.image_name)) {
 			echo "The image ${image_name} already exists. Skipping build."
 			return docker.image(image_name)
 		}
