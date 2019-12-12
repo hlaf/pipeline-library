@@ -13,7 +13,7 @@ def call(String image_name,
         gem install librarian-puppet --no-ri --no-rdoc
         cat <<EOF > Puppetfile
 mod 'nwolfe-image_build',    :git => 'https://github.com/hlaf/puppetlabs-image_build.git',
-                             :ref => 'v0.10.0_ruby18_compat-5'
+                             :ref => 'v0.10.0_ruby18_compat-6'
 EOF
         librarian-puppet install
         puppet docker dockerfile --master ${master} \
@@ -24,6 +24,7 @@ EOF
                                  --os centos \
                                  --no-inventory \
                                  --no-timestamp \
+                                 --puppet-extra-settings '--no-stringify_facts' \
                                  --trace \
                                  --puppet-env ${environment} > Dockerfile
         "
