@@ -1,8 +1,10 @@
-def call(String image_name,
-	     String environment='production',
-	     String master='puppet',
-	     String from_image_name='hlaf/puppet') {
+def call(Map parameters=[:]) {
 
+    String image_name = parameters.image_name
+    String environment = parameters.environment ?: 'production'
+    String master = parameters.master ?: 'puppet',
+    String from_image_name = parameters.from_image_name ?: 'hlaf/puppet'
+		 
     // Create the Dockerfile
     sh """docker run \
              --volumes-from $DOCKER_CONTAINER_ID \

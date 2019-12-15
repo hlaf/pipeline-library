@@ -22,7 +22,8 @@ def call(Map parameters=[:]) {
 		
 		image_fqdn = image_name + '.dockerbuilder.' + domain_name
 	
-		createPuppetDockerfile(image_name, environment)
+		createPuppetDockerfile(image_name: image_name,
+			                   environment: environment)
 		deletePuppetCertificate(image_fqdn, manager_node)
 		image = docker.build(image_name, "--no-cache .")
 
