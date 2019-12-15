@@ -3,6 +3,7 @@ def call(Map parameters=[:]) {
 	String image_name = parameters.image_name
 	String manager_node = parameters.manager_node
 	String environment = parameters.environment ?: 'dockerbuilder'
+	String from_image_name = parameters.from_image_name ?: 'hlaf/puppet'
 	boolean force = parameters.force ?: false
 		 
 	node ('linux') {	 
@@ -23,7 +24,8 @@ def call(Map parameters=[:]) {
 		image_fqdn = image_name + '.dockerbuilder.' + domain_name
 	
 		createPuppetDockerfile(image_name: image_name,
-			                   environment: environment)
+			                   environment: environment,
+							   from_image_name: from_image_name)
 		deletePuppetCertificate(image_fqdn, manager_node)
 		image = docker.build(image_name, "--no-cache .")
 
