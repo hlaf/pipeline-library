@@ -1,6 +1,7 @@
 def call(Map parameters=[:]) {
 
     String image_name = parameters.image_name
+	String image_user = parameters.image_user ?: 'root'
     String environment = parameters.environment ?: 'production'
     String master = parameters.master ?: 'puppet'
     String from_image_name = parameters.from_image_name ?: 'hlaf/puppet'
@@ -20,6 +21,7 @@ EOF
         librarian-puppet install
         puppet docker dockerfile --master ${master} \
                                  --image-name puppet/${image_name} \
+                                 --image-user ${image_user} \
                                  --skip-puppet-install \
                                  --modulepath modules \
                                  --from ${from_image_name} \
