@@ -1,5 +1,5 @@
 def call(String certificate_name,
-	     String manager_node,
+	     String manager_node='puppet_management_node',
 		 String master='puppet',
 		 String environment='production') {
 
