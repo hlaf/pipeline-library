@@ -7,12 +7,7 @@ def call(Map parameters=[:]) {
 	String from_image_name = parameters.from_image_name ?: 'hlaf/puppet'
 	boolean force = parameters.force ?: false
 		 
-	node ('linux') {	 
-		domain_name = sh(script: 'dnsdomainname', returnStdout: true).trim()
-		if (!domain_name) {
-			error "Could not determine the DNS domain name"
-		}
-	}
+	domain_name = getDnsDomainName()
 
 	node('docker-slave') {
 		if (!force && dockerImageExists(parameters.image_name)) {
