@@ -18,12 +18,14 @@ def call() {
 			          target: 'previous_build', filter: '**/coverage.xml',
 			          flatten: true);
 
+        echo "Reading ${env.WORKSPACE}/previous_build/coverage.xml"
 		def xml_old = readFile "${env.WORKSPACE}/previous_build/coverage.xml"
 		def coverage_old = new XmlParser().parseText(xml_old)
 		branch_rate_old = new BigDecimal(coverage_old['@branch-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
 		line_rate_old = new BigDecimal(coverage_old['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
 	}
 
+    echo "Reading ${env.WORKSPACE}/coverage.xml"
     def xml_new = readFile "${env.WORKSPACE}/coverage.xml"
     def coverage_new = new XmlParser().parseText(xml_new)
     def branch_rate_new = new BigDecimal(coverage_new['@branch-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
