@@ -6,17 +6,24 @@ def call(Map parameters=[:]) {
   
   if (fileExists(unstash_path)) {
 	if (fileExists(unstash_metadata_file)) {
-		String build_id = readFile unstash_metadata_file
-		if (build_id == env.BUILD_NUMBER) {
-			return
+		
+		def props = readJSON file: unstash_metadata_file
+		if (props.stash_name != key) {
+          error "Location '${unstash_path}' contains data for stash '${props.stash_name}'"
+		} else if (props.build_number == env.BUILD_NUMBER) {
+		  return
 		} else {
-			error "Unstashed data already exists at '${unstash_path}'"
+		  error "Location '${unstash_path}' contains data from a prior build"
 		}
 	}
     error "Unstash location already exists: '${unstash_path}'"
   }
   
   dir(unstash_path) { unstash key }
-  writeFile file: unstash_metadata_file, text: env.BUILD_NUMBER
+  def data = readJSON text: '{}'
+  data.build_number = env.BUILD_NUMBER
+  data.stash_name = key
+  writeJSON file: unstash_metadata_file, json: data
+  
   return
 }
