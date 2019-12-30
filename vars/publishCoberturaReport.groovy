@@ -4,7 +4,7 @@ def call(results=[]) {
 	if (results.size() > 0) {
 	    for (String k: results) {
 			try {
-				dir("./coverage_results/${k}") { unstash k }
+				unstashCoverageResult(key: k)
 			} catch (hudson.AbortException e) { // Ignore 'No such saved stash'
 		        println "Warning: ${e.message}" // errors
 			}

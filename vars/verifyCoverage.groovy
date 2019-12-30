@@ -1,5 +1,7 @@
-def call() {
+def call(Map parameters=[:]) {
     
+	String key = parameters.key
+
     // Copy the latest successful build's coverage.xml
 	def previous_build = getLatestSuccessfulBuildWithArtifacts()
 	def default_baseline_coverage = '0.85'
@@ -18,13 +20,17 @@ def call() {
 			          target: 'previous_build', filter: '**/coverage.xml',
 			          flatten: true);
 
+        echo "Reading ${env.WORKSPACE}/previous_build/coverage.xml"
 		def xml_old = readFile "${env.WORKSPACE}/previous_build/coverage.xml"
 		def coverage_old = new XmlParser().parseText(xml_old)
 		branch_rate_old = new BigDecimal(coverage_old['@branch-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
 		line_rate_old = new BigDecimal(coverage_old['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
 	}
 
-    def xml_new = readFile "${env.WORKSPACE}/coverage.xml"
+	String results_path_new = unstashCoverageResult(key: key)
+	String xml_path_new = "${results_path_new}/coverage.xml"
+    echo "Reading ${xml_path_new}"
+    def xml_new = readFile xml_path_new
     def coverage_new = new XmlParser().parseText(xml_new)
     def branch_rate_new = new BigDecimal(coverage_new['@branch-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
     def line_rate_new = new BigDecimal(coverage_new['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
