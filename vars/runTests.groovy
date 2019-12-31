@@ -1,4 +1,4 @@
-def call(String environment = '') {
+def call(String environment = '', Map config=null, String label='') {
 	if (environment?.trim()) {
         environment = "-e ${environment}"
 	}
@@ -21,6 +21,9 @@ def call(String environment = '') {
 			"""
 		}
 		
+		if (config?.compute_coverage) {
+		  stashCoverageResult key: label
+		}
 		
 	} finally {
 		publishJUnitReport()
