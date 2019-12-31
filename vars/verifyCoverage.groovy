@@ -1,6 +1,6 @@
 def call(Map parameters=[:]) {
     
-	String key = parameters.key
+	String key = parameters.key ?: ''
 
     // Copy the latest successful build's coverage.xml
 	def previous_build = getLatestSuccessfulBuildWithArtifacts()
