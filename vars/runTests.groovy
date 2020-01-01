@@ -1,4 +1,8 @@
-def call(String environment = '', Map config=null, String label='') {
+def call(Map parameters=[:]) {
+
+	String environment = parameters.environment ?: ''
+	String label = parameters.label ?: ''
+
 	if (environment?.trim()) {
         environment = "-e ${environment}"
 	}
@@ -21,7 +25,7 @@ def call(String environment = '', Map config=null, String label='') {
 			"""
 		}
 		
-		if (config?.compute_coverage) {
+		if (getPipelineConfig().compute_coverage) {
 		  stashCoverageResult key: label
 		}
 		
