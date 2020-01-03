@@ -24,3 +24,6 @@ hs_err_pid*
 
 # Vi swap files
 .*.swp
+
+# Gradle
+.gradle
