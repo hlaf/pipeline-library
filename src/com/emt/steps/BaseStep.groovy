@@ -7,7 +7,7 @@ abstract class BaseStep implements Serializable {
 
 	protected IStepExecutor _steps;
 	
-	BaseStep(IStepExecutor executor) {
+	BaseStep(Object executor) {
 		_steps = executor
 	}
 
