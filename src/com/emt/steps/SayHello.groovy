@@ -3,14 +3,8 @@ package com.emt.steps
 import com.emt.IStepExecutor
 import com.emt.ioc.ContextRegistry
 
-class SayHello implements Serializable {
-
-	SayHello() {}
-
+class SayHello extends BaseStep {
 	void execute(String name='human') {
-		IStepExecutor steps = ContextRegistry.getContext().getStepExecutor()
-
-		steps.echo name
-		
+		_steps.echo "Hello, ${name}."
 	}
 }

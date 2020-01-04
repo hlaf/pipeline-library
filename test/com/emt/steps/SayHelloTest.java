@@ -23,18 +23,15 @@ public class SayHelloTest {
     }
 
     @Test
-    public void build_callsShStep() {
-//        // prepare
-//        String solutionPath = "some/path/to.sln";
-//        MsBuild builder = new MsBuild(solutionPath);
-          new SayHello().execute();
-    	
-    	
-//        // execute
-//        builder.build();
-//
-//        // verify
-//        verify(_steps).sh(anyString());
+    public void callsEchoWithDefaultMessage() {
+        new SayHello().execute();
+        verify(_steps).echo("Hello, human.");
+    }
+    
+    @Test
+    public void callsEchoWithCustomMessage() {
+        new SayHello().execute("World");
+        verify(_steps).echo("Hello, World.");
     }
 
 }
