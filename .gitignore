@@ -1,4 +1,4 @@
-# Compiled class file
+/# Compiled class file
 *.class
 
 # Log file
@@ -25,5 +25,11 @@ hs_err_pid*
 # Vi swap files
 .*.swp
 
-# Gradle
-.gradle
+# Ignore Gradle project-specific cache directory
+/.gradle
+/gradle
+
+# Ignore Gradle build output directory
+/build
+/bin/
+/out
