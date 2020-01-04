@@ -5,7 +5,7 @@ import com.emt.ioc.ContextRegistry
 
 abstract class BaseStep implements Serializable {
 
-	protected IStepExecutor _steps;
+	protected Object _steps;
 	
 	BaseStep(Object executor) {
 		_steps = executor
