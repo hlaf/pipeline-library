@@ -22,15 +22,19 @@ public class SayHelloTest {
         ContextRegistry.registerContext(_context);
     }
 
+    public SayHello inst() {
+    	return new SayHello(_context);
+    }
+    
     @Test
     public void callsEchoWithDefaultMessage() {
-        new SayHello().execute();
+    	inst().execute();
         verify(_steps).echo("Hello, human.");
     }
     
     @Test
     public void callsEchoWithCustomMessage() {
-        new SayHello().execute("World");
+    	inst().execute("World");
         verify(_steps).echo("Hello, World.");
     }
 
