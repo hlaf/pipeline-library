@@ -1,7 +1,7 @@
 package com.emt.steps
 
-import org.somecompany.IStepExecutor
-import org.somecompany.ioc.ContextRegistry
+import com.emt.IStepExecutor
+import com.emt.ioc.ContextRegistry
 
 class SayHello implements Serializable {
 

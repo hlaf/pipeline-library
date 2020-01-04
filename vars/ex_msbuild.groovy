@@ -1,5 +1,5 @@
-import org.somecompany.build.MsBuild
-import org.somecompany.ioc.ContextRegistry
+import com.emt.build.MsBuild
+import com.emt.ioc.ContextRegistry
 
 /**
  * Example custom step for easy use of MsBuild inside Jenkinsfiles

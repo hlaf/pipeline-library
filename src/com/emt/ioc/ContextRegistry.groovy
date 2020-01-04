@@ -1,4 +1,4 @@
-package org.somecompany.ioc
+package com.emt.ioc
 
 class ContextRegistry implements Serializable {
     private static IContext _context

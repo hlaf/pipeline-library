@@ -1,7 +1,7 @@
-package org.somecompany.build
+package com.emt.build
 
-import org.somecompany.IStepExecutor
-import org.somecompany.ioc.ContextRegistry
+import com.emt.IStepExecutor
+import com.emt.ioc.ContextRegistry
 
 /**
  * Example class (without proper implementation) for using the MsBuild tool for building .NET projects.

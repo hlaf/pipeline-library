@@ -1,8 +1,8 @@
 package com.emt.steps;
 
-import org.somecompany.IStepExecutor;
-import org.somecompany.ioc.ContextRegistry;
-import org.somecompany.ioc.IContext;
+import com.emt.IStepExecutor;
+import com.emt.ioc.ContextRegistry;
+import com.emt.ioc.IContext;
 import org.junit.Before;
 import org.junit.Test;
 

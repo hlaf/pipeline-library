@@ -1,4 +1,4 @@
-package org.somecompany
+package com.emt
 
 /**
  * Interface for calling any necessary Jenkins steps. This will be mocked in unit tests.

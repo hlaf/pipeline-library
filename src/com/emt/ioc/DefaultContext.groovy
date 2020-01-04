@@ -1,7 +1,7 @@
-package org.somecompany.ioc
+package com.emt.ioc
 
-import org.somecompany.IStepExecutor
-import org.somecompany.StepExecutor
+import com.emt.IStepExecutor
+import com.emt.StepExecutor
 
 class DefaultContext implements IContext, Serializable {
     private _steps
