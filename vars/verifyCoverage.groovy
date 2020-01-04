@@ -1,3 +1,5 @@
+import com.cloudbees.groovy.cps.NonCPS
+
 def call(Map parameters=[:]) {
     
 	String key = parameters.key ?: ''
