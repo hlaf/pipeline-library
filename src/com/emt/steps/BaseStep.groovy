@@ -7,8 +7,8 @@ abstract class BaseStep implements Serializable {
 
 	protected IStepExecutor _steps;
 	
-	BaseStep(Object context) {
-		_steps = context.getStepExecutor()
+	BaseStep(IStepExecutor executor) {
+		_steps = executor
 	}
-	
+
 }

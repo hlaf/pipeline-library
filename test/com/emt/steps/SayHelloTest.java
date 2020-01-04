@@ -23,7 +23,7 @@ public class SayHelloTest {
     }
 
     public SayHello inst() {
-    	return new SayHello(_context);
+    	return new SayHello(_steps);
     }
     
     @Test
