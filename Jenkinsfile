@@ -13,4 +13,15 @@ node('linux') {
 	checkoutFromGit(repo_creds, repo_url)
   }
 
+  stage('commit.tests.unit') {
+	try {
+	  sh """
+	  chmod +x gradlew
+	  ./gradlew test
+	  """
+	} finally {
+	  junit keepLongStdio: true, testResults: '**/build/test-results/test/TEST-*.xml'
+	}
+  }
+
 }
