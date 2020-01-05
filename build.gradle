@@ -4,6 +4,18 @@ version '1.0-SNAPSHOT'
 apply plugin: 'groovy'
 apply plugin: 'java'
 
+buildscript {
+    repositories {
+        mavenCentral()
+        // The next repo is only needed while using SNAPSHOT versions
+        //maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    }
+    dependencies {
+        classpath "net.saliman:gradle-cobertura-plugin:3.0.0"
+    }
+}
+apply plugin: 'net.saliman.cobertura'
+
 sourceCompatibility = 1.8
 
 repositories {
@@ -32,4 +44,9 @@ sourceSets {
             srcDir 'test'
         }
     }
+}
+
+cobertura {
+    coverageDirs = ['src']
+    coverageFormats = ['html', 'xml'] 
 }
