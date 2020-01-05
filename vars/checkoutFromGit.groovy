@@ -1,10 +1,11 @@
 def call(String git_repo_creds,
-         String repo_url) {
+         String repo_url,
+		 String branch='master') {
 
   checkout([$class: 'GitSCM',
-           branches: [[name: '*/master']],
+           branches: [[name: "*/${branch}"]],
            doGenerateSubmoduleConfigurations: false,
-		   extensions: [[$class: 'LocalBranch', localBranch: 'master'], [$class: 'WipeWorkspace']],
+		   extensions: [[$class: 'LocalBranch', localBranch: branch], [$class: 'WipeWorkspace']],
 		   submoduleCfg: [],
 		   userRemoteConfigs: [[
 		     credentialsId: git_repo_creds,

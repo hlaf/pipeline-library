@@ -4,6 +4,18 @@ version '1.0-SNAPSHOT'
 apply plugin: 'groovy'
 apply plugin: 'java'
 
+buildscript {
+    repositories {
+        mavenCentral()
+        // The next repo is only needed while using SNAPSHOT versions
+        //maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    }
+    dependencies {
+        classpath "net.saliman:gradle-cobertura-plugin:3.0.0"
+    }
+}
+apply plugin: 'net.saliman.cobertura'
+
 sourceCompatibility = 1.8
 
 repositories {
@@ -11,11 +23,11 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.3.11'
-    compile 'org.eclipse.hudson:hudson-core:3.2.1'
-    compile 'com.cloudbees:groovy-cps:1.22'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile "org.mockito:mockito-core:2.+"
+    implementation 'org.codehaus.groovy:groovy-all:2.3.11'
+    implementation 'org.eclipse.hudson:hudson-core:3.2.1'
+    implementation 'com.cloudbees:groovy-cps:1.22'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation "org.mockito:mockito-core:2.+"
 }
 
 sourceSets {
@@ -32,4 +44,9 @@ sourceSets {
             srcDir 'test'
         }
     }
+}
+
+cobertura {
+    coverageDirs = ['src']
+    coverageFormats = ['html', 'xml'] 
 }
