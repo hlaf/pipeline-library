@@ -15,9 +15,12 @@ node('linux') {
 
   stage('commit.tests.unit') {
 	try {
+
+	  def target = getPipelineConfig().compute_coverage ? 'cobertura' : 'test'
+
 	  sh """
 	  chmod +x gradlew
-	  ./gradlew test
+	  ./gradlew ${target}
 	  """
 	} finally {
 	  junit keepLongStdio: true, testResults: '**/build/test-results/test/TEST-*.xml'
