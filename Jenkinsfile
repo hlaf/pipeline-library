@@ -7,7 +7,7 @@ repo_url = 'git@github.com:hlaf/pipeline-library.git'
 
 getPipelineConfig().compute_coverage = true
 
-node('linux') {
+node('docker-slave') {
    
   stage('commit.checkout') {
 	checkoutFromGit(repo_creds, repo_url)
