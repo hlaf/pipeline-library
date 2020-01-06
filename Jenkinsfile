@@ -24,7 +24,22 @@ node('linux') {
 	  """
 	} finally {
 	  junit keepLongStdio: true, testResults: '**/build/test-results/test/TEST-*.xml'
+	  stashCoverageResultGradle key: 'linux'
 	}
+  }
+  
+  stage('commit.tests.unit.coverage') {
+    verifyCoverage key: 'linux'
+    publishCoberturaReport(['linux'])
   }
 
 }
+
+def stashCoverageResultGradle(Map parameters=[:]) {
+  String key = parameters.key
+  stash_name = "coverage-${key}"
+  dir('build/reports/cobertura') {
+    saferStash name: stash_name, includes: "coverage.xml"
+  }
+}
+
