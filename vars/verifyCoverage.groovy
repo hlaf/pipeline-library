@@ -33,7 +33,9 @@ def call(Map parameters=[:]) {
 	String xml_path_new = "${results_path_new}/coverage.xml"
     echo "Reading ${xml_path_new}"
     def xml_new = readFile xml_path_new
-    def coverage_new = new XmlParser().parseText(xml_new)
+    def p = new XmlParser()
+    p.setFeature('http://apache.org/xml/features/disallow-doctype-decl', false)
+    def coverage_new = p.parseText(xml_new)
     def branch_rate_new = new BigDecimal(coverage_new['@branch-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
     def line_rate_new = new BigDecimal(coverage_new['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
     
