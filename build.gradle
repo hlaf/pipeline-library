@@ -47,6 +47,6 @@ sourceSets {
 }
 
 cobertura {
-    coverageDirs = ['src']
-    coverageFormats = ['html', 'xml'] 
+    coverageIncludes = ['.*com.emt.*']
+    coverageFormats = ['html', 'xml']
 }
