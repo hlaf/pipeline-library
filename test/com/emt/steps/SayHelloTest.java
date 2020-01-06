@@ -1,14 +1,17 @@
 package com.emt.steps;
 
-import com.emt.IStepExecutor;
-import com.emt.ioc.ContextRegistry;
-import com.emt.ioc.IContext;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Mockito.*;
+import com.emt.IStepExecutor;
+import com.emt.ioc.ContextRegistry;
+import com.emt.ioc.IContext;
 
-public class SayHelloTest {
+public class SayHelloTest extends StepTestFixture {
     private IContext _context;
     private IStepExecutor _steps;
 
