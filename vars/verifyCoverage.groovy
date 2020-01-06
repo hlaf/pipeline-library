@@ -22,21 +22,14 @@ def call(Map parameters=[:]) {
 			          target: 'previous_build', filter: '**/coverage.xml',
 			          flatten: true);
 
-        echo "Reading ${env.WORKSPACE}/previous_build/coverage.xml"
-		def xml_old = readFile "${env.WORKSPACE}/previous_build/coverage.xml"
-		def coverage_old = new XmlParser().parseText(xml_old)
-		branch_rate_old = new BigDecimal(coverage_old['@branch-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
-		line_rate_old = new BigDecimal(coverage_old['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
+		String xml_path_old = "${env.WORKSPACE}/previous_build/coverage.xml"
+		(branch_rate_old, line_rate_new) = parseCoverageXml(xml_path_old)
 	}
 
 	String results_path_new = unstashCoverageResult(key: key)
-	String xml_path_new = "${results_path_new}/coverage.xml"
-    echo "Reading ${xml_path_new}"
-    def xml_new = readFile xml_path_new
-    def coverage_new = new XmlParser().parseText(xml_new)
-    def branch_rate_new = new BigDecimal(coverage_new['@branch-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
-    def line_rate_new = new BigDecimal(coverage_new['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
-    
+    String xml_path_new = "${results_path_new}/coverage.xml"
+	(branch_rate_new, line_rate_new) = parseCoverageXml(xml_path_new)
+
 	echo "Baseline coverage metrics:"
 	echo "  Branch rate: ${branch_rate_old}"
 	echo "  Line rate  : ${line_rate_old}"
@@ -68,3 +61,13 @@ def getLatestSuccessfulBuildWithArtifacts() {
 	return null;
 }
 
+def parseCoverageXml(String xml_path) {
+	echo "Reading ${xml_path}"
+	def xml_text = readFile xml_path
+	def p = new XmlParser()
+	p.setFeature('http://apache.org/xml/features/disallow-doctype-decl', false)
+	def cov_data = p.parseText(xml_text)
+	def branch_rate = new BigDecimal(cov_data['@branch-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
+	def line_rate = new BigDecimal(cov_data['@line-rate']).setScale(2, java.math.RoundingMode.HALF_UP)
+	return [branch_rate, line_rate]
+}
