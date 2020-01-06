@@ -29,8 +29,8 @@ node('linux') {
   }
   
   stage('commit.tests.unit.coverage') {
+	publishCoberturaReport(['linux'])
     verifyCoverage key: 'linux'
-    publishCoberturaReport(['linux'])
   }
 
 }
