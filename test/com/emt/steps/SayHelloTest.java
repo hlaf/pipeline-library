@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.emt.IStepExecutor;
-import com.emt.ioc.ContextRegistry;
 import com.emt.ioc.IContext;
 
 public class SayHelloTest extends StepTestFixture {
@@ -21,8 +20,6 @@ public class SayHelloTest extends StepTestFixture {
         _steps = mock(IStepExecutor.class);
 
         when(_context.getStepExecutor()).thenReturn(_steps);
-
-        ContextRegistry.registerContext(_context);
     }
 
     public SayHello inst() {
