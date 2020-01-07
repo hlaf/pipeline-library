@@ -1,11 +1,31 @@
 package com.emt.steps;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
+import org.mockito.Mockito;
+
+import com.emt.IStepExecutor;
+import com.emt.ioc.IContext;
+
 public class StepTestFixture {
 
+	private IContext _context;
+    protected IStepExecutor _steps;
+	
+	@Before
+    public void setup() {
+        _context = mock(IContext.class);
+        _steps = mock(IStepExecutor.class, Mockito.CALLS_REAL_METHODS);
+
+        when(_context.getStepExecutor()).thenReturn(_steps);
+    }
+	
 	public static String capitalize(String str) {
 		String cap = str.substring(0, 1).toUpperCase() + str.substring(1);
 		return cap;
