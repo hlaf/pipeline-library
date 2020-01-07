@@ -23,7 +23,10 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:2.3.11'
+    // NOTE: Must stick to Groovy 2.0.8 as Cobertura cannot generate valid
+    // coverage reports for newer versions. More details at:
+    // https://github.com/cobertura/cobertura/issues/184
+    implementation 'org.codehaus.groovy:groovy-all:2.0.8'
     implementation 'org.eclipse.hudson:hudson-core:3.2.1'
     implementation 'com.cloudbees:groovy-cps:1.22'
     testImplementation group: 'junit', name: 'junit', version: '4.12'
