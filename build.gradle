@@ -31,6 +31,8 @@ dependencies {
     implementation 'com.cloudbees:groovy-cps:1.22'
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation "org.mockito:mockito-core:2.+"
+    testImplementation group: 'com.google.guava', name: 'guava', version: '23.5-jre'
+
 }
 
 sourceSets {
@@ -52,4 +54,12 @@ sourceSets {
 cobertura {
     coverageIncludes = ['.*com.emt.*']
     coverageFormats = ['html', 'xml']
+}
+
+// NOTE: Disable groovy optimizations to get more accurate Cobertura results
+// See https://pbetkier.github.io/2014/08/07/groovy-code-coverage-issues.html
+gradle.taskGraph.whenReady { graph ->
+    if (graph.hasTask(':cobertura')) {
+        compileGroovy.groovyOptions.optimizationOptions.all = false
+    }
 }
