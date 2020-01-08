@@ -53,3 +53,11 @@ cobertura {
     coverageIncludes = ['.*com.emt.*']
     coverageFormats = ['html', 'xml']
 }
+
+// NOTE: Disable groovy optimizations to get more accurate Cobertura results
+// See https://pbetkier.github.io/2014/08/07/groovy-code-coverage-issues.html
+gradle.taskGraph.whenReady { graph ->
+    if (graph.hasTask(':cobertura')) {
+        compileGroovy.groovyOptions.optimizationOptions.all = false
+    }
+}
