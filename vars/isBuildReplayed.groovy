@@ -1,5 +1,5 @@
 import com.emt.steps.IsBuildReplayed
 
 def call() {
-  return new IsBuildReplayed().execute()
+  return new IsBuildReplayed(this).execute()
 }
