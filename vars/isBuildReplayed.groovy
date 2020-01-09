@@ -1,4 +1,5 @@
-def call(Map parameters=[:]) {
-  def res = currentBuild.getBuildCauses('org.jenkinsci.plugins.workflow.cps.replay.ReplayCause')
-  return res.size() > 0	
+import com.emt.steps.IsBuildReplayed
+
+def call() {
+  return new IsBuildReplayed().execute()
 }

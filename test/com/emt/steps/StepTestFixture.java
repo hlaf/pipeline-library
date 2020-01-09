@@ -13,11 +13,14 @@ import org.mockito.Mockito;
 import com.emt.IStepExecutor;
 import com.emt.ioc.IContext;
 
+class Unassigned {};
+
 public class StepTestFixture {
 
 	private IContext _context;
     protected IStepExecutor _steps;
 	
+    
 	@Before
     public void setup() {
         _context = mock(IContext.class);

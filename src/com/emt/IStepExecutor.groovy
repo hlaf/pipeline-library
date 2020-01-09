@@ -6,6 +6,7 @@ package com.emt
 abstract class IStepExecutor {
 	
 	public IDockerNamespace docker
+	public ICurrentBuildNamespace currentBuild;
 	
     abstract int sh(String command)
 	abstract String sh(Map params)
@@ -18,6 +19,10 @@ abstract class IStepExecutor {
 	abstract String getDnsDomainName();
 	abstract boolean dockerImageExists(String name);
 	abstract void createPuppetDockerfile(Map params=[:]);
+}
+
+interface ICurrentBuildNamespace {
+	List<String> getBuildCauses();
 }
 
 interface IDockerNamespace {

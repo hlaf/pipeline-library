@@ -28,8 +28,6 @@ import com.emt.IDockerNamespace;
 
 import groovy.lang.Closure;
 
-class Unassigned {};
-
 @RunWith(Theories.class)
 public class BuildDockerImageTest extends StepTestFixture {
 
