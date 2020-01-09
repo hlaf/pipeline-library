@@ -4,5 +4,6 @@ package com.emt.steps
 class IsBuildStartedByTimer extends BaseStep {
 	boolean execute() {
 		def res = _steps.currentBuild.getBuildCauses('hudson.triggers.TimerTrigger.TimerTriggerCause')
+		return res.size() > 0
 	}
 }
