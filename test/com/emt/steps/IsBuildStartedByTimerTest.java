@@ -22,7 +22,7 @@ import com.emt.ICurrentBuildNamespace;
 @RunWith(Theories.class)
 public class IsBuildStartedByTimerTest extends StepTestFixture {
 
-	private static final String timer_cause = "hudson.triggers.TimerTrigger.TimerTriggerCause";
+	private static final String timer_cause = "hudson.triggers.TimerTrigger$TimerTriggerCause";
 
 	@DataPoints("build_cause")
     public static List<List<String>> build_cause_values() {
@@ -42,7 +42,7 @@ public class IsBuildStartedByTimerTest extends StepTestFixture {
     }
 
     @Theory
-    public void returnsTrue(@FromDataPoints("build_cause") List<String> build_causes) {
+    public void predicateWorks(@FromDataPoints("build_cause") List<String> build_causes) {
     	final boolean expected_res = build_causes.contains(timer_cause);
         when(_steps.currentBuild.getBuildCauses(timer_cause)).thenReturn(build_causes);
     	assertTrue(inst().execute() == expected_res);
