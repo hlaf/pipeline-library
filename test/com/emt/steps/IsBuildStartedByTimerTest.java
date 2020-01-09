@@ -1,7 +1,9 @@
 package com.emt.steps;
 
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,9 +27,8 @@ public class IsBuildStartedByTimerTest extends StepTestFixture {
 	@DataPoints("build_cause")
     public static List<List<String>> build_cause_values() {
 		List<List<String>> res = new ArrayList<List<String>>();
-		res.add(Arrays.asList("dummy_cause", timer_cause));
 		res.add(Arrays.asList(timer_cause));
-		res.add(Arrays.asList("dummy_cause1", "dummy_cause2"));
+		res.add(Arrays.asList());
 		return res;
     }
 
@@ -42,16 +43,10 @@ public class IsBuildStartedByTimerTest extends StepTestFixture {
 
     @Theory
     public void returnsTrue(@FromDataPoints("build_cause") List<String> build_causes) {
-    	assumeTrue(build_causes.contains(timer_cause));
-        when(_steps.currentBuild.getBuildCauses()).thenReturn(build_causes);
-    	assertTrue(inst().execute());
+    	final boolean expected_res = build_causes.contains(timer_cause);
+        when(_steps.currentBuild.getBuildCauses(timer_cause)).thenReturn(build_causes);
+    	assertTrue(inst().execute() == expected_res);
     }
-    
-    @Theory
-    public void returnsFalse(@FromDataPoints("build_cause") List<String> build_causes) {
-    	assumeFalse(build_causes.contains(timer_cause));
-        when(_steps.currentBuild.getBuildCauses()).thenReturn(build_causes);
-    	assertFalse(inst().execute());
-    }
+
 }
  
