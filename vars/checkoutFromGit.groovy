@@ -1,6 +1,6 @@
-import com.emt.steps.CoverageIgnore
 
-@CoverageIgnore
+
+
 def call(String git_repo_creds,
          String repo_url,
 		 String branch='master') {

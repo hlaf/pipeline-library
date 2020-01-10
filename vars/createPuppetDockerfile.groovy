@@ -1,6 +1,6 @@
-import com.emt.steps.CoverageIgnore
 
-@CoverageIgnore
+
+
 def call(Map parameters=[:]) {
 
     String image_name = parameters.image_name

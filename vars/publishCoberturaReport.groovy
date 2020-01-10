@@ -1,6 +1,6 @@
-import com.emt.steps.CoverageIgnore
 
-@CoverageIgnore
+
+
 def call(results=[]) {
     // Publish the Cobertura test coverage report(s)
 	def report_location

@@ -1,6 +1,6 @@
-import com.emt.steps.CoverageIgnore
 
-@CoverageIgnore
+
+
 def call() {
 
 	return PipelineConfigManager.inst().get("${env.JOB_NAME}@${env.BUILD_NUMBER}")

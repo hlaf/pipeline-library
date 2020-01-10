@@ -1,7 +1,7 @@
 import com.cloudbees.groovy.cps.NonCPS
-import com.emt.steps.CoverageIgnore
 
-@CoverageIgnore
+
+
 def call(Map parameters=[:]) {
     
 	String key = parameters.key ?: ''

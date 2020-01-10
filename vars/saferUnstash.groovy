@@ -1,6 +1,6 @@
-import com.emt.steps.CoverageIgnore
 
-@CoverageIgnore
+
+
 def call(Map parameters=[:]) {
   String key = parameters.key
   String unstash_path = parameters.to

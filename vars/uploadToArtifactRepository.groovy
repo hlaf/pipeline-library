@@ -1,6 +1,6 @@
-import com.emt.steps.CoverageIgnore
 
-@CoverageIgnore
+
+
 def call(String artifact_repo_url,
 	     String artifact_repo_creds) {
 
