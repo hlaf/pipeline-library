@@ -63,19 +63,6 @@ public class BuildDockerImageTest extends StepTestFixture {
         return new Object[]{ true, false, new Unassigned() };
     }
 
-	private static void putValue(Map args, String key, Object value) {
-		if (value instanceof Unassigned) return;
-		args.put(key, value);
-	}
-	
-	private Object execute(Map args) {
-		try {
-			return inst().execute(args);
-		} finally {
-			_executed = true;
-		}
-	}
-	
 	@DataPoints("args")
 	public static Map[] getArgs() {
 		

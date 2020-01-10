@@ -3,12 +3,8 @@ package com.emt.steps;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.management.RuntimeErrorException;
+import java.util.Map;
 
 import org.junit.Before;
 import org.mockito.Mockito;
@@ -22,6 +18,7 @@ public abstract class StepTestFixture {
 
 	private IContext _context;
     protected IStepExecutor _steps;
+	protected boolean _executed = false;
     
     public abstract Class<? extends BaseStep> getStepClass();
     
@@ -39,6 +36,19 @@ public abstract class StepTestFixture {
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
 			throw new RuntimeException(e);
+		}
+	}
+	
+	public static void putValue(Map args, String key, Object value) {
+		if (value instanceof Unassigned) return;
+		args.put(key, value);
+	}
+	
+	protected final Object execute(Map args) {
+		try {
+			return inst().execute(args);
+		} finally {
+			_executed = true;
 		}
 	}
 	
