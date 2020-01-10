@@ -4,12 +4,15 @@ import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableMap;
+
 public class SayHelloTest extends StepTestFixture {
-    
-    public SayHello inst() {
-    	return new SayHello(_steps);
-    }
-    
+
+	@Override
+	public Class<? extends BaseStep> getStepClass() {
+		return SayHello.class;
+	}
+	
     @Test
     public void callsEchoWithDefaultMessage() {
     	inst().execute();
@@ -18,7 +21,7 @@ public class SayHelloTest extends StepTestFixture {
     
     @Test
     public void callsEchoWithCustomMessage() {
-    	inst().execute("World");
+    	inst().execute(ImmutableMap.of("name", "World"));
         verify(_steps).echo("Hello, World.");
     }
 

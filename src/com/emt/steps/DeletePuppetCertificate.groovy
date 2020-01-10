@@ -2,11 +2,14 @@ package com.emt.steps
 
 @groovy.transform.InheritConstructors
 class DeletePuppetCertificate extends BaseStep {
-	void execute(String certificate_name,
-	             String manager_node='puppet_management_node',
-				 String master='puppet',
-				 String environment='production') {
+	@Override
+	Object execute(Map params=[:]) {
 		
+		String certificate_name = params.certificate_name
+		String manager_node = params.get('manager_node', 'puppet_management_node')
+		String master = params.get('master', 'puppet')
+		String environment = params.get('environment', 'production')
+				 
         _steps.node(manager_node) {
 			
 			_steps.sh """

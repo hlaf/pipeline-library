@@ -32,8 +32,9 @@ public class IsBuildStartedByTimerTest extends StepTestFixture {
 		return res;
     }
 
-    public IsBuildStartedByTimer inst() {
-    	return new IsBuildStartedByTimer(_steps);
+    @Override
+    public Class<? extends BaseStep> getStepClass() {
+    	return IsBuildStartedByTimer.class;
     }
     
     public void setup() {
@@ -45,7 +46,7 @@ public class IsBuildStartedByTimerTest extends StepTestFixture {
     public void predicateWorks(@FromDataPoints("build_cause") List<String> build_causes) {
     	final boolean expected_res = build_causes.contains(timer_cause);
         when(_steps.currentBuild.getBuildCauses(timer_cause)).thenReturn(build_causes);
-    	assertTrue(inst().execute() == expected_res);
+    	assertTrue(inst().execute().equals(expected_res));
     }
 
 }

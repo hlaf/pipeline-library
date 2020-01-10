@@ -4,8 +4,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.management.RuntimeErrorException;
 
 import org.junit.Before;
 import org.mockito.Mockito;
@@ -15,11 +18,12 @@ import com.emt.ioc.IContext;
 
 class Unassigned {};
 
-public class StepTestFixture {
+public abstract class StepTestFixture {
 
 	private IContext _context;
     protected IStepExecutor _steps;
-	
+    
+    public abstract Class<? extends BaseStep> getStepClass();
     
 	@Before
     public void setup() {
@@ -29,18 +33,13 @@ public class StepTestFixture {
         when(_context.getStepExecutor()).thenReturn(_steps);
     }
 	
-	public static String capitalize(String str) {
-		String cap = str.substring(0, 1).toUpperCase() + str.substring(1);
-		return cap;
-	}
-	
-	public static List<String> getStepNames() {
-		String package_name = "com.emt.steps.";
-		List<String> step_names = new ArrayList<String>();
-        for (String pathname : new File("vars").list()) {
-            step_names.add(package_name + capitalize(pathname).split(".groovy")[0]);
-        }
-        return step_names;
+	public final BaseStep inst() {
+		try {
+			return getStepClass().getConstructor(Object.class).newInstance(_steps);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 }

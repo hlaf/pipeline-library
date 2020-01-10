@@ -11,10 +11,6 @@ import org.junit.Test;
 
 public class GetDnsDomainNameTest extends StepTestFixture {
     
-    public GetDnsDomainName inst() {
-    	return new GetDnsDomainName(_steps);
-    }
-    
     @Test
     public void returnsValidDomain() {
     	String expected_output = "mydomain.com";
@@ -28,5 +24,10 @@ public class GetDnsDomainNameTest extends StepTestFixture {
     	inst().execute();
     	verify(_steps).error(anyString());
     }
+
+	@Override
+	public Class<? extends BaseStep> getStepClass() {
+		return GetDnsDomainName.class;
+	}
     
 }

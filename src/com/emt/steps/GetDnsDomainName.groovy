@@ -2,7 +2,7 @@ package com.emt.steps
 
 @groovy.transform.InheritConstructors
 class GetDnsDomainName extends BaseStep {
-	String execute() {
+	Object execute(Map args=[:]) {
 		def domain_name
 		_steps.node ('linux') {
 			domain_name = _steps.sh(script: 'dnsdomainname', returnStdout: true).trim()

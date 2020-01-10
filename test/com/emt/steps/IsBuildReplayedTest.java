@@ -30,10 +30,6 @@ public class IsBuildReplayedTest extends StepTestFixture {
 		return res;
     }
 
-    public IsBuildReplayed inst() {
-    	return new IsBuildReplayed(_steps);
-    }
-    
     public void setup() {
     	super.setup();
     	_steps.currentBuild = mock(ICurrentBuildNamespace.class);
@@ -43,8 +39,13 @@ public class IsBuildReplayedTest extends StepTestFixture {
     public void returnsCorrectValue(@FromDataPoints("build_cause") List<String> build_causes) {
         final boolean expected_res = build_causes.contains(replay_cause);
         when(_steps.currentBuild.getBuildCauses(replay_cause)).thenReturn(build_causes);
-    	assertTrue(inst().execute() == expected_res);
+    	assertTrue(inst().execute().equals(expected_res));
     }
+
+	@Override
+	public Class<? extends BaseStep> getStepClass() {
+		return IsBuildReplayed.class;
+	}
 
 }
  
