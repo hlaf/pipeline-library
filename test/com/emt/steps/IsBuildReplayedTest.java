@@ -25,9 +25,8 @@ public class IsBuildReplayedTest extends StepTestFixture {
 	@DataPoints("build_cause")
     public static List<List<String>> build_cause_values() {
 		List<List<String>> res = new ArrayList<List<String>>();
-		res.add(Arrays.asList("dummy_cause", replay_cause));
 		res.add(Arrays.asList(replay_cause));
-		res.add(Arrays.asList("dummy_cause1", "dummy_cause2"));
+		res.add(Arrays.asList());
 		return res;
     }
 
@@ -41,17 +40,11 @@ public class IsBuildReplayedTest extends StepTestFixture {
     }
 
     @Theory
-    public void returnsTrue(@FromDataPoints("build_cause") List<String> build_causes) {
-    	assumeTrue(build_causes.contains(replay_cause));
-        when(_steps.currentBuild.getBuildCauses()).thenReturn(build_causes);
-    	assertTrue(inst().execute());
+    public void returnsCorrectValue(@FromDataPoints("build_cause") List<String> build_causes) {
+        final boolean expected_res = build_causes.contains(replay_cause);
+        when(_steps.currentBuild.getBuildCauses(replay_cause)).thenReturn(build_causes);
+    	assertTrue(inst().execute() == expected_res);
     }
-    
-    @Theory
-    public void returnsFalse(@FromDataPoints("build_cause") List<String> build_causes) {
-    	assumeFalse(build_causes.contains(replay_cause));
-        when(_steps.currentBuild.getBuildCauses()).thenReturn(build_causes);
-    	assertFalse(inst().execute());
-    }
+
 }
  

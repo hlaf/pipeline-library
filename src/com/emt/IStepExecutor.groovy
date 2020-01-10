@@ -22,7 +22,7 @@ abstract class IStepExecutor {
 }
 
 interface ICurrentBuildNamespace {
-	List<String> getBuildCauses();
+	List<String> getBuildCauses(String cause)
 }
 
 interface IDockerNamespace {
