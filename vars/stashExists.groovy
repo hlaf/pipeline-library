@@ -1,3 +1,6 @@
+import com.emt.steps.CoverageIgnore
+
+@CoverageIgnore
 def call(String name) {
   
   try {

@@ -54,6 +54,7 @@ sourceSets {
 cobertura {
     coverageIncludes = ['.*com.emt.*']
     coverageFormats = ['html', 'xml']
+    coverageIgnoreMethodAnnotations = ['com.emt.steps.CoverageIgnore']
 }
 
 // NOTE: Disable groovy optimizations to get more accurate Cobertura results

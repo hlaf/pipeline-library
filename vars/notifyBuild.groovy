@@ -1,3 +1,6 @@
+import com.emt.steps.CoverageIgnore
+
+@CoverageIgnore
 def call(String build_status,
          String recipient_email) {
 

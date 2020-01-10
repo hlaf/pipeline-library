@@ -1,3 +1,6 @@
+import com.emt.steps.CoverageIgnore
+
+@CoverageIgnore
 def call(String git_repo_creds,
          String author,
          String author_email,

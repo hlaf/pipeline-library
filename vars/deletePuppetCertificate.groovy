@@ -1,5 +1,7 @@
+import com.emt.steps.CoverageIgnore
 import com.emt.steps.DeletePuppetCertificate
 
+@CoverageIgnore
 def call(String certificate_name,
 	     String manager_node='puppet_management_node',
 		 String master='puppet',
