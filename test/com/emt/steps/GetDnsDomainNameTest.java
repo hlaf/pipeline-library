@@ -25,9 +25,4 @@ public class GetDnsDomainNameTest extends StepTestFixture {
     	verify(_steps).error(anyString());
     }
 
-	@Override
-	public Class<? extends BaseStep> getStepClass() {
-		return GetDnsDomainName.class;
-	}
-    
 }

@@ -1,9 +1,6 @@
 package com.emt.steps;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -32,11 +29,6 @@ public class IsBuildStartedByTimerTest extends StepTestFixture {
 		return res;
     }
 
-    @Override
-    public Class<? extends BaseStep> getStepClass() {
-    	return IsBuildStartedByTimer.class;
-    }
-    
     public void setup() {
     	super.setup();
     	_steps.currentBuild = mock(ICurrentBuildNamespace.class);

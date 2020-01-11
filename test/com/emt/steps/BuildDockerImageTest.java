@@ -93,9 +93,6 @@ public class BuildDockerImageTest extends StepTestFixture {
 		return arg_combinations;
 	}
 	
-	@Override
-	public Class<? extends BaseStep> getStepClass() { return BuildDockerImage.class; }
-	
     @Before
     public void setup() {
     	super.setup();

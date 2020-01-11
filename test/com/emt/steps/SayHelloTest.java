@@ -8,11 +8,6 @@ import com.google.common.collect.ImmutableMap;
 
 public class SayHelloTest extends StepTestFixture {
 
-	@Override
-	public Class<? extends BaseStep> getStepClass() {
-		return SayHello.class;
-	}
-	
     @Test
     public void callsEchoWithDefaultMessage() {
     	inst().execute();

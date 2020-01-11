@@ -1,7 +1,6 @@
 package com.emt.steps;
 
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -41,11 +40,6 @@ public class IsBuildReplayedTest extends StepTestFixture {
         when(_steps.currentBuild.getBuildCauses(replay_cause)).thenReturn(build_causes);
     	assertTrue(inst().execute().equals(expected_res));
     }
-
-	@Override
-	public Class<? extends BaseStep> getStepClass() {
-		return IsBuildReplayed.class;
-	}
 
 }
  

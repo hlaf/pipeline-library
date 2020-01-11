@@ -20,7 +20,17 @@ public abstract class StepTestFixture {
     protected IStepExecutor _steps;
 	protected boolean _executed = false;
     
-    public abstract Class<? extends BaseStep> getStepClass();
+    public final Class<? extends BaseStep> getStepClass() {
+    	String test_class_name = this.getClass().getName();
+    	String step_class_name = test_class_name.substring(0, test_class_name.lastIndexOf("Test"));
+    	Class<? extends BaseStep> klass;
+    	try {
+			klass = (Class<? extends BaseStep>) Class.forName(step_class_name);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+    	return klass;
+    }
     
 	@Before
     public void setup() {

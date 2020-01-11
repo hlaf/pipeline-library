@@ -67,9 +67,6 @@ public class BumpPackageVersionTest extends StepTestFixture {
     	_steps.env.put("JOB_NAME", "dummy_job");
     }
 
-	@Override
-	public Class<? extends BaseStep> getStepClass() { return BumpPackageVersion.class; }
-
     @Theory
     public void runsWithoutErrors(@FromDataPoints("args") Map args) {
     	inst().execute(args);

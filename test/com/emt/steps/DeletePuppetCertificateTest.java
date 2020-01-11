@@ -16,7 +16,4 @@ public class DeletePuppetCertificateTest extends StepTestFixture {
         verify(_steps).sh(anyString());
     }
 
-	@Override
-	public Class<? extends BaseStep> getStepClass() { return DeletePuppetCertificate.class; }
-
 }
