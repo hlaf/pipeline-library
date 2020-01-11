@@ -1,19 +1,9 @@
-
-
+import com.emt.steps.CheckoutFromGit
 
 def call(String git_repo_creds,
          String repo_url,
 		 String branch='master') {
-
-  checkout([$class: 'GitSCM',
-           branches: [[name: "*/${branch}"]],
-           doGenerateSubmoduleConfigurations: false,
-		   extensions: [[$class: 'LocalBranch', localBranch: branch], [$class: 'WipeWorkspace']],
-		   submoduleCfg: [],
-		   userRemoteConfigs: [[
-		     credentialsId: git_repo_creds,
-		     name: 'origin',
-		     url: repo_url]]
-   ])
-
+  new CheckoutFromGit(this).execute(repo_creds: git_repo_creds,
+	  								repo_url: repo_url,
+									branch: branch)
 }

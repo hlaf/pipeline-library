@@ -9,7 +9,8 @@ abstract class IStepExecutor {
 	public ICurrentBuildNamespace currentBuild;
 	public Map<String, String> env;
 	
-    abstract int sh(String command)
+    abstract void checkout(Map);
+	abstract int sh(String command)
 	abstract String sh(Map params)
     abstract void echo(String message)
     abstract void error(String message)
