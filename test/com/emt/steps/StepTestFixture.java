@@ -4,6 +4,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
@@ -36,6 +37,7 @@ public abstract class StepTestFixture {
     public void setup() {
         _context = mock(IContext.class);
         _steps = mock(IStepExecutor.class, Mockito.CALLS_REAL_METHODS);
+        _steps.env = new HashMap<String, String>();
 
         when(_context.getStepExecutor()).thenReturn(_steps);
     }
