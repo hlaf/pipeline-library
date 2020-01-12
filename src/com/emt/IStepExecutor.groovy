@@ -10,6 +10,7 @@ abstract class IStepExecutor {
 	public Map<String, String> env;
 	
     abstract void checkout(Map);
+	abstract void emailext(Map);
 	abstract int sh(String command)
 	abstract String sh(Map params)
     abstract void echo(String message)
