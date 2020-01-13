@@ -33,66 +33,37 @@ public class BuildDockerImageTest extends StepTestFixture {
 
 	private boolean _executed = false;
 	
-	@DataPoints("image_name")
-    public static String[] image_names() {
+	public static List<String> getParameters() {
+		return Arrays.asList("image_name", "image_user", "manager_node",
+				             "environment", "from_image_name", "force");
+	}
+	
+    public static String[] image_name_values() {
         return new String[]{ "my_docker_image" };
     }
 	
-	@DataPoints("image_user")
-    public static Object[] image_users() {
+    public static Object[] image_user_values() {
         return new Object[]{ "my_image_user", new Unassigned() };
     }
 	
-	@DataPoints("manager_node")
-    public static Object[] manager_nodes() {
+    public static Object[] manager_node_values() {
         return new Object[]{ "my_puppet_manager_node", new Unassigned() };
     }
 	
-	@DataPoints("environment")
-    public static Object[] environments() {
+    public static Object[] environment_values() {
         return new Object[]{ "my_puppet_environment", new Unassigned() };
     }
 	
-	@DataPoints("from_image_name")
-    public static Object[] from_image_names() {
+    public static Object[] from_image_name_values() {
         return new Object[]{ "my_from_image", new Unassigned() };
     }
 	
-	@DataPoints("force")
     public static Object[] force_values() {
-        return new Object[]{ true, false, new Unassigned() };
+        return new Object[]{ new Boolean(true), new Boolean(false), new Unassigned() };
     }
 
-	@DataPoints("args")
-	public static Map[] getArgs() {
-		
-		Set<List<Object>> s = cartesianProduct(
-				new HashSet<Object>(Arrays.asList(image_names())),
-				new HashSet<Object>(Arrays.asList(image_users())),
-				new HashSet<Object>(Arrays.asList(manager_nodes())),
-				new HashSet<Object>(Arrays.asList(environments())),
-				new HashSet<Object>(Arrays.asList(from_image_names())),
-		        new HashSet<Object>(Arrays.asList(force_values()))   
-				);
-		
-		Map[] arg_combinations = new Map[s.size()];
-		
-		int i = 0;
-		for (List<Object> tuple : s) {
-			System.out.println(tuple);
-			Map<String, Object> m = new HashMap<>();
-			arg_combinations[i++] = m;
-			putValue(m, "image_name", tuple.get(0));
-			putValue(m, "image_user", tuple.get(1));
-			putValue(m, "manager_node", tuple.get(2));
-			putValue(m, "environment", tuple.get(3));
-			putValue(m, "from_image_name", tuple.get(4));
-			putValue(m, "force", tuple.get(5));
-		}
+	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
 
-		return arg_combinations;
-	}
-	
     @Before
     public void setup() {
     	super.setup();
