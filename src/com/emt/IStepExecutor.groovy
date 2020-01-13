@@ -10,12 +10,14 @@ abstract class IStepExecutor {
 	public Map<String, String> env;
 	
 	abstract void archiveArtifacts(Map);
+	abstract int bat(String command)
 	abstract void checkout(Map);
     Object dir(String path, Closure body) { return body() };
     abstract void echo(String message)
     abstract void emailext(Map);
     void error(String message) { throw new RuntimeException(message); }
 	abstract boolean fileExists(String file_path);
+	abstract boolean isUnix();
 	abstract void junit(Map);
 	Object node(String name, Closure body) { return body() }
 	abstract Object readJSON(Map);
@@ -29,11 +31,14 @@ abstract class IStepExecutor {
 	// TODO: Find a way to get rid of these declarations
 	abstract void deletePuppetCertificate(String cert_name, String manager_node);
 	abstract String getDnsDomainName();
+	abstract Map getPipelineConfig();
 	abstract boolean dockerImageExists(String name);
 	abstract void createPuppetDockerfile(Map params=[:]);
 	abstract Object initializeVirtualEnv();
 	abstract void saferUnstash(Map);
+	abstract void stashCoverageResult(Map);
 	abstract String unstashCoverageResult(Map) throws hudson.AbortException;
+	abstract void publishJUnitReport();
 }
 
 interface ICurrentBuildNamespace {
