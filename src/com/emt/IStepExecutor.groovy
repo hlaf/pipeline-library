@@ -29,6 +29,7 @@ abstract class IStepExecutor {
 	abstract boolean dockerImageExists(String name);
 	abstract void createPuppetDockerfile(Map params=[:]);
 	abstract Object initializeVirtualEnv();
+	abstract void saferUnstash(Map);
 }
 
 interface ICurrentBuildNamespace {
