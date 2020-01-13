@@ -16,6 +16,7 @@ abstract class IStepExecutor {
     abstract void emailext(Map);
     void error(String message) { throw new RuntimeException(message); }
 	abstract boolean fileExists(String file_path);
+	abstract void junit(Map);
 	Object node(String name, Closure body) { return body() }
 	abstract Object readJSON(Map);
 	abstract int sh(String command)

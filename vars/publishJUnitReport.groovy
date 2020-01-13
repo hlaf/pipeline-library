@@ -1,6 +1,5 @@
-
-
+import com.emt.steps.PublishJUnitReport
 
 def call() {
-    junit keepLongStdio: true, testResults: '**/test_results.xml'
+    new PublishJUnitReport(this).execute()
 }
