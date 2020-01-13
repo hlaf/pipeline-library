@@ -101,10 +101,8 @@ public abstract class StepTestFixture {
 		Set<List<Object>> s = cartesianProduct(input_sets);
 		
 		Map[] arg_combinations = new Map[s.size()];
-		System.out.println("Cardinality of S:" + s.size());
 		int i = 0;
 		for (List<Object> tuple : s) {
-			System.out.println(tuple);
 			Map<String, Object> m = new HashMap<>();
 			arg_combinations[i++] = m;
 			for (int j = 0; j < tuple.size(); ++j) {

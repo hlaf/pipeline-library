@@ -9,6 +9,7 @@ abstract class IStepExecutor {
 	public ICurrentBuildNamespace currentBuild;
 	public Map<String, String> env;
 	
+	abstract void archiveArtifacts(Map);
 	abstract void checkout(Map);
     Object dir(String path, Closure body) { return body() };
     abstract void echo(String message)
@@ -20,6 +21,7 @@ abstract class IStepExecutor {
 	abstract int sh(String command)
 	abstract String sh(Map params)
 	Object sshagent(List list, Closure body) { return body() }
+	abstract void step(Map);
 	abstract void unstash(String stash_name);
 	abstract void writeJSON(Map);
 
@@ -30,6 +32,7 @@ abstract class IStepExecutor {
 	abstract void createPuppetDockerfile(Map params=[:]);
 	abstract Object initializeVirtualEnv();
 	abstract void saferUnstash(Map);
+	abstract String unstashCoverageResult(Map) throws hudson.AbortException;
 }
 
 interface ICurrentBuildNamespace {
