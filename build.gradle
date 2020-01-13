@@ -29,7 +29,7 @@ dependencies {
     implementation 'org.codehaus.groovy:groovy-all:2.0.8'
     implementation 'org.eclipse.hudson:hudson-core:3.2.1'
     implementation 'com.cloudbees:groovy-cps:1.22'
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'junit', name: 'junit', version: '4.13'
     testImplementation "org.mockito:mockito-core:2.+"
     testImplementation group: 'com.google.guava', name: 'guava', version: '23.5-jre'
 

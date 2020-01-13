@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import com.emt.IStepExecutor;
@@ -28,6 +30,9 @@ public abstract class StepTestFixture {
     protected IStepExecutor _steps;
 	protected boolean _executed = false;
     
+	@Rule
+	public final ExpectedException exception = ExpectedException.none();
+	
     public final Class<? extends BaseStep> getStepClass() {
     	String test_class_name = this.getClass().getName();
     	String step_class_name = test_class_name.substring(0, test_class_name.lastIndexOf("Test"));
@@ -40,10 +45,11 @@ public abstract class StepTestFixture {
     	return klass;
     }
     
-    public final static List<String> _get_parameter_names(Class<?> klass) {
+    private final static List<String> _get_parameter_names(Class<?> klass, 
+    													   String method_name) {
     	Method m;
     	try {
-			m = klass.getMethod("getParameters");
+			m = klass.getMethod(method_name);
 		} catch (NoSuchMethodException | SecurityException e) {
 			throw new RuntimeException(e);
 		}
@@ -57,10 +63,14 @@ public abstract class StepTestFixture {
 		return parameter_names;
     }
     
-    public static Map[] _getArgs() {
+    public static Map[] _getState() { return _getArgs(false); }
+    
+    public static Map[] _getArgs() { return _getArgs(true); }
+
+    private static Map[] _getArgs(boolean input_parameters) {
 		List<Set<Object>> input_sets = new ArrayList<Set<Object>>();
 		
-		String klass_name = Thread.currentThread().getStackTrace()[2].getClassName();
+		String klass_name = Thread.currentThread().getStackTrace()[3].getClassName();
 		Class<?> klass;
 		try {
 			klass = Class.forName(klass_name);
@@ -68,7 +78,8 @@ public abstract class StepTestFixture {
 			throw new RuntimeException(e);
 		}
 
-		List<String> parameter_names = _get_parameter_names(klass);
+		List<String> parameter_names = _get_parameter_names(
+				klass, input_parameters ? "getParameters" : "getStateVariables");
 		
 		for (String parameter_name: parameter_names) {
 			Method getter;

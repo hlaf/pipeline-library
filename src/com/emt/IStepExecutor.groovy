@@ -9,15 +9,20 @@ abstract class IStepExecutor {
 	public ICurrentBuildNamespace currentBuild;
 	public Map<String, String> env;
 	
-    abstract void checkout(Map);
-	abstract void emailext(Map);
+	abstract void checkout(Map);
+    Object dir(String path, Closure body) { return body() };
+    abstract void echo(String message)
+    abstract void emailext(Map);
+    void error(String message) { throw new RuntimeException(message); }
+	abstract boolean fileExists(String file_path);
+	Object node(String name, Closure body) { return body() }
+	abstract Object readJSON(Map);
 	abstract int sh(String command)
 	abstract String sh(Map params)
-    abstract void echo(String message)
-    abstract void error(String message)
-	Object node(String name, Closure body) { return body() }
 	Object sshagent(List list, Closure body) { return body() }
-	
+	abstract void unstash(String stash_name);
+	abstract void writeJSON(Map);
+
 	// TODO: Find a way to get rid of these declarations
 	abstract void deletePuppetCertificate(String cert_name, String manager_node);
 	abstract String getDnsDomainName();

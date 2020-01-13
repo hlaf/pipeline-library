@@ -21,6 +21,7 @@ public class GetDnsDomainNameTest extends StepTestFixture {
     @Test
     public void callsErrorOnEmptyDomain() {
     	when(_steps.sh(any(Map.class))).thenReturn("");
+    	exception.expect(Exception.class);
     	inst().execute();
     	verify(_steps).error(anyString());
     }
