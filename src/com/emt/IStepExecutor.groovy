@@ -41,6 +41,8 @@ abstract class IStepExecutor {
 	abstract Object initializeVirtualEnv();
 	abstract void saferUnstash(Map);
 	abstract void stashCoverageResult(Map);
+	abstract void stash(Map);
+	abstract boolean stashExists(String);
 	abstract String unstashCoverageResult(Map) throws hudson.AbortException;
 	abstract void publishJUnitReport();
 }
