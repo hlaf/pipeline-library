@@ -27,7 +27,9 @@ abstract class IStepExecutor {
 	abstract String sh(Map params)
 	Object sshagent(List list, Closure body) { return body() }
 	abstract void step(Map);
+	Object tempDir(Closure body) { return body() }
 	abstract void unstash(String stash_name);
+	abstract void unstash(Map) throws hudson.AbortException;
 	abstract void writeJSON(Map);
 
 	// TODO: Find a way to get rid of these declarations
