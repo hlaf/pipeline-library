@@ -39,6 +39,7 @@ abstract class IStepExecutor {
 	abstract boolean dockerImageExists(String name);
 	abstract void createPuppetDockerfile(Map params=[:]);
 	abstract Object initializeVirtualEnv();
+	abstract void saferStash(Map);
 	abstract void saferUnstash(Map);
 	abstract void stashCoverageResult(Map);
 	abstract void stash(Map);
