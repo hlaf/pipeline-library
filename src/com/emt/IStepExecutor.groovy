@@ -30,6 +30,8 @@ abstract class IStepExecutor {
 	Object tempDir(Closure body) { return body() }
 	abstract void unstash(String stash_name);
 	abstract void unstash(Map) throws hudson.AbortException;
+	abstract Object usernamePassword(Map);
+	Object withCredentials(List, Closure body) { return body() }
 	abstract void writeJSON(Map);
 
 	// TODO: Find a way to get rid of these declarations
