@@ -25,7 +25,7 @@ def call(Map parameters=[:]) {
 			          flatten: true);
 
 		String xml_path_old = "${env.WORKSPACE}/previous_build/coverage.xml"
-		(branch_rate_old, line_rate_new) = parseCoverageXml(xml_path_old)
+		(branch_rate_old, line_rate_old) = parseCoverageXml(xml_path_old)
 	}
 
 	String results_path_new = unstashCoverageResult(key: key)
