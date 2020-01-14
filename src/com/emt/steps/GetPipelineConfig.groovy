@@ -10,7 +10,7 @@ class GetPipelineConfig extends BaseStep {
 	}
 }
 
-protected class PipelineConfigManager {
+public class PipelineConfigManager {
 	
 	private final Map _items;
 	private static PipelineConfigManager _inst;
