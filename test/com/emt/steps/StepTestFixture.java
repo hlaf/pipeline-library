@@ -22,6 +22,8 @@ import org.mockito.Mockito;
 import com.emt.IStepExecutor;
 import com.emt.ioc.IContext;
 
+import groovy.lang.Closure;
+
 class Unassigned {};
 
 public abstract class StepTestFixture {
@@ -142,6 +144,16 @@ public abstract class StepTestFixture {
 		} finally {
 			_executed = true;
 		}
+	}
+	
+	public static boolean closureThrows(Closure c) {
+		boolean threw_exception = false;
+		try {
+			c.call();
+		} catch (Exception e) {
+			threw_exception = true;
+		}
+		return threw_exception;
 	}
 	
 }

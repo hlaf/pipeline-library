@@ -1,9 +1,5 @@
+import com.emt.steps.TempDir
 
-
-
-def call(closure) {
-  dir(pwd(tmp: true)) {
-	  closure()
-	  deleteDir()
-  }
+def call(Closure body) {
+  return new TempDir(this).execute(closure: body)
 }

@@ -12,6 +12,7 @@ abstract class IStepExecutor {
 	abstract void archiveArtifacts(Map);
 	abstract int bat(String command)
 	abstract void checkout(Map);
+	abstract void deleteDir();
     Object dir(String path, Closure body) { return body() };
     abstract void echo(String message)
     abstract void emailext(Map);
@@ -20,6 +21,7 @@ abstract class IStepExecutor {
 	abstract boolean isUnix();
 	abstract void junit(Map);
 	Object node(String name, Closure body) { return body() }
+	abstract String pwd(Map);
 	abstract Object readJSON(Map);
 	abstract int sh(String command)
 	abstract String sh(Map params)

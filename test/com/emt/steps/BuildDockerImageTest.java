@@ -27,8 +27,6 @@ import groovy.lang.Closure;
 @RunWith(Theories.class)
 public class BuildDockerImageTest extends StepTestFixture {
 
-	private boolean _executed = false;
-	
 	public static List<String> getParameters() {
 		return Arrays.asList("image_name", "image_user", "manager_node",
 				             "environment", "from_image_name", "force");
@@ -87,7 +85,7 @@ public class BuildDockerImageTest extends StepTestFixture {
         when(_steps.dockerImageExists(anyString())).thenReturn(false);
         when(_steps.docker.build((String) eq(args.get("image_name")), anyString())).thenReturn(new_image);
 
-    	assert inst().execute(args).equals(new_image);
+    	assert execute(args).equals(new_image);
     }
     
     @Theory
@@ -100,7 +98,7 @@ public class BuildDockerImageTest extends StepTestFixture {
         when(_steps.dockerImageExists(anyString())).thenReturn(true);
         when(_steps.docker.image(image_name)).thenReturn(existing_image);
 
-    	assert inst().execute(args).equals(existing_image);
+    	assert execute(args).equals(existing_image);
     }
 
     @Theory
@@ -114,7 +112,7 @@ public class BuildDockerImageTest extends StepTestFixture {
         when(_steps.docker.image(image_name)).thenReturn(existing_image);
         when(_steps.docker.build(eq(image_name), anyString())).thenReturn(new_image);
         
-    	assert inst().execute(args).equals(new_image);
+    	assert execute(args).equals(new_image);
     }
 
     @Theory
@@ -126,6 +124,6 @@ public class BuildDockerImageTest extends StepTestFixture {
         when(_steps.dockerImageExists(anyString())).thenReturn(false);
         when(_steps.docker.build(eq(image_name), anyString())).thenReturn(new_image);
         
-    	assert inst().execute(args).equals(new_image);
+    	assert execute(args).equals(new_image);
     }
 }
