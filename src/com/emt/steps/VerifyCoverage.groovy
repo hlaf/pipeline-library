@@ -5,9 +5,6 @@ import java.lang.annotation.RetentionPolicy
 
 import hudson.model.Result
 
-@Retention(RetentionPolicy.RUNTIME)
-@interface CoverageIgnore2 {}
-
 @groovy.transform.InheritConstructors
 class VerifyCoverage extends BaseStep {
 	
@@ -75,7 +72,7 @@ class VerifyCoverage extends BaseStep {
 		return null;
 	}
 	
-	@CoverageIgnore2
+	@CoverageIgnore
 	def parseCoverageXml(context, String xml_path) {
 		context.echo "Reading ${xml_path}"
 		def xml_text = context.readFile xml_path
