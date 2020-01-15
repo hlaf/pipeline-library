@@ -12,6 +12,7 @@ abstract class IStepExecutor {
 	abstract void archiveArtifacts(Map);
 	abstract int bat(String command)
 	abstract void checkout(Map);
+	abstract void copyArtifacts(Map);
 	abstract void deleteDir();
     Object dir(String path, Closure body) { return body() };
     abstract void echo(String message)
@@ -22,9 +23,11 @@ abstract class IStepExecutor {
 	abstract void junit(Map);
 	Object node(String name, Closure body) { return body() }
 	abstract String pwd(Map);
+	abstract Object readFile(String)
 	abstract Object readJSON(Map);
 	abstract int sh(String command)
 	abstract String sh(Map params)
+	abstract specific(String);
 	Object sshagent(List list, Closure body) { return body() }
 	abstract void step(Map);
 	Object tempDir(Closure body) { return body() }
@@ -36,6 +39,7 @@ abstract class IStepExecutor {
 
 	// TODO: Find a way to get rid of these declarations
 	abstract void deletePuppetCertificate(String cert_name, String manager_node);
+	abstract void echo(String);
 	abstract String getDnsDomainName();
 	abstract Map getPipelineConfig();
 	abstract boolean dockerImageExists(String name);
@@ -52,6 +56,8 @@ abstract class IStepExecutor {
 
 interface ICurrentBuildNamespace {
 	List<String> getBuildCauses(String cause)
+	Object getPreviousBuild();
+	Object getRawBuild();
 }
 
 interface IDockerNamespace {

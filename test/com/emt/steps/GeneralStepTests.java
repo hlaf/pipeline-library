@@ -6,13 +6,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class GeneralStepTests {
 
 	@Test
-	@Ignore("Not implemented yet")
+	//@Ignore("Not implemented yet")
 	public void allPipelineStepsHaveTests() {
 		for (String step_name : getStepNames()) {
 			String test_class_name = step_name + "Test";

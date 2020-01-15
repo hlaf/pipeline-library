@@ -2,6 +2,7 @@ package com.emt.steps;
 
 import static com.google.common.collect.Sets.cartesianProduct;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,11 +27,14 @@ import groovy.lang.Closure;
 
 class Unassigned {};
 
+class NullValue {};
+
 public abstract class StepTestFixture {
 
 	private IContext _context;
     protected IStepExecutor _steps;
 	protected boolean _executed = false;
+    protected Map _state, _args;
     
 	@Rule
 	public final ExpectedException exception = ExpectedException.none();
@@ -126,12 +130,16 @@ public abstract class StepTestFixture {
 	
 	public final BaseStep inst() {
 		try {
-			return getStepClass().getConstructor(Object.class).newInstance(_steps);
+			BaseStep inst = spy(getStepClass().getConstructor(Object.class).newInstance(_steps));
+			postInst(inst);
+			return inst;
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public void postInst(BaseStep inst) {}
 	
 	public static void putValue(Map args, String key, Object value) {
 		if (value instanceof Unassigned) return;
