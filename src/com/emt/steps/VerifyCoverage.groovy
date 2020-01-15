@@ -5,6 +5,8 @@ import com.cloudbees.groovy.cps.NonCPS
 import groovy.transform.InheritConstructors
 import hudson.model.Result
 
+import com.emt.steps.CoverageIgnore;
+
 @groovy.transform.InheritConstructors
 class VerifyCoverage extends BaseStep {
 	
@@ -59,7 +61,7 @@ class VerifyCoverage extends BaseStep {
 		}
 	}
 	
-	@CoverageIgnore
+	//@CoverageIgnore
 	//@NonCPS
 	def getLatestSuccessfulBuildWithArtifacts(context) {
 		def b = context.currentBuild
