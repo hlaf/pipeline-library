@@ -60,7 +60,7 @@ class VerifyCoverage extends BaseStep {
 	}
 	
 	@CoverageIgnore
-	@NonCPS
+	//@NonCPS
 	def getLatestSuccessfulBuildWithArtifacts(context) {
 		def b = context.currentBuild
 		while (b.getPreviousBuild() != null) {
