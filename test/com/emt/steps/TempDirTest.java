@@ -5,8 +5,6 @@ import static org.junit.Assume.assumeTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.experimental.theories.DataPoints;
@@ -20,10 +18,8 @@ import groovy.lang.Closure;
 @RunWith(Theories.class)
 public class TempDirTest extends StepTestFixture {
 
-	public static List<String> getParameters() {
-		return Arrays.asList("body");
-	}
-
+	@Parameter Closure body;
+	
 	public static Closure noop_closure = new Closure(null) {
 		public Object call() { return 1234; }
 	};

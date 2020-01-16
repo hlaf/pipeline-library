@@ -21,25 +21,16 @@ import hudson.AbortException;
 @RunWith(Theories.class)
 public class PublishCoberturaReportTest extends StepTestFixture {
 
-	public static List<String> getParameters() {
-		return Arrays.asList("results");
-	}
+	@Parameter List<String> results;
 
-	public static List<String> getStateVariables() {
-		return Arrays.asList("StashExists");
-	}
+	@StateVar boolean StashExists;
 
     public static Object[] results_values() {
         return new Object[]{ new ArrayList<String>(), 
         		             Arrays.asList("unit", "integration")};
     }
 	
-    public static Object[] StashExists_values() {
-        return new Object[]{ true, false };
-    }
-
 	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-
 	@DataPoints("state") public static Map[] getState() { return _getState(); }
 	
 	private void commonSetup(Map args, Map state) {

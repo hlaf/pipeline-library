@@ -8,8 +8,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.experimental.theories.DataPoints;
@@ -21,26 +19,11 @@ import org.junit.runner.RunWith;
 @RunWith(Theories.class)
 public class SaferStashTest extends StepTestFixture {
 
-	public static List<String> getParameters() {
-		return Arrays.asList("name", "includes");
-	}
-
-	public static List<String> getStateVariables() {
-		return Arrays.asList("StashExists");
-	}
+	@Parameter(values="my_stash_name") String name;
+	@Parameter(values="my_includes") String includes;
 	
-    public static Object[] name_values() {
-    	return new Object[] { "my_stash_name" };
-    }
-
-    public static Object[] includes_values() {
-    	return new Object[] { "my_includes" };
-    }
-    
-    public static Object[] StashExists_values() {
-    	return new Object[]{ true, false };
-    }
-
+	@StateVar boolean StashExists;
+	
 	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
 	@DataPoints("state") public static Map[] getState() { return _getState(); }
 	
