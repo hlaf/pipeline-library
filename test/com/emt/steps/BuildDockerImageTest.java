@@ -8,8 +8,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.After;
@@ -27,35 +25,13 @@ import groovy.lang.Closure;
 @RunWith(Theories.class)
 public class BuildDockerImageTest extends StepTestFixture {
 
-	public static List<String> getParameters() {
-		return Arrays.asList("image_name", "image_user", "manager_node",
-				             "environment", "from_image_name", "force");
-	}
+	@Parameter(values={"my_docker_image"}) String image_name;
+	@Parameter(values={"my_image_user"}, optional=true) String image_user;
+	@Parameter(values={"my_puppet_manager_node"}, optional=true) String manager_node;
+	@Parameter(values={"my_puppet_environment"}, optional=true) String environment;
+	@Parameter(values={"my_from_image"}, optional=true) String from_image_name;
+	@Parameter(optional=true) boolean force;
 	
-    public static String[] image_name_values() {
-        return new String[]{ "my_docker_image" };
-    }
-	
-    public static Object[] image_user_values() {
-        return new Object[]{ "my_image_user", new Unassigned() };
-    }
-	
-    public static Object[] manager_node_values() {
-        return new Object[]{ "my_puppet_manager_node", new Unassigned() };
-    }
-	
-    public static Object[] environment_values() {
-        return new Object[]{ "my_puppet_environment", new Unassigned() };
-    }
-	
-    public static Object[] from_image_name_values() {
-        return new Object[]{ "my_from_image", new Unassigned() };
-    }
-	
-    public static Object[] force_values() {
-        return new Object[]{ new Boolean(true), new Boolean(false), new Unassigned() };
-    }
-
 	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
 
     @Before

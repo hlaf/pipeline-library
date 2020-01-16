@@ -39,6 +39,7 @@ class NullValue {};
 @Target(ElementType.FIELD)
 @interface Parameter {
 	String[] values() default {};
+	boolean optional() default false;
 }
 
 @Retention(RetentionPolicy.RUNTIME)
@@ -115,21 +116,17 @@ public abstract class StepTestFixture {
 			
 			String getter_name = parameter_name + "_values";
 			if (hasMethod(klass, getter_name)) {
-				Method getter = getMethod(klass, getter_name);
-				try {
-					Object[] parameter_values = (Object[]) getter.invoke(null);
-					input_set.addAll(Arrays.asList(parameter_values));
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					throw new RuntimeException(e);
-				}
+				input_set.addAll(getParameterValuesFromGetter(klass, getter_name));
 			} else if (hasField(klass, parameter_name)) {
 				Field f = getField(klass, parameter_name);
 				Class type = f.getType();
 				
+				boolean is_optional = false;
 				Object[] values;
 				if (input_parameters) {
 					Parameter p = (Parameter) f.getAnnotation(annotation_klass);
 					values = p.values();
+					is_optional = p.optional();
 				} else {
 					StateVar p = (StateVar) f.getAnnotation(annotation_klass);
 					values = p.values();
@@ -137,6 +134,9 @@ public abstract class StepTestFixture {
 				
 				for (Object o: values) {
 					try {
+						if (type.equals(double.class)) {
+							type = Double.class;
+						}
 						input_set.add(type.getConstructor(o.getClass()).newInstance(o));
 					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException | NoSuchMethodException | SecurityException e) {
@@ -144,12 +144,17 @@ public abstract class StepTestFixture {
 					}
 				}
 				
-				if (input_set.size() > 0) {
-				} else if (type.equals(boolean.class) || type.equals(Boolean.class)) {
+				if (type.equals(boolean.class) || type.equals(Boolean.class)) {
 					input_set.add(Boolean.TRUE);
 					input_set.add(Boolean.FALSE);
-				} else {
+				}
+
+				if (input_set.isEmpty()) {
 					throw new RuntimeException("Cannot generate parameter values");
+				}
+
+				if (is_optional) {
+					input_set.add(new Unassigned());
 				}
 			} else {
 				throw new RuntimeException("No parameter values!");
@@ -218,6 +223,19 @@ public abstract class StepTestFixture {
 		return threw_exception;
 	}
 	
+	private static List<Object> getParameterValuesFromGetter(Class<?> klass, 
+													         String getter_name) {
+		Method getter = getMethod(klass, getter_name);
+		Object[] parameter_values;
+		try {
+			parameter_values = (Object[]) getter.invoke(null);
+			
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			throw new RuntimeException(e);
+		}
+		return Arrays.asList(parameter_values);
+	}
+
 	private static List<String> getParameterNamesForAnnotation(Class target_klass, Class annotation_class) {
 	
 		List<String> parameter_names = new ArrayList<>();

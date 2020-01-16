@@ -4,8 +4,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.experimental.theories.DataPoints;
@@ -17,13 +15,7 @@ import org.junit.runner.RunWith;
 @RunWith(Theories.class)
 public class StashCoverageResultTest extends StepTestFixture {
 
-	public static List<String> getParameters() {
-		return Arrays.asList("key");
-	}
-
-    public static String[] key_values() {
-        return new String[]{ "my_results_key" };
-    }
+	@Parameter(values="my_results_key") String key;
 	
 	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
 

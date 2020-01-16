@@ -16,21 +16,9 @@ import org.junit.runner.RunWith;
 @RunWith(Theories.class)
 public class BumpPackageVersionTest extends StepTestFixture {
 
-	@Parameter String git_repo_creds;
-	@Parameter String author;
-	@Parameter String author_email;
-	
-    public static String[] git_repo_creds_values() {
-        return new String[]{ "my_credentials" };
-    }
-	
-    public static Object[] author_values() {
-        return new Object[]{ "some_author" };
-    }
-	
-    public static Object[] author_email_values() {
-        return new Object[]{ "some_author@some_domain.com" };
-    }
+	@Parameter(values="my_credentials") String git_repo_creds;
+	@Parameter(values="some_author") String author;
+	@Parameter(values="some_author@some_domain.com") String author_email;
 	
 	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
 

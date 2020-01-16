@@ -10,7 +10,6 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -26,17 +25,13 @@ import com.emt.ICurrentBuildNamespace;
 @RunWith(Theories.class)
 public class VerifyCoverageTest extends StepTestFixture {
 
-	@Parameter String key;
+	@Parameter(values={"my_key"}, optional=true) String key;
 
 	@StateVar Map PreviousBuild;
-	@StateVar double PreviousBranchRate;
-	@StateVar double PreviousLineRate;
-	@StateVar double BranchRate;
-	@StateVar double LineRate;
-	
-    public static Object[] key_values() {
-        return new Object[]{ "my_key", new Unassigned() };
-    }
+	@StateVar(values = {"0.1", "1.0"}) double PreviousBranchRate;
+	@StateVar(values = {"0.1", "1.0"}) double PreviousLineRate;
+	@StateVar(values = {"0.1", "1.0"}) double BranchRate;
+	@StateVar(values = {"0.1", "1.0"}) double LineRate;
 	
     public static Object[] PreviousBuild_values() {
     	Map previous_build1 = new HashMap();
@@ -44,24 +39,7 @@ public class VerifyCoverageTest extends StepTestFixture {
         return new Object[]{ previous_build1, new NullValue() };
     }
     
-    public static Object[] PreviousBranchRate_values() {
-        return new Object[]{ 0.1, 1.0 };
-    }
-
-    public static Object[] PreviousLineRate_values() {
-        return new Object[]{ 0.1, 1.0 };
-    }
-    
-    public static Object[] BranchRate_values() {
-    	return new Object[]{ 0.1, 1.0 };
-    }
-
-    public static Object[] LineRate_values() {
-    	return new Object[]{ 0.1, 1.0 };
-    }
-    
 	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-
 	@DataPoints("state") public static Map[] getState() { return _getState(); }
 	
 	@Before

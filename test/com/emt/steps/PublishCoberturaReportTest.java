@@ -31,7 +31,6 @@ public class PublishCoberturaReportTest extends StepTestFixture {
     }
 	
 	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-
 	@DataPoints("state") public static Map[] getState() { return _getState(); }
 	
 	private void commonSetup(Map args, Map state) {

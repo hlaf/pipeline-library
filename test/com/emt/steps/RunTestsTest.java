@@ -3,9 +3,7 @@ package com.emt.steps;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.experimental.theories.DataPoints;
@@ -17,32 +15,13 @@ import org.junit.runner.RunWith;
 @RunWith(Theories.class)
 public class RunTestsTest extends StepTestFixture {
 
-	public static List<String> getParameters() {
-		return Arrays.asList("environment", "label");
-	}
-
-	public static List<String> getStateVariables() {
-		return Arrays.asList("IsUnix", "ComputeCoverage");
-	}
-
-    public static Object[] environment_values() {
-        return new Object[]{ "my_tox_environment", new Unassigned() };
-    }
+	@Parameter(values={"my_tox_environment"}, optional=true) String environment;
+	@Parameter(values={"my_label"}, optional=true) String label;
 	
-    public static Object[] label_values() {
-        return new Object[]{ "my_label", new Unassigned() };
-    }
-    
-    public static Object[] IsUnix_values() {
-        return new Object[]{ true, false };
-    }
-
-    public static Object[] ComputeCoverage_values() {
-        return new Object[]{ true, false };
-    }
-
+	@StateVar boolean IsUnix;
+	@StateVar boolean ComputeCoverage;
+	
 	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-
 	@DataPoints("state") public static Map[] getState() { return _getState(); }
 	
 	private void commonSetup(Map args, Map state) {
