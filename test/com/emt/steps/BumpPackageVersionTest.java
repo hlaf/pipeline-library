@@ -3,9 +3,7 @@ package com.emt.steps;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -18,9 +16,9 @@ import org.junit.runner.RunWith;
 @RunWith(Theories.class)
 public class BumpPackageVersionTest extends StepTestFixture {
 
-	public static List<String> getParameters() {
-		return Arrays.asList("git_repo_creds", "author", "author_email");
-	}
+	@Parameter String git_repo_creds;
+	@Parameter String author;
+	@Parameter String author_email;
 	
     public static String[] git_repo_creds_values() {
         return new String[]{ "my_credentials" };

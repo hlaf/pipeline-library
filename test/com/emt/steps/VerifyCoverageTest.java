@@ -26,18 +26,14 @@ import com.emt.ICurrentBuildNamespace;
 @RunWith(Theories.class)
 public class VerifyCoverageTest extends StepTestFixture {
 
-	public static List<String> getParameters() {
-		return Arrays.asList("key");
-	}
+	@Parameter String key;
 
-	public static List<String> getStateVariables() {
-		return Arrays.asList("PreviousBuild",
-				             "PreviousBranchRate",
-				             "PreviousLineRate",
-				             "BranchRate",
-				             "LineRate");
-	}
-
+	@StateVar Map PreviousBuild;
+	@StateVar double PreviousBranchRate;
+	@StateVar double PreviousLineRate;
+	@StateVar double BranchRate;
+	@StateVar double LineRate;
+	
     public static Object[] key_values() {
         return new Object[]{ "my_key", new Unassigned() };
     }

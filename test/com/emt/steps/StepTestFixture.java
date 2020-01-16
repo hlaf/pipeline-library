@@ -5,6 +5,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -28,6 +34,18 @@ import groovy.lang.Closure;
 class Unassigned {};
 
 class NullValue {};
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+@interface Parameter {
+	String[] values() default {};
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+@interface StateVar {
+	String[] values() default {};
+}
 
 public abstract class StepTestFixture {
 
@@ -83,24 +101,60 @@ public abstract class StepTestFixture {
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
+		Class<? extends Annotation> annotation_klass = input_parameters ? Parameter.class : StateVar.class;
 
-		List<String> parameter_names = _get_parameter_names(
-				klass, input_parameters ? "getParameters" : "getStateVariables");
-		
+		List<String> parameter_names = getParameterNamesForAnnotation(klass, annotation_klass);
+		if (parameter_names.size() == 0) {
+			parameter_names = _get_parameter_names(
+					klass, input_parameters ? "getParameters" : "getStateVariables");			
+		}
+
 		for (String parameter_name: parameter_names) {
-			Method getter;
-			try {
-				getter = klass.getMethod(parameter_name + "_values");
-			} catch (NoSuchMethodException | SecurityException e) {
-				throw new RuntimeException(e);
-			}
+			
 			Set<Object> input_set = new HashSet<>();
-			try {
-				Object[] parameter_values = (Object[]) getter.invoke(null);
-				input_set.addAll(Arrays.asList(parameter_values));
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				throw new RuntimeException(e);
+			
+			String getter_name = parameter_name + "_values";
+			if (hasMethod(klass, getter_name)) {
+				Method getter = getMethod(klass, getter_name);
+				try {
+					Object[] parameter_values = (Object[]) getter.invoke(null);
+					input_set.addAll(Arrays.asList(parameter_values));
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					throw new RuntimeException(e);
+				}
+			} else if (hasField(klass, parameter_name)) {
+				Field f = getField(klass, parameter_name);
+				Class type = f.getType();
+				
+				Object[] values;
+				if (input_parameters) {
+					Parameter p = (Parameter) f.getAnnotation(annotation_klass);
+					values = p.values();
+				} else {
+					StateVar p = (StateVar) f.getAnnotation(annotation_klass);
+					values = p.values();
+				}
+				
+				for (Object o: values) {
+					try {
+						input_set.add(type.getConstructor(o.getClass()).newInstance(o));
+					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+							| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+						throw new RuntimeException(e);
+					}
+				}
+				
+				if (input_set.size() > 0) {
+				} else if (type.equals(boolean.class) || type.equals(Boolean.class)) {
+					input_set.add(Boolean.TRUE);
+					input_set.add(Boolean.FALSE);
+				} else {
+					throw new RuntimeException("Cannot generate parameter values");
+				}
+			} else {
+				throw new RuntimeException("No parameter values!");
 			}
+			
 			input_sets.add(input_set);
 		}
 		
@@ -162,6 +216,48 @@ public abstract class StepTestFixture {
 			threw_exception = true;
 		}
 		return threw_exception;
+	}
+	
+	private static List<String> getParameterNamesForAnnotation(Class target_klass, Class annotation_class) {
+	
+		List<String> parameter_names = new ArrayList<>();
+		
+		for(Field field : target_klass.getDeclaredFields()){
+			  //Class type = field.getType();
+			  String name = field.getName();
+			  if (field.isAnnotationPresent(annotation_class)) {
+				  parameter_names.add(name);
+			  }
+		}
+		return parameter_names;
+	}
+	
+	private static Field getField(Class klass, String field_name) {
+		Field f;
+		try {
+			f = klass.getDeclaredField(field_name);
+		} catch (NoSuchFieldException | SecurityException e) {
+			return null;
+		}
+		return f;
+	}
+	
+	private static boolean hasField(Class klass, String field_name) {
+		return getField(klass, field_name) != null;
+	}
+	
+	private static Method getMethod(Class klass, String method_name) {
+		Method m;
+		try {
+			m = klass.getMethod(method_name);
+		} catch (NoSuchMethodException | SecurityException e) {
+			return null;
+		}
+		return m;
+	}
+	
+	private static boolean hasMethod(Class klass, String method_name) {
+		return getMethod(klass, method_name) != null;
 	}
 	
 }

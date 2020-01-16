@@ -3,8 +3,6 @@ package com.emt.steps;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.experimental.theories.DataPoints;
@@ -18,22 +16,10 @@ import hudson.AbortException;
 @RunWith(Theories.class)
 public class StashExistsTest extends StepTestFixture {
 
-	public static List<String> getParameters() {
-		return Arrays.asList("name");
-	}
+	@Parameter(values = {"my_stash_name"}) String name;
 
-	public static List<String> getStateVariables() {
-		return Arrays.asList("StashExists");
-	}
+	@StateVar boolean StashExists;
 	
-    public static Object[] name_values() {
-    	return new Object[] { "my_stash_name" };
-    }
-
-    public static Object[] StashExists_values() {
-    	return new Object[]{ true, false };
-    }
-
 	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
 	@DataPoints("state") public static Map[] getState() { return _getState(); }
 	
