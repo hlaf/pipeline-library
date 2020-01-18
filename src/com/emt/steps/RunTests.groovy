@@ -22,7 +22,7 @@ class RunTests extends BaseStep {
 			"""
 			} else {
 				_steps.bat """
-			\${workspace}/master_venv/Scripts/activate.bat && \
+			${_steps.env.WORKSPACE}/master_venv/Scripts/activate.bat && \
 			pip install tox --upgrade && \
 			tox ${environment}
 			"""
