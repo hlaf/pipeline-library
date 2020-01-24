@@ -13,11 +13,11 @@ class DeletePuppetCertificate extends BaseStep {
         _steps.node(manager_node) {
 			
 			_steps.sh """
-			curl -ss --insecure --cert /var/lib/puppet/ssl/certs/\${HOSTNAME} \
+			curl -ss --insecure --cacert /var/lib/puppet/ssl/certs/\${HOSTNAME} \
 			     --key /var/lib/puppet/ssl/private_keys/\${HOSTNAME} \
 			     -d '{\"desired_state\":\"revoked\"}' -H 'Content-Type: text/pson' \
 			     -X PUT https://${master}:8140/${environment}/certificate_status/${certificate_name} && \
-			curl -ss --insecure --cert /var/lib/puppet/ssl/certs/\${HOSTNAME} \
+			curl -ss --insecure --cacert /var/lib/puppet/ssl/certs/\${HOSTNAME} \
 			     --key /var/lib/puppet/ssl/private_keys/\${HOSTNAME} \
 			     -X DELETE https://${master}:8140/${environment}/certificate_status/${certificate_name}
 			"""
