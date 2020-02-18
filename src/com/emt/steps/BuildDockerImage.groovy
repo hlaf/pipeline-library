@@ -8,6 +8,7 @@ class BuildDockerImage extends BaseStep {
 		String image_user = parameters.image_user ?: 'root'
 		String manager_node = parameters.manager_node ?: 'puppet_management_node'
 		String environment = parameters.environment ?: 'dockerbuilder'
+		String master = parameters.master ?: 'puppet'
 		String from_image_name = parameters.from_image_name ?: 'hlaf/puppet'
 		boolean force = parameters.force ?: false
 			 
@@ -25,6 +26,7 @@ class BuildDockerImage extends BaseStep {
 		
 			_steps.createPuppetDockerfile(image_name: image_name,
 								          image_user: image_user,
+										  master: master,
 								          environment: environment,
 								          from_image_name: from_image_name)
 			_steps.deletePuppetCertificate(image_fqdn, manager_node)

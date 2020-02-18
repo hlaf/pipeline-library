@@ -29,6 +29,7 @@ public class BuildDockerImageTest extends StepTestFixture {
 	@Parameter(values={"my_image_user"}, optional=true) String image_user;
 	@Parameter(values={"my_puppet_manager_node"}, optional=true) String manager_node;
 	@Parameter(values={"my_puppet_environment"}, optional=true) String environment;
+	@Parameter(values={"my_puppet_master"}, optional=true) String master;
 	@Parameter(values={"my_from_image"}, optional=true) String from_image_name;
 	@Parameter(optional=true) boolean force;
 	
