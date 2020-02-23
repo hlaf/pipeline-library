@@ -13,7 +13,8 @@ class BuildDockerImage extends BaseStep {
 		boolean force = parameters.force ?: false
 			 
 		String domain_name = _steps.getDnsDomainName()
-	
+	    String master_fqdn = master + '.' + domain_name
+		
 		_steps.node('docker-slave') {
 			if (!force && _steps.dockerImageExists(parameters.image_name)) {
 				_steps.echo "The image ${image_name} already exists. Skipping build."
@@ -26,12 +27,12 @@ class BuildDockerImage extends BaseStep {
 		
 			_steps.createPuppetDockerfile(image_name: image_name,
 								          image_user: image_user,
-										  master: master,
+										  master: master_fqdn,
 								          environment: environment,
 								          from_image_name: from_image_name)
 			_steps.deletePuppetCertificate(image_fqdn,
 				                           manager_node,
-										   master + '.' + domain_name,
+										   master_fqdn,
 										   environment)
 			def image = _steps.docker.build(image_name, "--no-cache .")
 	
