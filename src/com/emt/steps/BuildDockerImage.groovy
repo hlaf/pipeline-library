@@ -3,12 +3,13 @@ package com.emt.steps
 @groovy.transform.InheritConstructors
 class BuildDockerImage extends BaseStep {
 	Object execute(Map parameters=[:]) {
-		
+		def config = _steps.getPipelineConfig()
+			
 		String image_name = parameters.image_name
 		String image_user = parameters.image_user ?: 'root'
 		String manager_node = parameters.manager_node ?: 'puppet_management_node'
 		String environment = parameters.environment ?: 'dockerbuilder'
-		String master = parameters.master ?: 'puppet'
+		String master = parameters.master ?: config.puppet_master ?: 'puppet'
 		String from_image_name = parameters.from_image_name ?: 'hlaf/puppet'
 		boolean force = parameters.force ?: false
 			 
