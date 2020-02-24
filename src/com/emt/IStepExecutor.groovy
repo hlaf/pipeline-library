@@ -57,10 +57,11 @@ abstract class IStepExecutor {
 	abstract void publishJUnitReport();
 }
 
-interface ICurrentBuildNamespace {
-	List<String> getBuildCauses(String cause)
-	Object getPreviousBuild();
-	Object getRawBuild();
+abstract class ICurrentBuildNamespace {
+	abstract List<String> getBuildCauses(String cause);
+	abstract Object getPreviousBuild();
+	abstract Object getRawBuild();
+	public List changeSets;
 }
 
 interface IDockerNamespace {

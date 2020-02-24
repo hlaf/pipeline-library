@@ -13,6 +13,7 @@ import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import com.emt.ICurrentBuildNamespace;
 
@@ -31,7 +32,7 @@ public class IsBuildReplayedTest extends StepTestFixture {
 
     public void setup() {
     	super.setup();
-    	_steps.currentBuild = mock(ICurrentBuildNamespace.class);
+    	_steps.currentBuild = mock(ICurrentBuildNamespace.class, Mockito.CALLS_REAL_METHODS);
     }
 
     @Theory
