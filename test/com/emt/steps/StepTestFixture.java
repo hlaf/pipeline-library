@@ -105,10 +105,6 @@ public abstract class StepTestFixture {
 		Class<? extends Annotation> annotation_klass = input_parameters ? Parameter.class : StateVar.class;
 
 		List<String> parameter_names = getParameterNamesForAnnotation(klass, annotation_klass);
-		if (parameter_names.size() == 0) {
-			parameter_names = _get_parameter_names(
-					klass, input_parameters ? "getParameters" : "getStateVariables");			
-		}
 
 		for (String parameter_name: parameter_names) {
 			
