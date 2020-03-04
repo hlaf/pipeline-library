@@ -16,6 +16,8 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
+import static com.emt.util.TestUtils.getFileContent;
+
 @RunWith(Theories.class)
 public class SetPackageVersionTest extends StepTestFixture {
 
@@ -29,21 +31,6 @@ public class SetPackageVersionTest extends StepTestFixture {
 	
 	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
 	@DataPoints("state") public static Map[] getState() { return _getState(); }
-
-	private String getFileContent(Map state) {
-		String version_info = "";
-		if ((boolean)state.get("file_contains_version_info")) {
-    	    version_info = String.format("%s = '%s'%n",
-    	                    		     state.get("file_version_key"),
-    	        		                 state.get("file_version_value"));
-		}
-		String file_content = String.format(
-    			"%nsome random text%n" +
-    	        version_info +
-    	        "%nmore random text%n"
-    	);
-		return file_content;
-	}
 
     @Theory
     public void setVersionSucceeds(@FromDataPoints("args") Map args,
