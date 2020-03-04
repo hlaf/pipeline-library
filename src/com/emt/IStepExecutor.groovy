@@ -46,11 +46,13 @@ abstract class IStepExecutor {
 	abstract void echo(String);
 	abstract String getDnsDomainName();
 	abstract Map getPipelineConfig();
+	abstract String getPackageVersion(Map params=[:]);
 	abstract boolean dockerImageExists(String name);
 	abstract void createPuppetDockerfile(Map params=[:]);
 	abstract Object initializeVirtualEnv();
 	abstract void saferStash(Map);
 	abstract void saferUnstash(Map);
+	abstract void setPackageVersion(Map);
 	abstract void stashCoverageResult(Map);
 	abstract void stash(Map);
 	abstract boolean stashExists(String);
