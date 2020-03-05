@@ -7,7 +7,8 @@ class CheckoutFromGit extends BaseStep {
 		_steps.checkout([$class: 'GitSCM',
 			branches: [[name: "*/${args.branch}"]],
 			doGenerateSubmoduleConfigurations: false,
-			extensions: [[$class: 'LocalBranch', localBranch: args.branch], [$class: 'WipeWorkspace']],
+			extensions: [[$class: 'LocalBranch', localBranch: '**'],
+				         [$class: 'WipeWorkspace']],
 			submoduleCfg: [],
 			userRemoteConfigs: [[
 			  credentialsId: args.repo_creds,
