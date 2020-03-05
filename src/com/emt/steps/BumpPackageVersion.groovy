@@ -31,7 +31,7 @@ class BumpPackageVersion extends BaseStep {
 			git config --global user.email $author_email
 			
 	        git commit -m "Bump version to ${new_version}." $version_file
-	        git push --set-upstream origin master
+	        git push --set-upstream origin HEAD
 	        
 	        git tag -fa $new_version -m \"Create tag for version ${new_version}.\"
 	        git tag -fa \"${tag_name}\" -m \"Update the '${tag_name}' tag.\"
