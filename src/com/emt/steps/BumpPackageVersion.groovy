@@ -8,7 +8,8 @@ class BumpPackageVersion extends BaseStep {
 		String author = parameters.author
 		String author_email = parameters.author_email
 		String version_file = parameters.get('version_file', "src/${_steps.env.JOB_NAME}/__init__.py")
-   
+		String branch = parameters.branch ?: 'master'
+		
 	   def tag_name = 'latest'
 	 
 	   // TODO: Replace the hyphens with underscores in env.JOB_NAME when building
@@ -31,7 +32,7 @@ class BumpPackageVersion extends BaseStep {
 			git config --global user.email $author_email
 			
 	        git commit -m "Bump version to ${new_version}." $version_file
-	        git push --set-upstream origin HEAD
+	        git push --set-upstream origin ${branch}
 	        
 	        git tag -fa $new_version -m \"Create tag for version ${new_version}.\"
 	        git tag -fa \"${tag_name}\" -m \"Update the '${tag_name}' tag.\"
