@@ -5,7 +5,11 @@ class InitializeVirtualEnv extends BaseStep {
 	Object execute(Map params=[:]) {
 		
 		boolean load_python = !params.containsKey('load_python') || params.load_python
-		
+	
+		if (_steps.fileExists('master_venv')) {
+			return;
+		}
+
         if (load_python) {
 			_steps.sh '''
 	    	    label="$(uname)"
