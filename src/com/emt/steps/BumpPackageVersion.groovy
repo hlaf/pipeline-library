@@ -15,7 +15,7 @@ class BumpPackageVersion extends BaseStep {
 	   // the default version_file path
 	   String current_version = _steps.getPackageVersion(parameters.plus(version_file: version_file))
 	   
-	   _steps.initializeVirtualEnv()
+	   _steps.initializeVirtualEnv(load_python: false)
 	   String new_version = _steps.sh(
 		   script: "source master_venv/bin/activate > /dev/null; \\pip install semver --upgrade > /dev/null; python -c \"import semver; print semver.bump_patch(\'${current_version}\')\"",
 		   returnStdout: true).trim()
