@@ -2,6 +2,6 @@
 import com.emt.steps.InitializeVirtualEnv
 
 
-def call() {
-	new InitializeVirtualEnv(this).execute();
+def call(Map parameters=[:]) {
+	new InitializeVirtualEnv(this).execute(parameters);
 }
