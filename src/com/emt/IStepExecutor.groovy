@@ -49,7 +49,7 @@ abstract class IStepExecutor {
 	abstract String getPackageVersion(Map params=[:]);
 	abstract boolean dockerImageExists(String name);
 	abstract void createPuppetDockerfile(Map params=[:]);
-	abstract Object initializeVirtualEnv();
+	abstract Object initializeVirtualEnv(Map params=[:]);
 	abstract void saferStash(Map);
 	abstract void saferUnstash(Map);
 	abstract void setPackageVersion(Map);
