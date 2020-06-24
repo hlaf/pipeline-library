@@ -42,4 +42,3 @@ def stashCoverageResultGradle(Map parameters=[:]) {
     saferStash name: stash_name, includes: "coverage.xml"
   }
 }
-
