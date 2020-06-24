@@ -1,10 +1,13 @@
 package com.emt.steps
 
+import com.emt.common.MapUtils
+
 @groovy.transform.InheritConstructors
 class InitializeVirtualEnv extends BaseStep {
 	Object execute(Map params=[:]) {
-		
-		boolean load_python = !params.containsKey('load_python') || params.load_python
+	
+        Map config = MapUtils.merge(_steps.getPipelineConfig(), params)
+		boolean load_python = config.getOrDefault('load_python', true)
 		
         if (load_python) {
 			_steps.sh '''

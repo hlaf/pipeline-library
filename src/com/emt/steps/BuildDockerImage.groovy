@@ -1,23 +1,25 @@
 package com.emt.steps
 
+import com.emt.common.MapUtils
+
 @groovy.transform.InheritConstructors
 class BuildDockerImage extends BaseStep {
 	Object execute(Map parameters=[:]) {
-		def config = _steps.getPipelineConfig()
+		Map config = MapUtils.merge(_steps.getPipelineConfig(), parameters)
 			
-		String image_name = parameters.image_name
-		String image_user = parameters.image_user ?: 'root'
-		String manager_node = parameters.manager_node ?: 'puppet_management_node'
-		String environment = parameters.environment ?: 'dockerbuilder'
-		String master = parameters.master ?: config.puppet_master ?: 'puppet'
-		String from_image_name = parameters.from_image_name ?: 'hlaf/puppet'
-		boolean force = parameters.force ?: false
+		String image_name = config.image_name
+		String image_user = config.image_user ?: 'root'
+		String manager_node = config.manager_node ?: 'puppet_management_node'
+		String environment = config.environment ?: 'dockerbuilder'
+		String master = config.master ?: config.puppet_master ?: 'puppet'
+		String from_image_name = config.from_image_name ?: 'hlaf/puppet'
+		boolean force = config.getOrDefault('force', false)
 			 
 		String domain_name = _steps.getDnsDomainName()
 	    String master_fqdn = master + '.' + domain_name
 		
 		_steps.node('docker-slave') {
-			if (!force && _steps.dockerImageExists(parameters.image_name)) {
+			if (!force && _steps.dockerImageExists(image_name)) {
 				_steps.echo "The image ${image_name} already exists. Skipping build."
 				return _steps.docker.image(image_name)
 			}
