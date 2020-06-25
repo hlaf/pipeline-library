@@ -26,7 +26,7 @@ abstract class IStepExecutor {
 	abstract Object readFile(String)
 	abstract Object readJSON(Map);
 	abstract int sh(String command)
-	abstract String sh(Map params)
+	abstract Object sh(Map params)
 	abstract specific(String);
 	Object sshagent(List list, Closure body) { return body() }
 	abstract void step(Map);

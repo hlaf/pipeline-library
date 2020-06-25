@@ -3,6 +3,7 @@ package com.emt.steps;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -20,15 +21,15 @@ import org.mockito.ArgumentCaptor;
 @RunWith(Theories.class)
 public class InitializeVirtualEnvTest extends StepTestFixture {
 
-    @Parameter(optional = true) boolean load_python;
-
     @StateVar boolean VenvExists;
+    @StateVar boolean ModulesCommandAvailable;
 
     @DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
     @DataPoints("state") public static Map[] getState() { return _getState(); }
 
     private void commonSetup(Map args, Map state) {
         when(_steps.fileExists(anyString())).thenReturn((boolean)state.get("VenvExists"));
+        when(_steps.sh(any(Map.class))).thenReturn((boolean)state.get("ModulesCommandAvailable") ? 0:1);
     }
     
     @Theory
@@ -58,19 +59,17 @@ public class InitializeVirtualEnvTest extends StepTestFixture {
     }
 
     @Theory
-    public void loadsPythonWhenRequested(@FromDataPoints("args") Map args,
-                                         @FromDataPoints("state") Map state) {
+    public void usesModulesCommandWhenAvailable(@FromDataPoints("args") Map args,
+                                                @FromDataPoints("state") Map state) {
         assumeFalse((boolean)state.get("VenvExists"));
-
+        
         commonSetup(args, state);
-
+        
         inst().execute(args);
-
-        final boolean should_load_python = !args.containsKey("load_python") || (boolean) args.get("load_python");
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(_steps).sh(captor.capture());
-        assertTrue(captor.getValue().contains("module load python") == should_load_python);
+        assertTrue(captor.getValue().contains("module load") == (boolean)state.get("ModulesCommandAvailable"));
     }
 
 }
