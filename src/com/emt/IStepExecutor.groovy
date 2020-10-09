@@ -39,10 +39,7 @@ abstract class IStepExecutor {
 	abstract void writeJSON(Map);
 
 	// TODO: Find a way to get rid of these declarations
-	abstract void deletePuppetCertificate(String cert_name,
-		                                  String manager_node,
-										  String master,
-										  String environment);
+	abstract void deletePuppetCertificate(Map params=[:]);
 	abstract void echo(String);
 	abstract String getDnsDomainName();
 	abstract Map getPipelineConfig();

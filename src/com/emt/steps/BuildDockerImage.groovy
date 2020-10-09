@@ -33,10 +33,10 @@ class BuildDockerImage extends BaseStep {
 										  master: master_fqdn,
 								          environment: environment,
 								          from_image_name: from_image_name)
-			_steps.deletePuppetCertificate(image_fqdn,
-				                           manager_node,
-										   master_fqdn,
-										   environment)
+			_steps.deletePuppetCertificate(certificate_name: image_fqdn,
+				                           manager_node: manager_node,
+										   master: master_fqdn,
+										   environment: environment)
 			def image = _steps.docker.build(image_name, "--no-cache .")
 	
 			return image
