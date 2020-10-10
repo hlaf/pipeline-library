@@ -1,5 +1,8 @@
 package com.emt.steps
 
+import com.emt.common.CertUtils
+import com.emt.common.MapUtils
+
 @groovy.transform.InheritConstructors
 class DeletePuppetCertificate extends BaseStep {
 	@Override
@@ -14,6 +17,12 @@ class DeletePuppetCertificate extends BaseStep {
                                           "/var/lib/puppet/ssl/certs/\${HOSTNAME}.pem")
         String ssl_cert_key = config.get('ssl_cert_key',
                                          "/var/lib/puppet/ssl/private_keys/\${HOSTNAME}.pem")
+        String puppetapi_cert_name = config.get('puppetapi_cert_name')
+
+        if (puppetapi_cert_name != null) {
+          ssl_cert_path = CertUtils.getSslCertPath(puppetapi_cert_name)
+          ssl_cert_key = CertUtils.getSslKeyPath(puppetapi_cert_name)
+        }
 
         _steps.node(manager_node) {
 			_steps.sh """
