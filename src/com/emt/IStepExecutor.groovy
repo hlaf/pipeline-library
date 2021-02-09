@@ -36,7 +36,7 @@ abstract class IStepExecutor {
 	abstract Object usernamePassword(Map);
 	Object withCredentials(List, Closure body) { return body() }
 	abstract void writeFile(Map);
-	abstract void writeJSON(Map);
+	void writeJSON(Map) { throw new RuntimeException("Step requires approval") };
 
 	// TODO: Find a way to get rid of these declarations
 	abstract void deletePuppetCertificate(Map params=[:]);
@@ -54,6 +54,7 @@ abstract class IStepExecutor {
 	abstract void stash(Map);
 	abstract boolean stashExists(String);
 	abstract String unstashCoverageResult(Map) throws hudson.AbortException;
+    abstract void writeAsJson(Map);
 	abstract void publishJUnitReport();
 }
 

@@ -30,7 +30,7 @@ class SaferUnstash extends BaseStep {
 		def data = _steps.readJSON text: '{}'
 		data.build_number = _steps.env.BUILD_NUMBER
 		data.stash_name = key
-		_steps.writeJSON file: unstash_metadata_file, json: data
+		_steps.writeAsJson file: unstash_metadata_file, json: data
 
 	}
 }
