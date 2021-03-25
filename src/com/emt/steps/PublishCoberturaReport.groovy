@@ -21,6 +21,8 @@ class PublishCoberturaReport extends BaseStep {
 			_steps.archiveArtifacts artifacts: report_location, fingerprint: true
 		}
 
-		_steps.step([$class: 'CoberturaPublisher', coberturaReportFile: report_location])
+		_steps.step([$class: 'CoberturaPublisher',
+                     coberturaReportFile: report_location,
+                     onlyStable: false])
 	}
 }
