@@ -4,7 +4,6 @@ import static com.google.common.collect.Sets.cartesianProduct;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
-import static org.junit.Assume.assumeTrue;  
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
@@ -24,15 +23,11 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.experimental.theories.FromDataPoints;
-import org.junit.experimental.theories.Theory;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import com.emt.IStepExecutor;
 import com.emt.ioc.IContext;
-import com.emt.util.MyTestRunner;
 
 import groovy.lang.Closure;
 
@@ -56,7 +51,6 @@ class NullValue {
     String[] values() default {};
 }
 
-@RunWith(MyTestRunner.class)
 public abstract class StepTestFixture {
 
     private IContext _context;
@@ -111,7 +105,6 @@ public abstract class StepTestFixture {
         Class<?> klass;
         try {
             klass = Class.forName(klass_name);
-            //klass = Class.forName(klass_name, true, getClass().getClassLoader());
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -189,18 +182,6 @@ public abstract class StepTestFixture {
 
     @Before
     public void setup() {
-        //System.out.println("This is class " + this.getClass().getName());
-// if (this.getClass().getName() == "com.emt.steps.CheckoutFromBzrTest") {
-//          new ByteBuddy()
-//                  .redefine(this.getClass())
-//                  .defineMethod("getDumboArgs", Map[].class, Modifier.PUBLIC | Modifier.STATIC)
-//                  .intercept(MethodCall.invoke(new TypeDescription.ForLoadedType(StepTestFixture.class)
-//                  .getDeclaredMethods()
-//                  .filter(named("_getArgs").and(takesArguments(0)).and(isStatic()))
-//                  .getOnly()))
-//                  .make()
-//                  .load(ClassLoader.getSystemClassLoader());
-//        }
         _context = mock(IContext.class);
         _steps = mock(IStepExecutor.class, Mockito.CALLS_REAL_METHODS);
         _steps.env = new HashMap<String, String>();
@@ -300,21 +281,9 @@ public abstract class StepTestFixture {
         return getMethod(klass, method_name) != null;
     }
 
-    @Theory
-    public void worksOk(@FromDataPoints("args") Map args) {
-        assumeTrue(true);
-        try {
-            getMethod(this.getClass(), "getArgs").invoke(null);
-        } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+    //@Theory
+    //public void worksOk(@FromDataPoints("args") Map args) {
+    //    assumeTrue(true);
+    //}
 
 }
