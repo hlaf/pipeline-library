@@ -11,21 +11,19 @@ import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
-import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
+import com.emt.util.StateVar;
+
 @RunWith(Theories.class)
 public class InitializeVirtualEnvTest extends StepTestFixture {
 
     @StateVar boolean VenvExists;
     @StateVar boolean ModulesCommandAvailable;
-
-    @DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-    @DataPoints("state") public static Map[] getState() { return _getState(); }
 
     private void commonSetup(Map args, Map state) {
         when(_steps.fileExists(anyString())).thenReturn((boolean)state.get("VenvExists"));

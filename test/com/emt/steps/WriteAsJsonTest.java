@@ -7,12 +7,13 @@ import static org.mockito.Mockito.verify;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+
+import com.emt.util.Parameter;
 
 @RunWith(Theories.class)
 public class WriteAsJsonTest extends StepTestFixture {
@@ -25,8 +26,6 @@ public class WriteAsJsonTest extends StepTestFixture {
         m.put("foo", "bar");
 	    return new Object[] { m };
 	}
-	
-	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
 	
 	@Theory
     public void writesDataAsJSON(@FromDataPoints("args") Map args) {

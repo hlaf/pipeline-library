@@ -12,13 +12,13 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
+import com.emt.util.Parameter;
+
 @RunWith(Theories.class)
 public class StashCoverageResultTest extends StepTestFixture {
 
 	@Parameter(values="my_results_key") String key;
 	
-	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-
 	@Theory
     public void callsSaferStash(@FromDataPoints("args") Map args) {
     	inst().execute(args);

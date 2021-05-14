@@ -18,6 +18,9 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
+import com.emt.util.Parameter;
+import com.emt.util.StateVar;
+
 @RunWith(Theories.class)
 public class SaferUnstashTest extends StepTestFixture {
 
@@ -29,9 +32,6 @@ public class SaferUnstashTest extends StepTestFixture {
 	@StateVar(values={"my_stash_key", "someone_elses_stash"}) String metadata_stash_name;
 	@StateVar(values={"1", "2"}) String metadata_build_number;
 	@StateVar(values={"1", "2"}) String build_number;
-	
-	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-	@DataPoints("state") public static Map[] getState() { return _getState(); }
 	
 	private void commonSetup(Map args, Map state) {
 		when(_steps.fileExists((String)args.get("to"))).thenReturn((boolean)state.get("UnstashPathExists"));

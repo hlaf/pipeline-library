@@ -16,6 +16,9 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
+import com.emt.util.Parameter;
+import com.emt.util.StateVar;
+
 @RunWith(Theories.class)
 public class SaferStashTest extends StepTestFixture {
 
@@ -23,9 +26,6 @@ public class SaferStashTest extends StepTestFixture {
 	@Parameter(values="my_includes") String includes;
 	
 	@StateVar boolean StashExists;
-	
-	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-	@DataPoints("state") public static Map[] getState() { return _getState(); }
 	
 	private void commonSetup(Map args, Map state) {
 		when(_steps.stashExists(anyString())).thenReturn((boolean)state.get("StashExists"));

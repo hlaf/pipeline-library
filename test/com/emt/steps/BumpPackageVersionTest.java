@@ -10,12 +10,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
-import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+
+import com.emt.util.Parameter;
 
 @RunWith(Theories.class)
 public class BumpPackageVersionTest extends StepTestFixture {
@@ -24,8 +25,6 @@ public class BumpPackageVersionTest extends StepTestFixture {
 	@Parameter(values="some_author") String author;
 	@Parameter(values="some_author@some_domain.com") String author_email;
 	
-	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-
 	@Before
     public void setup() {
     	super.setup();

@@ -4,6 +4,8 @@ version '1.0-SNAPSHOT'
 apply plugin: 'groovy'
 apply plugin: 'java'
 
+def agent_archive = "test-agent.jar"
+
 buildscript {
     repositories {
         mavenCentral()
@@ -32,6 +34,7 @@ dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.13'
     testImplementation "org.mockito:mockito-core:2.+"
     testImplementation group: 'com.google.guava', name: 'guava', version: '23.5-jre'
+    testImplementation 'net.bytebuddy:byte-buddy:LATEST'
 
 }
 
@@ -49,6 +52,34 @@ sourceSets {
             srcDir 'test'
         }
     }
+}
+
+tasks.register('agentJar', Jar) {
+    description 'Assembles a jar archive containing the Java agent.'
+    
+    dependsOn 'compileTestJava', 'compileTestGroovy'
+    
+    archiveName = agent_archive
+
+    from(['build/classes/java/test/com/emt/util/TestInstrumentationAgent.class'])
+
+    manifest {
+        attributes(
+                'Premain-Class': 'com.emt.util.TestInstrumentationAgent',
+                'Can-Redefine-Classes': 'true',
+                'Can-Retransform-Classes': 'true',
+                'Can-Set-Native-Method-Prefix': 'true',
+                'Implementation-Title': "ClassLogger",
+                'Implementation-Version': rootProject.version
+        )
+    }
+
+}
+
+test {
+    dependsOn 'agentJar'
+
+    jvmArgs "-javaagent:$buildDir/libs/${agent_archive}"
 }
 
 cobertura {

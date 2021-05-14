@@ -16,6 +16,9 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
+import com.emt.util.Parameter;
+import com.emt.util.StateVar;
+
 import static com.emt.util.TestUtils.getFileContent;
 
 @RunWith(Theories.class)
@@ -29,9 +32,6 @@ public class SetPackageVersionTest extends StepTestFixture {
 	@StateVar(values={"1.0.0", "10.11.12"}) String file_version_value;
 	@StateVar boolean file_contains_version_info;
 	
-	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-	@DataPoints("state") public static Map[] getState() { return _getState(); }
-
     @Theory
     public void setVersionSucceeds(@FromDataPoints("args") Map args,
     		                       @FromDataPoints("state") Map state) {

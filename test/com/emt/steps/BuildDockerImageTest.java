@@ -12,13 +12,13 @@ import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 import com.emt.IDockerNamespace;
+import com.emt.util.Parameter;
 
 import groovy.lang.Closure;
 
@@ -33,8 +33,6 @@ public class BuildDockerImageTest extends StepTestFixture {
 	@Parameter(values={"my_from_image"}, optional=true) String from_image_name;
 	@Parameter(optional=true) boolean force;
 	
-	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-
     @Before
     public void setup() {
     	super.setup();
