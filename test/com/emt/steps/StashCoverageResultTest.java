@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 
 import com.emt.util.Parameter;
 
-@RunWith(Theories.class)
+
 public class StashCoverageResultTest extends StepTestFixture {
 
 	@Parameter(values="my_results_key") String key;

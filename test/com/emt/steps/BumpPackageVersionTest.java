@@ -11,14 +11,12 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.experimental.theories.FromDataPoints;
-import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
 import com.emt.util.Parameter;
 
-@RunWith(Theories.class)
+
 public class BumpPackageVersionTest extends StepTestFixture {
 
 	@Parameter(values="my_credentials") String git_repo_creds;

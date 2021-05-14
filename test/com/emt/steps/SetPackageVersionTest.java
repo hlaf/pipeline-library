@@ -21,7 +21,7 @@ import com.emt.util.StateVar;
 
 import static com.emt.util.TestUtils.getFileContent;
 
-@RunWith(Theories.class)
+
 public class SetPackageVersionTest extends StepTestFixture {
 
 	@Parameter(values="1.1.0") String version;

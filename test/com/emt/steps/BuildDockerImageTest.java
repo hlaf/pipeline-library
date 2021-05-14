@@ -13,16 +13,14 @@ import java.util.Map;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.experimental.theories.FromDataPoints;
-import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
 
 import com.emt.IDockerNamespace;
 import com.emt.util.Parameter;
 
 import groovy.lang.Closure;
 
-@RunWith(Theories.class)
+
 public class BuildDockerImageTest extends StepTestFixture {
 
 	@Parameter(values={"my_docker_image"}) String image_name;

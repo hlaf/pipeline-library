@@ -15,7 +15,7 @@ import org.mockito.ArgumentCaptor;
 
 import com.emt.util.Parameter;
 
-@RunWith(Theories.class)
+
 public class WriteAsJsonTest extends StepTestFixture {
 
 	@Parameter(values={"some/file/path"}) String file;

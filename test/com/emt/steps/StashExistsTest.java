@@ -16,7 +16,7 @@ import com.emt.util.StateVar;
 
 import hudson.AbortException;
 
-@RunWith(Theories.class)
+
 public class StashExistsTest extends StepTestFixture {
 
 	@Parameter(values = {"my_stash_name"}) String name;
