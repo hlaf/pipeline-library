@@ -18,6 +18,7 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 import com.emt.IDockerNamespace;
+import com.emt.util.Parameter;
 
 import groovy.lang.Closure;
 

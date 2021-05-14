@@ -16,6 +16,9 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
+import com.emt.util.Parameter;
+import com.emt.util.StateVar;
+
 import hudson.AbortException;
 
 @RunWith(Theories.class)
@@ -29,9 +32,6 @@ public class PublishCoberturaReportTest extends StepTestFixture {
         return new Object[]{ new ArrayList<String>(), 
         		             Arrays.asList("unit", "integration")};
     }
-	
-	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-	@DataPoints("state") public static Map[] getState() { return _getState(); }
 	
 	private void commonSetup(Map args, Map state) {
 		if ((boolean)state.get("StashExists")) {

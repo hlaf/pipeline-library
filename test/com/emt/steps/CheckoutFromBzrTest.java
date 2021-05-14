@@ -12,6 +12,8 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
+import com.emt.util.Parameter;
+
 @RunWith(Theories.class)
 public class CheckoutFromBzrTest extends StepTestFixture {
 

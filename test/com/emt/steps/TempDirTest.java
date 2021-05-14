@@ -13,6 +13,8 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
+import com.emt.util.Parameter;
+
 import groovy.lang.Closure;
 
 @RunWith(Theories.class)
@@ -31,8 +33,6 @@ public class TempDirTest extends StepTestFixture {
     public static Object[] body_values() {
     	return new Object[] { noop_closure, throwing_closure };
     }
-
-	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
 
 	private void commonSetup(Map args) {
 		if (closureThrows((Closure)args.get("body"))) {

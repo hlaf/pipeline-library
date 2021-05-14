@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
-import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
@@ -21,6 +20,8 @@ import org.junit.runner.RunWith;
 import org.mockito.AdditionalMatchers;
 
 import com.emt.ICurrentBuildNamespace;
+import com.emt.util.Parameter;
+import com.emt.util.StateVar;
 
 @RunWith(Theories.class)
 public class VerifyCoverageTest extends StepTestFixture {
@@ -39,9 +40,6 @@ public class VerifyCoverageTest extends StepTestFixture {
         return new Object[]{ previous_build1, new NullValue() };
     }
     
-	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-	@DataPoints("state") public static Map[] getState() { return _getState(); }
-	
 	@Before
     public void setup() {
     	super.setup();

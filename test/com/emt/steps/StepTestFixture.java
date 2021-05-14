@@ -6,10 +6,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -28,6 +24,8 @@ import org.mockito.Mockito;
 
 import com.emt.IStepExecutor;
 import com.emt.ioc.IContext;
+import com.emt.util.Parameter;
+import com.emt.util.StateVar;
 
 import groovy.lang.Closure;
 
@@ -36,20 +34,6 @@ class Unassigned {
 
 class NullValue {
 };
-
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-@interface Parameter {
-    String[] values() default {};
-
-    boolean optional() default false;
-}
-
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-@interface StateVar {
-    String[] values() default {};
-}
 
 public abstract class StepTestFixture {
 

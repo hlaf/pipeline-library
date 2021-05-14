@@ -12,6 +12,9 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
+import com.emt.util.Parameter;
+import com.emt.util.StateVar;
+
 @RunWith(Theories.class)
 public class RunTestsTest extends StepTestFixture {
 
@@ -20,9 +23,6 @@ public class RunTestsTest extends StepTestFixture {
 	
 	@StateVar boolean IsUnix;
 	@StateVar boolean ComputeCoverage;
-	
-	@DataPoints("args") public static Map[] getArgs() { return _getArgs(); }
-	@DataPoints("state") public static Map[] getState() { return _getState(); }
 	
 	private void commonSetup(Map args, Map state) {
 		when(_steps.isUnix()).thenReturn((boolean)state.get("IsUnix"));
