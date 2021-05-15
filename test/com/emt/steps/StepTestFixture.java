@@ -139,7 +139,7 @@ public abstract class StepTestFixture {
                 if (type.equals(boolean.class) || type.equals(Boolean.class)) {
                     input_set.add(Boolean.TRUE);
                     input_set.add(Boolean.FALSE);
-                } else if (type.equals(String.class)) {
+                } else if (type.equals(String.class) && input_set.isEmpty()) {
                     input_set.add(parameter_name + "_test_string");
                     // test the empty string
                     input_set.add("");
