@@ -5,14 +5,22 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.experimental.theories.FromDataPoints;
+import org.junit.experimental.theories.Theory;
+
+import com.emt.util.Parameter;
+
 
 public class CheckoutFromGitTest extends StepTestFixture {
-    
-    @Test
-    public void callsCheckout() {
-    	inst().execute();
-    	verify(_steps).checkout(any(Map.class));    	
+
+    @Parameter(values={"https://some.url.com/path/to/repo"}) String repo_url;
+    @Parameter(values={"some_credentials_id"}, optional=true) String repo_creds;
+    @Parameter(values={"my_branch"}, optional=true) String branch;
+
+    @Theory
+    public void callsCheckout(@FromDataPoints("args") Map args) {
+        inst().execute(args);
+        verify(_steps).checkout(any(Map.class));
     }
 
 }

@@ -5,11 +5,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.experimental.theories.Theory;
 
 public class GetPipelineConfigTest extends StepTestFixture {
 
-    @Test
+    @Theory
     public void usesSeparateNamespacesPerJob() {
     	// Object identity tests
 

@@ -17,7 +17,7 @@ import com.emt.util.Parameter;
 
 import groovy.lang.Closure;
 
-@RunWith(Theories.class)
+
 public class TempDirTest extends StepTestFixture {
 
 	@Parameter Closure body;

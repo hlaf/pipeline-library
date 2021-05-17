@@ -1,18 +1,22 @@
 package com.emt.steps;
 
-import org.junit.Test;
+import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
+import org.junit.experimental.theories.FromDataPoints;
+import org.junit.experimental.theories.Theory;
+
+import com.emt.util.Parameter;
 
 public class UnstashCoverageResultTest extends StepTestFixture {
 
-    @Test
-    public void callsEchoWithDefaultMessage() {
-    	String key = "my_results_key";
-    	String result = (String) inst().execute(ImmutableMap.of("key", key));
-    	
-    	assert result.endsWith(key);
-    	assert result.contains(UnstashCoverageResult.COVERAGE_RESULTS_BASE_DIR);
+    @Parameter(values={"my_results_key"}) String key;
+
+    @Theory
+    public void returnsPathOfUnstashedResults(@FromDataPoints("args") Map args) {
+        String result = (String) execute(args);
+
+        assert result.endsWith((String)args.get("key"));
+        assert result.contains(UnstashCoverageResult.COVERAGE_RESULTS_BASE_DIR);
     }
-    
+
 }

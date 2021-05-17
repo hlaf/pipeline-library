@@ -1,5 +1,6 @@
 package com.emt.steps;
 
+import static com.emt.util.TestUtils.getFileContent;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
@@ -7,18 +8,13 @@ import static org.mockito.Mockito.doReturn;
 
 import java.util.Map;
 
-import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.FromDataPoints;
-import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
 
 import com.emt.util.Parameter;
 import com.emt.util.StateVar;
 
-import static com.emt.util.TestUtils.getFileContent;
 
-@RunWith(Theories.class)
 public class GetPackageVersionTest extends StepTestFixture {
 
 	@Parameter(values="some_version_file") String version_file;

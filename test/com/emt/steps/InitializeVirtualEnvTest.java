@@ -19,7 +19,7 @@ import org.mockito.ArgumentCaptor;
 
 import com.emt.util.StateVar;
 
-@RunWith(Theories.class)
+
 public class InitializeVirtualEnvTest extends StepTestFixture {
 
     @StateVar boolean VenvExists;

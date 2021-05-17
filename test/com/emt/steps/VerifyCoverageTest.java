@@ -23,7 +23,7 @@ import com.emt.ICurrentBuildNamespace;
 import com.emt.util.Parameter;
 import com.emt.util.StateVar;
 
-@RunWith(Theories.class)
+
 public class VerifyCoverageTest extends StepTestFixture {
 
 	@Parameter(values={"my_key"}, optional=true) String key;

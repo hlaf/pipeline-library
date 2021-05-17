@@ -3,16 +3,33 @@ package com.emt.steps;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
-import org.junit.Test;
+import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
+import org.junit.experimental.theories.FromDataPoints;
+import org.junit.experimental.theories.Theory;
+
+import com.emt.util.Parameter;
 
 public class DeletePuppetCertificateTest extends StepTestFixture {
 
-    @Test
-    public void callsShWithCommand() {
-        inst().execute(Maps.newHashMap(ImmutableMap.of("certificate_name", "mycertificate.com")));
+    @Parameter
+    String certificate_name;
+    @Parameter(optional = true)
+    String manager_node;
+    @Parameter(optional = true)
+    String master;
+    @Parameter(optional = true)
+    String environment;
+    @Parameter(optional = true)
+    String ssl_cert_path;
+    @Parameter(optional = true)
+    String ssl_cert_key;
+    @Parameter(optional = true)
+    String puppetapi_cert_name;
+
+    @Theory
+    public void callsShWithCommand(@FromDataPoints("args") Map args) {
+         inst().execute(args);
         verify(_steps).sh(anyString());
     }
 

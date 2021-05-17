@@ -21,7 +21,7 @@ import com.emt.util.StateVar;
 
 import hudson.AbortException;
 
-@RunWith(Theories.class)
+
 public class PublishCoberturaReportTest extends StepTestFixture {
 
 	@Parameter List<String> results;

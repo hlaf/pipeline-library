@@ -1,6 +1,7 @@
 package com.emt.steps;
 
 import static com.google.common.collect.Sets.cartesianProduct;
+import static org.junit.Assume.assumeTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -19,7 +20,11 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.experimental.theories.FromDataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import com.emt.IStepExecutor;
@@ -35,6 +40,7 @@ class Unassigned {
 class NullValue {
 };
 
+@RunWith(Theories.class)
 public abstract class StepTestFixture {
 
     private IContext _context;
@@ -133,6 +139,10 @@ public abstract class StepTestFixture {
                 if (type.equals(boolean.class) || type.equals(Boolean.class)) {
                     input_set.add(Boolean.TRUE);
                     input_set.add(Boolean.FALSE);
+                } else if (type.equals(String.class) && input_set.isEmpty()) {
+                    input_set.add(parameter_name + "_test_string");
+                    // test the empty string
+                    input_set.add("");
                 }
 
                 if (input_set.isEmpty()) {

@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 import com.emt.util.Parameter;
 import com.emt.util.StateVar;
 
-@RunWith(Theories.class)
+
 public class RunTestsTest extends StepTestFixture {
 
 	@Parameter(values={"my_tox_environment"}, optional=true) String environment;

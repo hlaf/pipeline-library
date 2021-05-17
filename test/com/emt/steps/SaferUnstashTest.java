@@ -21,7 +21,7 @@ import org.junit.runner.RunWith;
 import com.emt.util.Parameter;
 import com.emt.util.StateVar;
 
-@RunWith(Theories.class)
+
 public class SaferUnstashTest extends StepTestFixture {
 
 	@Parameter(values={"my_stash_key"}) String key;
