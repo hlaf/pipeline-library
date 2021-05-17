@@ -4,11 +4,12 @@ import groovy.json.JsonOutput
 
 @groovy.transform.InheritConstructors
 class WriteAsJson extends BaseStep {
+    def required_parameters = ["file", "json"]
 
-	Object execute(Map params=[:]) {
-      String file = params.file
-      Map json = params.json
-      _steps.writeFile(file: file, text: JsonOutput.toJson(json))
-	}
-
+    Object execute(Map parameters=[:]) {
+        validateParameters(parameters)
+        String file = parameters.file
+        Map json = parameters.json
+        _steps.writeFile(file: file, text: JsonOutput.toJson(json))
+    }
 }

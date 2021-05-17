@@ -12,9 +12,7 @@ import static org.mockito.Mockito.when;
 import java.util.Map;
 
 import org.junit.experimental.theories.FromDataPoints;
-import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
 import com.emt.util.StateVar;

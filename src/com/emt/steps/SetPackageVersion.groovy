@@ -1,11 +1,21 @@
 package com.emt.steps
 
+import com.emt.common.MissingArgumentException
+
 import groovy.transform.InheritConstructors
 
 @groovy.transform.InheritConstructors
 class SetPackageVersion extends BaseStep {
 
     Object execute(Map parameters=[:]) {
+        def required_parameters = ["version", "version_file"]
+        for (p_name in required_parameters) {
+            if (!parameters.containsKey(p_name)) {
+                throw new MissingArgumentException(
+                "The parameter '${p_name}' is mandatory");
+            }
+        }
+        
         String version      = parameters.version
         String version_file = parameters.version_file
         String version_key  = parameters.version_key ?: "__version__"

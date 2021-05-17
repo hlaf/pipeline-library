@@ -52,8 +52,17 @@ public class TestInstrumentationAgent {
         .annotateMethod(
                   AnnotationDescription.Builder.ofType(DataPoints.class)
                                                .defineArray("value", new String[] {"state"})
+                                               .build())
+        .defineMethod("getInputWithMissingArgs", Map[].class, Modifier.PUBLIC | Modifier.STATIC)
+          .intercept(MethodCall.invoke(new TypeDescription.ForLoadedType(StepTestFixture.class)
+          .getDeclaredMethods()
+          .filter(named("_getInputWithMissingArgs").and(takesArguments(0)).and(isStatic()))
+          .getOnly()))
+        .annotateMethod(
+                  AnnotationDescription.Builder.ofType(DataPoints.class)
+                                               .defineArray("value", new String[] {"missing_args"})
                                                .build());
-    }
+        }
     }).installOn(instrumentation);
 
     }
