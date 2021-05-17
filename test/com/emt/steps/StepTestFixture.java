@@ -275,10 +275,4 @@ public abstract class StepTestFixture {
         return getMethod(klass, method_name) != null;
     }
 
-    @Theory
-    public void dummyTest(@FromDataPoints("args") Map args) {
-        assumeTrue(true);
-        assert true;
-    }
-    
 }
