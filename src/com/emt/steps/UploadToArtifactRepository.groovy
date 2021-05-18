@@ -5,10 +5,10 @@ class UploadToArtifactRepository extends BaseStep {
 
     def required_parameters = ['artifact_repo_url', 'artifact_repo_creds']
 
-    Object execute(Map params=[:]) {
+    Object execute(Map parameters=[:]) {
         validateParameters(parameters)
-        String artifact_repo_url = params.artifact_repo_url
-        String artifact_repo_creds = params.artifact_repo_creds
+        String artifact_repo_url = parameters.artifact_repo_url
+        String artifact_repo_creds = parameters.artifact_repo_creds
 
         _steps.withCredentials([
             _steps.usernamePassword(

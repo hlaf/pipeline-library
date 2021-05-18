@@ -1,7 +1,6 @@
 package com.emt.steps;
 
 import static com.google.common.collect.Sets.cartesianProduct;
-import static org.junit.Assume.assumeFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -12,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -42,7 +42,7 @@ class NullValue {
 };
 
 class ReflectionUtils {
-    
+
     public static List<String> getFieldNamesForAnnotation(Class target_klass, Class annotation_class) {
 
         List<String> parameter_names = new ArrayList<>();
@@ -123,9 +123,9 @@ public abstract class StepTestFixture {
 
     private static Class<?> getTestClass() {
         StackTraceElement[] stack_trace = Thread.currentThread().getStackTrace();
-        
+
         Class<?> test_klass;
-        for (int i=1; i < stack_trace.length; ++i) {
+        for (int i = 1; i < stack_trace.length; ++i) {
             String klass_name = stack_trace[i].getClassName();
             try {
                 test_klass = Class.forName(klass_name);
@@ -229,29 +229,42 @@ public abstract class StepTestFixture {
         return null_map;
     }
 
-    //private static Collection<String> getRequiredParameters() {
-    //    
-    //}
-    
+    private static Collection<String> getParameters() {
+        return ReflectionUtils.getFieldNamesForAnnotation(getTestClass(), Parameter.class);
+    }
+
+    private static Collection<String> getRequiredParameters() {
+        List<String> res = new ArrayList<String>();
+        for (String p : getParameters()) {
+            Field f = ReflectionUtils.getField(getTestClass(), p);
+            Parameter parameter_info = f.getAnnotation(Parameter.class);
+            if (!parameter_info.optional()) {
+                res.add(p);
+            }
+        }
+        return res;
+    }
+
+    private static boolean hasRequiredParameters() {
+        return getRequiredParameters().size() > 0;
+    }
+
     public static Map[] _getInputWithMissingArgs() { // Mutate input
-        Map<String, Object>[] input_args = _getArgs();
-        for (int i=0; i < input_args.length; ++i) {
-            Map<String, Object> m = input_args[i];
-            List<String> args_to_remove = new ArrayList<String>();
-            for (String parameter_name: m.keySet()) {
-                Field f = ReflectionUtils.getField(getTestClass(), parameter_name);
-                Parameter parameter_info = f.getAnnotation(Parameter.class);
-                if (!parameter_info.optional()) {
-                    args_to_remove.add(parameter_name);
+        if (hasRequiredParameters()) {
+            Map<String, Object>[] input_args = _getArgs();
+            for (int i = 0; i < input_args.length; ++i) {
+                for (String parameter_name : getRequiredParameters()) {
+                    input_args[i].remove(parameter_name);
                 }
             }
-            for (String p: args_to_remove) { m.remove(p); }
-        }
 
-        if (input_args.length == 0) {
-            return new Map[] { getEmptyArgSet() };
+            if (input_args.length == 0) {
+                return new Map[] { getEmptyArgSet() };
+            } else {
+                return input_args;
+            }
         } else {
-            return input_args;
+            return new Map[] { getEmptyArgSet() };
         }
     }
 
@@ -314,12 +327,12 @@ public abstract class StepTestFixture {
         return Arrays.asList(parameter_values);
     }
 
-    
     @Theory
-    public void testRequiredArguments(@FromDataPoints("missing_args") Map args) {
-        assumeFalse(isEmptyArgSet(args));
-        exception.expect(MissingArgumentException.class);
-        execute(args);
+    public void testRequiredArguments(@FromDataPoints("missing_args") Map<String, Object> args) {
+        if (!isEmptyArgSet(args)) {
+            exception.expect(MissingArgumentException.class);
+            execute(args);
+        }
     }
 
 }

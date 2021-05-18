@@ -18,7 +18,7 @@ public class UploadToArtifactRepositoryTest extends StepTestFixture {
 	
     @Theory
     public void callsSh(@FromDataPoints("args") Map args) {
-    	inst().execute();
+    	inst().execute(args);
         verify(_steps).sh(anyString());
     }
 
