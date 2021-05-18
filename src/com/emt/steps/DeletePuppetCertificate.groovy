@@ -5,10 +5,14 @@ import com.emt.common.MapUtils
 
 @groovy.transform.InheritConstructors
 class DeletePuppetCertificate extends BaseStep {
+
+    def required_parameters = ['certificate_name']
+
 	@Override
-	Object execute(Map params=[:]) {
-        Map config = MapUtils.merge(_steps.getPipelineConfig(), params)
-		
+	Object execute(Map parameters=[:]) {
+        Map config = MapUtils.merge(_steps.getPipelineConfig(), parameters)
+        validateParameters(config)
+
 		String certificate_name = config.certificate_name
 		String manager_node = config.get('manager_node', 'puppet_management_node')
 		String master = config.get('master', 'puppet')

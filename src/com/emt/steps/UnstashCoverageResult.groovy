@@ -4,8 +4,11 @@ package com.emt.steps
 class UnstashCoverageResult extends BaseStep {
 	
 	public static final String COVERAGE_RESULTS_BASE_DIR = "coverage_results";
+
+    def required_parameters = ['key']
 	
 	Object execute(Map parameters=[:]) {
+        validateParameters(parameters)
 		String key = parameters.key
 
 		String unstash_path = "./${COVERAGE_RESULTS_BASE_DIR}/${key}"
