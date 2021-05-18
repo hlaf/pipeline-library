@@ -95,7 +95,7 @@ public abstract class StepTestFixture {
 
     private IContext _context;
     protected IStepExecutor _steps;
-    protected boolean _executed = false;
+    protected boolean _executed_successfully = false;
     protected Map _state, _args;
 
     @Rule
@@ -298,11 +298,9 @@ public abstract class StepTestFixture {
     }
 
     protected final Object execute(Map args) {
-        try {
-            return inst().execute(args);
-        } finally {
-            _executed = true;
-        }
+        Object result = inst().execute(args);
+        _executed_successfully = true;
+        return result;
     }
 
     public static boolean closureThrows(Closure c) {
@@ -328,7 +326,7 @@ public abstract class StepTestFixture {
     }
 
     @Theory
-    public void testRequiredArguments(@FromDataPoints("missing_args") Map<String, Object> args) {
+    public void testRequiredParameters(@FromDataPoints("missing_args") Map<String, Object> args) {
         if (!isEmptyArgSet(args)) {
             exception.expect(MissingArgumentException.class);
             execute(args);
