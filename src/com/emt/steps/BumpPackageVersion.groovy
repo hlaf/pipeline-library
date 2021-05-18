@@ -2,10 +2,7 @@ package com.emt.steps
 
 @groovy.transform.InheritConstructors
 class BumpPackageVersion extends BaseStep {
-    def required_parameters = ["git_repo_creds", "author", "author_email"]
-    
 	Object execute(Map parameters=[:]) {
-        validateParameters(parameters)
 		
 		String git_repo_creds = parameters.git_repo_creds
 		String author = parameters.author

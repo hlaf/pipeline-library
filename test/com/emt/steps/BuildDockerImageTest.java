@@ -40,7 +40,7 @@ public class BuildDockerImageTest extends StepTestFixture {
 
     @After
     public void check_invariants() {
-    	if (_executed_successfully) {
+    	if (_executed) {
     		runsInDockerNode();
     	}
     }

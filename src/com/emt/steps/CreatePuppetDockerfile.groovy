@@ -1,25 +1,17 @@
 package com.emt.steps
 
-import com.emt.common.MissingArgumentException
-
 @groovy.transform.InheritConstructors
 class CreatePuppetDockerfile extends BaseStep {
-    Object execute(Map parameters=[:]) {
-        def required_parameters = ["image_name"]
-        for (p_name in required_parameters) {
-            if (!parameters.containsKey(p_name)) {
-                throw new MissingArgumentException(
-                        "The parameter '${p_name}' is mandatory");
-            }
-        }
-        String image_name = parameters.image_name
-        String image_user = parameters.get('image_user', 'root')
-        String environment = parameters.get('environment', 'production')
-        String master = parameters.get('master', 'puppet')
-        String from_image_name = parameters.get('from_image_name', 'hlaf/puppet')
+	Object execute(Map parameters=[:]) {
+		
+		String image_name = parameters.image_name
+		String image_user = parameters.get('image_user', 'root')
+		String environment = parameters.get('environment', 'production')
+		String master = parameters.get('master', 'puppet')
+		String from_image_name = parameters.get('from_image_name', 'hlaf/puppet')
 
-        // Create the Dockerfile
-        _steps.sh """docker run \
+		// Create the Dockerfile
+		_steps.sh """docker run \
              --volumes-from \$DOCKER_CONTAINER_ID \
              --entrypoint="" \
              puppet/puppet-agent-alpine /bin/sh -c "
@@ -46,5 +38,5 @@ EOF
         "
 		"""
 
-    }
+	}
 }
