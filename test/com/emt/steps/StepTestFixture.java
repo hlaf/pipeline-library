@@ -1,6 +1,7 @@
 package com.emt.steps;
 
 import static com.google.common.collect.Sets.cartesianProduct;
+import static org.junit.Assume.assumeFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -40,6 +41,55 @@ class Unassigned {
 class NullValue {
 };
 
+class ReflectionUtils {
+    
+    public static List<String> getFieldNamesForAnnotation(Class target_klass, Class annotation_class) {
+
+        List<String> parameter_names = new ArrayList<>();
+
+        for (Field field : target_klass.getDeclaredFields()) {
+            String name = field.getName();
+            if (field.isAnnotationPresent(annotation_class)) {
+                parameter_names.add(name);
+            }
+        }
+        return parameter_names;
+    }
+
+    public static boolean isStrictSubclassOf(Class<?> child, Class<?> parent) {
+        return parent.isAssignableFrom(child) && !child.isAssignableFrom(parent);
+    }
+
+    public static Field getField(Class klass, String field_name) {
+        Field f;
+        try {
+            f = klass.getDeclaredField(field_name);
+        } catch (NoSuchFieldException | SecurityException e) {
+            return null;
+        }
+        return f;
+    }
+
+    public static boolean hasField(Class klass, String field_name) {
+        return getField(klass, field_name) != null;
+    }
+
+    public static Method getMethod(Class klass, String method_name) {
+        Method m;
+        try {
+            m = klass.getMethod(method_name);
+        } catch (NoSuchMethodException | SecurityException e) {
+            return null;
+        }
+        return m;
+    }
+
+    public static boolean hasMethod(Class klass, String method_name) {
+        return getMethod(klass, method_name) != null;
+    }
+
+}
+
 @RunWith(Theories.class)
 public abstract class StepTestFixture {
 
@@ -63,23 +113,6 @@ public abstract class StepTestFixture {
         return klass;
     }
 
-    private final static List<String> _get_parameter_names(Class<?> klass, String method_name) {
-        Method m;
-        try {
-            m = klass.getMethod(method_name);
-        } catch (NoSuchMethodException | SecurityException e) {
-            throw new RuntimeException(e);
-        }
-
-        List<String> parameter_names;
-        try {
-            parameter_names = (List<String>) m.invoke(null);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-        return parameter_names;
-    }
-
     public static Map[] _getState() {
         return _getArgs(false);
     }
@@ -88,10 +121,6 @@ public abstract class StepTestFixture {
         return _getArgs(true);
     }
 
-    private static boolean isStrictSubclassOf(Class<?> child, Class<?> parent) {
-        return parent.isAssignableFrom(child) && !child.isAssignableFrom(parent);
-    }
-    
     private static Class<?> getTestClass() {
         StackTraceElement[] stack_trace = Thread.currentThread().getStackTrace();
         
@@ -103,30 +132,30 @@ public abstract class StepTestFixture {
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            if (isStrictSubclassOf(test_klass, StepTestFixture.class)) {
+            if (ReflectionUtils.isStrictSubclassOf(test_klass, StepTestFixture.class)) {
                 return test_klass;
             }
         }
         throw new RuntimeException("Could not find the test class");
     }
-    
+
     private static Map[] _getArgs(boolean input_parameters) {
         List<Set<Object>> input_sets = new ArrayList<Set<Object>>();
 
         Class<?> klass = getTestClass();
         Class<? extends Annotation> annotation_klass = input_parameters ? Parameter.class : StateVar.class;
 
-        List<String> parameter_names = getFieldNamesForAnnotation(klass, annotation_klass);
+        List<String> parameter_names = ReflectionUtils.getFieldNamesForAnnotation(klass, annotation_klass);
 
         for (String parameter_name : parameter_names) {
 
             Set<Object> input_set = new HashSet<>();
 
             String getter_name = parameter_name + "_values";
-            if (hasMethod(klass, getter_name)) {
+            if (ReflectionUtils.hasMethod(klass, getter_name)) {
                 input_set.addAll(getParameterValuesFromGetter(klass, getter_name));
-            } else if (hasField(klass, parameter_name)) {
-                Field f = getField(klass, parameter_name);
+            } else if (ReflectionUtils.hasField(klass, parameter_name)) {
+                Field f = ReflectionUtils.getField(klass, parameter_name);
                 Class type = f.getType();
 
                 boolean is_optional = false;
@@ -190,13 +219,27 @@ public abstract class StepTestFixture {
         return arg_combinations;
     }
 
+    private static boolean isEmptyArgSet(Map<String, Object> params) {
+        return params.size() == 1 && params.containsKey(".");
+    }
+
+    private static Map getEmptyArgSet() {
+        Map null_map = new HashMap();
+        null_map.put(".", new NullValue());
+        return null_map;
+    }
+
+    //private static Collection<String> getRequiredParameters() {
+    //    
+    //}
+    
     public static Map[] _getInputWithMissingArgs() { // Mutate input
         Map<String, Object>[] input_args = _getArgs();
         for (int i=0; i < input_args.length; ++i) {
             Map<String, Object> m = input_args[i];
             List<String> args_to_remove = new ArrayList<String>();
             for (String parameter_name: m.keySet()) {
-                Field f = getField(getTestClass(), parameter_name);
+                Field f = ReflectionUtils.getField(getTestClass(), parameter_name);
                 Parameter parameter_info = f.getAnnotation(Parameter.class);
                 if (!parameter_info.optional()) {
                     args_to_remove.add(parameter_name);
@@ -204,7 +247,12 @@ public abstract class StepTestFixture {
             }
             for (String p: args_to_remove) { m.remove(p); }
         }
-        return input_args;
+
+        if (input_args.length == 0) {
+            return new Map[] { getEmptyArgSet() };
+        } else {
+            return input_args;
+        }
     }
 
     @Before
@@ -255,7 +303,7 @@ public abstract class StepTestFixture {
     }
 
     private static List<Object> getParameterValuesFromGetter(Class<?> klass, String getter_name) {
-        Method getter = getMethod(klass, getter_name);
+        Method getter = ReflectionUtils.getMethod(klass, getter_name);
         Object[] parameter_values;
         try {
             parameter_values = (Object[]) getter.invoke(null);
@@ -266,51 +314,10 @@ public abstract class StepTestFixture {
         return Arrays.asList(parameter_values);
     }
 
-    private static List<String> getFieldNamesForAnnotation(Class target_klass, Class annotation_class) {
-
-        List<String> parameter_names = new ArrayList<>();
-
-        for (Field field : target_klass.getDeclaredFields()) {
-            String name = field.getName();
-            if (field.isAnnotationPresent(annotation_class)) {
-                parameter_names.add(name);
-            }
-        }
-        return parameter_names;
-    }
-
-    private static Field getField(Class klass, String field_name) {
-        Field f;
-        try {
-            f = klass.getDeclaredField(field_name);
-        } catch (NoSuchFieldException | SecurityException e) {
-            return null;
-        }
-        return f;
-    }
-
-    private static boolean hasField(Class klass, String field_name) {
-        return getField(klass, field_name) != null;
-    }
-
-    private static Method getMethod(Class klass, String method_name) {
-        Method m;
-        try {
-            m = klass.getMethod(method_name);
-        } catch (NoSuchMethodException | SecurityException e) {
-            return null;
-        }
-        return m;
-    }
-
-    private static boolean hasMethod(Class klass, String method_name) {
-        return getMethod(klass, method_name) != null;
-    }
     
     @Theory
     public void testRequiredArguments(@FromDataPoints("missing_args") Map args) {
-        // Remove a required argument
-        //assumeTrue( required_argument_is_missing );
+        assumeFalse(isEmptyArgSet(args));
         exception.expect(MissingArgumentException.class);
         execute(args);
     }

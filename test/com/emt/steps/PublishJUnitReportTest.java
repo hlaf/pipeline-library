@@ -6,16 +6,14 @@ import static org.mockito.Mockito.verify;
 import java.util.Map;
 
 import org.junit.experimental.theories.FromDataPoints;
-import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
 
 import com.emt.util.Parameter;
 
-
 public class PublishJUnitReportTest extends StepTestFixture {
 
-    @Parameter(values={"**/some_pattern.xml"}) String test_results;
+    @Parameter(values={"**/some_pattern.xml"}, optional=true)
+    String test_results;
 
     @Theory
     public void callsJunit(@FromDataPoints("args") Map args) {
