@@ -252,17 +252,18 @@ public abstract class StepTestFixture {
     public static Map[] _getInputWithMissingArgs() { // Mutate input
         if (hasRequiredParameters()) {
             Map<String, Object>[] input_args = _getArgs();
+            
+            final List<Map<String, Object>> mutated_args = new ArrayList<>();
+            
             for (int i = 0; i < input_args.length; ++i) {
                 for (String parameter_name : getRequiredParameters()) {
-                    input_args[i].remove(parameter_name);
+                    Map<String, Object> mutated_map = new HashMap<>(input_args[i]);
+                    mutated_map.remove(parameter_name);
+                    mutated_args.add(mutated_map);
                 }
             }
 
-            if (input_args.length == 0) {
-                return new Map[] { getEmptyArgSet() };
-            } else {
-                return input_args;
-            }
+            return mutated_args.toArray(new Map[0]);
         } else {
             return new Map[] { getEmptyArgSet() };
         }

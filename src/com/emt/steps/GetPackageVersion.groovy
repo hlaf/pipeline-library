@@ -5,7 +5,7 @@ import groovy.transform.InheritConstructors
 @groovy.transform.InheritConstructors
 class GetPackageVersion extends BaseStep {
 
-    def required_parameters = [] // NOTE: Wrong
+    def required_parameters = ['version_file']
 
     Object execute(Map parameters=[:]) {
         validateParameters(parameters)
