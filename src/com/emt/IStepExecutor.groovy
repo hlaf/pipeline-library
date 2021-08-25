@@ -56,6 +56,7 @@ abstract class IStepExecutor {
 	abstract String unstashCoverageResult(Map) throws hudson.AbortException;
     abstract void writeAsJson(Map);
 	abstract void publishJUnitReport();
+    abstract void parallel(Map);
 }
 
 abstract class ICurrentBuildNamespace {

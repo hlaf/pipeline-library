@@ -9,7 +9,7 @@ class RunParallel extends BaseStep {
 
         // setup a latch
         int max_concurrent = 2
-        latch = new java.util.concurrent.LinkedBlockingDeque(max_concurrent)
+        def latch = new java.util.concurrent.LinkedBlockingDeque(max_concurrent)
         // put a number of items into the queue to allow that number of branches to run
         for (int i=0;i<max_concurrent;i++) {
             latch.offer("$i")
@@ -36,7 +36,7 @@ class RunParallel extends BaseStep {
             }
         }
         
-        parallel(branches)
+        _steps.parallel(branches)
 
     }
 }
