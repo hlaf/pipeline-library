@@ -16,7 +16,8 @@ class RunParallel extends BaseStep {
         }
 
         for (String name: tasks.keySet()) {
-            branches[name] = {
+            String name_copy = name
+            branches[name_copy] = {
                 def thing = null
                 // this will not allow proceeding until there is something in the queue.
                 _steps.waitUntil {
@@ -24,7 +25,7 @@ class RunParallel extends BaseStep {
                     return thing != null;
                 }
                 try {
-                    tasks.get(name).call()
+                    tasks.get(name_copy).call()
                 }
                 finally {
                     // put something back into the queue to allow others to proceed
