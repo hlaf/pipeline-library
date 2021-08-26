@@ -24,10 +24,7 @@ class RunParallel extends BaseStep {
                     return thing != null;
                 }
                 try {
-                    _steps.echo "Hello from $name"
-                    //sleep time: 5, unit: 'SECONDS'
                     tasks.get(name).call()
-                    _steps.echo "Goodbye from $name"
                 }
                 finally {
                     // put something back into the queue to allow others to proceed
