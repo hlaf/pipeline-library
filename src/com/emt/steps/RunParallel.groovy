@@ -4,11 +4,11 @@ package com.emt.steps
 class RunParallel extends BaseStep {
     Object execute(Map params=[:]) {
         Map<String, Closure> tasks = params.tasks
+        int max_concurrent = params.n_workers
 
         def branches = [:]
 
         // setup a latch
-        int max_concurrent = 2
         def latch = new java.util.concurrent.LinkedBlockingDeque(max_concurrent)
         // put a number of items into the queue to allow that number of branches to run
         for (int i=0;i<max_concurrent;i++) {
