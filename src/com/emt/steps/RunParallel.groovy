@@ -19,15 +19,15 @@ class RunParallel extends BaseStep {
             branches[name] = {
                 def thing = null
                 // this will not allow proceeding until there is something in the queue.
-                waitUntil {
+                _steps.waitUntil {
                     thing = latch.pollFirst();
                     return thing != null;
                 }
                 try {
-                    echo "Hello from $name"
+                    _steps.echo "Hello from $name"
                     //sleep time: 5, unit: 'SECONDS'
                     tasks.get(name).call()
-                    echo "Goodbye from $name"
+                    _steps.echo "Goodbye from $name"
                 }
                 finally {
                     // put something back into the queue to allow others to proceed
@@ -35,8 +35,6 @@ class RunParallel extends BaseStep {
                 }
             }
         }
-        
         _steps.parallel(branches)
-
     }
 }
