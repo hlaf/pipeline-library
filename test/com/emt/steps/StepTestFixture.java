@@ -128,6 +128,8 @@ public abstract class StepTestFixture {
                     try {
                         if (type.equals(double.class)) {
                             type = Double.class;
+                        } else if (type.equals(int.class)) {
+                            type = Integer.class;
                         }
                         input_set.add(type.getConstructor(o.getClass()).newInstance(o));
                     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException

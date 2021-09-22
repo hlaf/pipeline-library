@@ -14,6 +14,7 @@ import groovy.lang.Closure;
 public class RunParallelTest extends StepTestFixture {
 
 	@Parameter Map<String, Closure> tasks;
+	@Parameter(values={"1", "2"}) int n_workers;
 
     public static Closure noop_closure = new Closure(null) {
         public Object call() { return 1234; }

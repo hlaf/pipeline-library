@@ -86,6 +86,10 @@ cobertura {
     coverageIncludes = ['.*com.emt.*']
     coverageFormats = ['html', 'xml']
     coverageIgnoreMethodAnnotations = ['com.emt.steps.CoverageIgnore']
+    coverageCheckHaltOnFailure = true
+    coverageCheckLineRate = 99
+    coverageCheckTotalLineRate = 99
+    coverageCheckTotalBranchRate = 99
 }
 
 // NOTE: Disable groovy optimizations to get more accurate Cobertura results
