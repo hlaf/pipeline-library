@@ -8,6 +8,7 @@ abstract class BaseStep implements Serializable {
 		_steps = executor
 	}
 
-	abstract Object execute(Map args=[:]);
+	//abstract Object execute(Map args=[:]);
+	abstract Object execute(Map args);
 
 }

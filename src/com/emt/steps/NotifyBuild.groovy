@@ -2,7 +2,7 @@ package com.emt.steps
 
 @groovy.transform.InheritConstructors
 class NotifyBuild extends BaseStep {
-	Object execute(Map params=[:]) {
+	Object execute(Map params) {
 		
 		String build_status = params.build_status
 	    String recipient_email = params.recipient_email

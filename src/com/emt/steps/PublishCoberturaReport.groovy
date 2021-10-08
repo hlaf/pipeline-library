@@ -2,7 +2,7 @@ package com.emt.steps
 
 @groovy.transform.InheritConstructors
 class PublishCoberturaReport extends BaseStep {
-	Object execute(Map parameters=[:]) {
+	Object execute(Map parameters) {
 		List results = parameters.get('results', [])
 		
 		// Publish the Cobertura test coverage report(s)

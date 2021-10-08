@@ -1,37 +1,28 @@
+plugins {
+  id 'groovy'
+  id 'java'
+  id 'jacoco'
+  id 'net.saliman.cobertura' version "4.0.0" apply false
+}
+
 group 'emt'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'groovy'
-apply plugin: 'java'
-
 def agent_archive = "test-agent.jar"
-
-buildscript {
-    repositories {
-        mavenCentral()
-        // The next repo is only needed while using SNAPSHOT versions
-        //maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-    }
-    dependencies {
-        classpath "net.saliman:gradle-cobertura-plugin:3.0.0"
-    }
-}
-apply plugin: 'net.saliman.cobertura'
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.jenkins-ci.org/releases/' }
 }
 
 dependencies {
-    // NOTE: Must stick to Groovy 2.0.8 as Cobertura cannot generate valid
-    // coverage reports for newer versions. More details at:
-    // https://github.com/cobertura/cobertura/issues/184
-    implementation 'org.codehaus.groovy:groovy-all:2.0.8'
+    implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
     implementation 'org.eclipse.hudson:hudson-core:3.2.1'
-    implementation 'com.cloudbees:groovy-cps:1.22'
+    implementation "com.cloudbees:groovy-cps:1.32@jar"
     testImplementation group: 'junit', name: 'junit', version: '4.13'
+    testImplementation 'org.spockframework:spock-core:1.3-groovy-2.4'
     testImplementation "org.mockito:mockito-core:2.+"
     testImplementation group: 'com.google.guava', name: 'guava', version: '23.5-jre'
     testImplementation 'net.bytebuddy:byte-buddy:LATEST'
@@ -49,7 +40,10 @@ sourceSets {
     }
     test {
         java {
-            srcDir 'test'
+            srcDirs = []
+        }
+        groovy {
+            srcDirs = ['test/src', 'test/vars']
         }
     }
 }
@@ -79,19 +73,56 @@ tasks.register('agentJar', Jar) {
 test {
     dependsOn 'agentJar'
 
+    systemProperty 'com.emt.use_cps', enable_cps.toBoolean()
+
     jvmArgs "-javaagent:$buildDir/libs/${agent_archive}"
+
+    if (use_jacoco.toBoolean()) {
+        finalizedBy jacocoTestReport
+    }
 }
 
-cobertura {
-    coverageIncludes = ['.*com.emt.*']
-    coverageFormats = ['html', 'xml']
-    coverageIgnoreMethodAnnotations = ['com.emt.steps.CoverageIgnore']
+if (use_cobertura.toBoolean()) {
+    apply plugin: 'net.saliman.cobertura' 
+
+    cobertura {
+        coverageIncludes = ['.*com.emt.*']
+        coverageFormats = ['html', 'xml']
+        coverageIgnoreMethodAnnotations = ['com.emt.common.CoverageIgnoreGenerated']
+    }
 }
 
-// NOTE: Disable groovy optimizations to get more accurate Cobertura results
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.enabled true
+        xml.destination file("${buildDir}/reports/jacoco/coverage.xml")
+        csv.enabled false
+        html.destination file("${buildDir}/reports/coverage")
+    }
+    
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, include: [
+                "com/emt/**"
+            ])
+        }))
+    }
+
+}
+
+compileGroovy {
+    if (enable_cps.toBoolean() == true) {
+        groovyOptions.configurationScript = file("config/groovyCompilerConfig.groovy")
+        //horrible no-good hack to add groovy-cps to groovyClasspath
+        groovyClasspath += sourceSets.main.compileClasspath
+    }
+}
+
+// NOTE: Disable groovy optimizations to get more accurate coverage results
 // See https://pbetkier.github.io/2014/08/07/groovy-code-coverage-issues.html
 gradle.taskGraph.whenReady { graph ->
-    if (graph.hasTask(':cobertura')) {
+    if (graph.hasTask(':cobertura') || graph.hasTask(':jacocoTestReport')) {
         compileGroovy.groovyOptions.optimizationOptions.all = false
     }
 }

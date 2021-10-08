@@ -5,7 +5,7 @@ import groovy.transform.InheritConstructors
 @groovy.transform.InheritConstructors
 class GetPackageVersion extends BaseStep {
 
-    Object execute(Map parameters=[:]) {
+    Object execute(Map parameters) {
 
         String version_file = parameters.version_file
         String version_key  = parameters.version_key ?: "__version__"

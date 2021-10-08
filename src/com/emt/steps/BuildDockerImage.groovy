@@ -4,7 +4,7 @@ import com.emt.common.MapUtils
 
 @groovy.transform.InheritConstructors
 class BuildDockerImage extends BaseStep {
-	Object execute(Map parameters=[:]) {
+	Object execute(Map parameters) {
 		Map config = MapUtils.merge(_steps.getPipelineConfig(), parameters)
 			
 		String image_name = config.image_name

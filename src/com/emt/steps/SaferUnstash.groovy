@@ -5,7 +5,7 @@ class SaferUnstash extends BaseStep {
 	
 	public static final String METADATA_FILE_NAME = "UNSTASH.meta";
 	
-	Object execute(Map parameters=[:]) {
+	Object execute(Map parameters) {
 		String key = parameters.key
 		String unstash_path = parameters.to
 		

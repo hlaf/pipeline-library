@@ -2,7 +2,7 @@ package com.emt.steps
 
 @groovy.transform.InheritConstructors
 class CheckoutFromGit extends BaseStep {
-	Object execute(Map args=[:]) {
+	Object execute(Map args) {
 
 		_steps.checkout([$class: 'GitSCM',
 			branches: [[name: "*/${args.branch}"]],

@@ -2,7 +2,7 @@ package com.emt.steps
 
 @groovy.transform.InheritConstructors
 class CreatePuppetDockerfile extends BaseStep {
-	Object execute(Map parameters=[:]) {
+	Object execute(Map parameters) {
 		
 		String image_name = parameters.image_name
 		String image_user = parameters.get('image_user', 'root')
