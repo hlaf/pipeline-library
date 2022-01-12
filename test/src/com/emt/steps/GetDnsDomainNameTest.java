@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.experimental.theories.FromDataPoints;
@@ -22,7 +23,7 @@ public class GetDnsDomainNameTest extends StepTestFixture {
     public void returnsValidDomain(@FromDataPoints("state") Map state) {
         assumeFalse(state.get("domain_name").toString().isEmpty());
     	when(_steps.sh(any(Map.class))).thenReturn(state.get("domain_name"));
-    	assert inst().execute().equals(state.get("domain_name"));
+    	assert execute(new HashMap<>()).equals(state.get("domain_name"));
     }
 
     @Theory
@@ -30,7 +31,7 @@ public class GetDnsDomainNameTest extends StepTestFixture {
         assumeTrue(state.get("domain_name").toString().isEmpty());
     	when(_steps.sh(any(Map.class))).thenReturn(state.get("domain_name"));
     	exception.expect(Exception.class);
-    	inst().execute();
+    	execute(new HashMap<>());
     	verify(_steps).error(anyString());
     }
 

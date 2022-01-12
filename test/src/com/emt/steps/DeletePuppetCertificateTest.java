@@ -29,7 +29,7 @@ public class DeletePuppetCertificateTest extends StepTestFixture {
 
     @Theory
     public void callsShWithCommand(@FromDataPoints("args") Map args) {
-         inst().execute(args);
+        execute(args);
         verify(_steps).sh(anyString());
     }
 

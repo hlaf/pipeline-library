@@ -23,7 +23,7 @@ public class DockerImageExistsTest extends StepTestFixture {
 
         when(_steps.sh(anyMap())).thenReturn((boolean)state.get("image_exists") ? 0 : 1);
 
-        boolean res = (boolean) inst().execute(args);
+        boolean res = (boolean) execute(args);
         verify(_steps).sh(any(Map.class));
         assert res == (boolean) state.get("image_exists");
     }

@@ -1,15 +1,13 @@
 package com.emt.common
 
-import com.emt.steps.CoverageIgnore
-
 class MapUtils implements Serializable {
 
-    @CoverageIgnore
+    @CoverageIgnoreGenerated
     static boolean isMap(object){
         return object in Map
     }
 
-    @CoverageIgnore
+    @CoverageIgnoreGenerated
     static Map merge(Map base, Map overlay) {
 
         Map result = [:]

@@ -1,8 +1,11 @@
 package com.emt
 
+import com.emt.common.CoverageIgnoreGenerated
+
 /**
  * Interface for calling any necessary Jenkins steps. This will be mocked in unit tests.
  */
+@CoverageIgnoreGenerated
 abstract class IStepExecutor {
 	
 	public IDockerNamespace docker
@@ -36,14 +39,15 @@ abstract class IStepExecutor {
 	abstract Object usernamePassword(Map);
 	Object withCredentials(List, Closure body) { return body() }
 	abstract void writeFile(Map);
+    @CoverageIgnoreGenerated
 	void writeJSON(Map) { throw new RuntimeException("Step requires approval") };
 
 	// TODO: Find a way to get rid of these declarations
-	abstract void deletePuppetCertificate(Map params=[:]);
+	abstract void deletePuppetCertificate(Map params);
 	abstract void echo(String);
 	abstract String getDnsDomainName();
 	abstract Map getPipelineConfig();
-	abstract String getPackageVersion(Map params=[:]);
+	abstract String getPackageVersion(Map params);
 	abstract boolean dockerImageExists(String name);
 	abstract void createPuppetDockerfile(Map params=[:]);
 	abstract Object initializeVirtualEnv(Map params=[:]);
@@ -56,8 +60,10 @@ abstract class IStepExecutor {
 	abstract String unstashCoverageResult(Map) throws hudson.AbortException;
     abstract void writeAsJson(Map);
 	abstract void publishJUnitReport();
+
 }
 
+@CoverageIgnoreGenerated
 abstract class ICurrentBuildNamespace {
 	abstract List<String> getBuildCauses(String cause);
 	abstract Object getPreviousBuild();

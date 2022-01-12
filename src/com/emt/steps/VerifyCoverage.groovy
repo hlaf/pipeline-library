@@ -3,6 +3,8 @@ package com.emt.steps
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
 
+import com.emt.common.CoverageIgnoreGenerated
+
 import hudson.model.Result
 
 @groovy.transform.InheritConstructors
@@ -10,7 +12,7 @@ class VerifyCoverage extends BaseStep {
 	
 	public static final double DEFAULT_BASELINE = 0.85
 	
-	Object execute(Map parameters=[:]) {
+	Object execute(Map parameters) {
 		
 		String key = parameters.key ?: ''
 		
@@ -59,7 +61,7 @@ class VerifyCoverage extends BaseStep {
 		}
 	}
 	
-	@CoverageIgnore
+	@CoverageIgnoreGenerated
 	//@NonCPS
 	def getLatestSuccessfulBuildWithArtifacts(context) {
 		def b = context.currentBuild
@@ -72,7 +74,7 @@ class VerifyCoverage extends BaseStep {
 		return null;
 	}
 	
-	@CoverageIgnore
+	@CoverageIgnoreGenerated
 	def parseCoverageXml(context, String xml_path) {
 		context.echo "Reading ${xml_path}"
 		def xml_text = context.readFile xml_path

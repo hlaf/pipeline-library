@@ -19,7 +19,7 @@ public class CheckoutFromGitTest extends StepTestFixture {
 
     @Theory
     public void callsCheckout(@FromDataPoints("args") Map args) {
-        inst().execute(args);
+        execute(args);
         verify(_steps).checkout(any(Map.class));
     }
 

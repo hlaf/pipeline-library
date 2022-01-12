@@ -57,7 +57,7 @@ public class FileChangedTest extends StepTestFixture {
         Set<String> c_set = (Set<String>) state.get("change_set");
         assumeTrue(c_set.contains(args.get("name")));
         _steps.currentBuild.changeSets.add(buildChangeLogSet(c_set));
-        assertTrue(inst().execute(args).equals(true));
+        assertTrue(execute(args).equals(true));
     }
 
     @Theory
@@ -66,7 +66,7 @@ public class FileChangedTest extends StepTestFixture {
         Set<String> c_set = (Set<String>) state.get("change_set");
         assumeFalse(c_set.contains(args.get("name")));
         _steps.currentBuild.changeSets.add(buildChangeLogSet(c_set));
-        assertTrue(inst().execute(args).equals(false));
+        assertTrue(execute(args).equals(false));
     }
 
     @Theory
@@ -75,7 +75,7 @@ public class FileChangedTest extends StepTestFixture {
         Set<String> c_set = (Set<String>) state.get("change_set");
         assumeTrue(c_set.isEmpty());
         _steps.currentBuild.changeSets.add(buildChangeLogSet(c_set));
-        assertTrue(inst().execute(args).equals(false));
+        assertTrue(execute(args).equals(false));
     }
 
     private static ChangeLogSet buildChangeLogSet(Collection<String> file_paths) {

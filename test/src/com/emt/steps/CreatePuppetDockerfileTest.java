@@ -21,7 +21,7 @@ public class CreatePuppetDockerfileTest extends StepTestFixture {
     @Theory
     public void callsShWithCommand(@FromDataPoints("args") Map args) {
     	_steps.env.put("WORKSPACE", "/dummy/path/to/workspace");
-        inst().execute(args);
+        execute(args);
         verify(_steps).sh(anyString());
     }
 

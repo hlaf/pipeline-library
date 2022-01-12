@@ -34,7 +34,7 @@ public class BumpPackageVersionTest extends StepTestFixture {
     public void runsWithoutErrors(@FromDataPoints("args") Map args) {
     	String bumped_version = "1.1.0";
     	doReturn(bumped_version).when(_steps).sh(any(Map.class));
-    	inst().execute(args);
+    	execute(args);
     	
     	ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
     	verify(_steps).setPackageVersion(captor.capture());
