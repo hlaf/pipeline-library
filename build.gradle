@@ -79,6 +79,7 @@ test {
     dependsOn 'agentJar'
 
     systemProperty 'com.emt.use_cps', enable_cps.toBoolean()
+    systemProperty 'com.emt.unit_testing_enabled', true
 
     jvmArgs "-javaagent:$buildDir/libs/${agent_archive}"
 

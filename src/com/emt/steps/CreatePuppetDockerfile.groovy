@@ -2,14 +2,12 @@ package com.emt.steps
 
 @groovy.transform.InheritConstructors
 class CreatePuppetDockerfile extends BaseStep {
+
+    def required_parameters = ["image_name"]
+
     Object execute(Map parameters=[:]) {
-        def required_parameters = ["image_name"]
-        for (p_name in required_parameters) {
-            if (!parameters.containsKey(p_name)) {
-                throw new Exception(
-                        "The parameter '${p_name}' is mandatory");
-            }
-        }
+        validateParameters(parameters)
+
         String image_name = parameters.image_name
         String image_user = parameters.get('image_user', 'root')
         String environment = parameters.get('environment', 'production')

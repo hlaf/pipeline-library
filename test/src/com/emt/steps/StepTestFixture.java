@@ -46,6 +46,7 @@ public abstract class StepTestFixture {
     protected IStepExecutor _steps;
     protected boolean _executed = false;
     protected Map _state, _args;
+    private boolean _called_error = false;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -208,7 +209,10 @@ public abstract class StepTestFixture {
             if (use_cps) {
                 return _executeCps(args);
             } else {
-                return inst().execute(args);
+                BaseStep inst = inst();
+                Object res = inst.execute(args);
+                _called_error = inst._called_error;
+                return res;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -220,7 +224,10 @@ public abstract class StepTestFixture {
 
     private final Object _executeCps(Map args) {
         try {
-            return CPSUtils.invokeCPSMethod(inst(), "execute", args);
+            BaseStep inst = inst();
+            Object res = CPSUtils.invokeCPSMethod(inst, "execute", args);
+            _called_error = inst._called_error;
+            return res;
         } catch (InvalidCPSInvocation e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -289,6 +296,10 @@ public abstract class StepTestFixture {
 
     private static boolean hasMethod(Class klass, String method_name) {
         return getMethod(klass, method_name) != null;
+    }
+
+    protected final boolean error_was_called() {
+        return _called_error;
     }
 
 }

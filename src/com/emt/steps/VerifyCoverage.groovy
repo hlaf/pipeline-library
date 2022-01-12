@@ -54,11 +54,11 @@ class VerifyCoverage extends BaseStep {
 		// Fail the job if coverage decreases
 		if (branch_rate_new < branch_rate_old || line_rate_new < line_rate_old) {
 			if (previous_build != null) {
-				_steps.error "Code coverage decreased from build ${previous_build.number} to build ${_steps.env.BUILD_NUMBER}"
-			} else {
-				_steps.error "Code coverage is too low"
+				return error_helper("Code coverage decreased from build ${previous_build.number} to build ${_steps.env.BUILD_NUMBER}")
 			}
+			return error_helper("Code coverage is too low")
 		}
+        return
 	}
 	
 	@CoverageIgnoreGenerated

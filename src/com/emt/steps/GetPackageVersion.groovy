@@ -18,7 +18,7 @@ class GetPackageVersion extends BaseStep {
         def pattern = /${version_key}\s*=\s*[\'\"]?(\d+(\.\d+)*)[\'\"]?.*/
         def matcher = content =~ pattern
         if (matcher.size() == 0) {
-            _steps.error("Couldn't find version information")
+            return error_helper("Couldn't find version information")
         }
         String version = matcher[0][1]
         return version

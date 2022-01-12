@@ -19,14 +19,14 @@ class SaferUnstash extends BaseStep {
 
                 def props = _steps.readJSON file: unstash_metadata_file
                 if (props.stash_name != key) {
-                    _steps.error "Location '${unstash_path}' contains data for stash '${props.stash_name}'"
-                } else if (props.build_number == _steps.env.BUILD_NUMBER) {
-                    return
-                } else {
-                    _steps.error "Location '${unstash_path}' contains data from a prior build"
+                    return error_helper("Location '${unstash_path}' contains data for stash '${props.stash_name}'")
                 }
+                if (props.build_number == _steps.env.BUILD_NUMBER) {
+                    return
+                }
+                return error_helper("Location '${unstash_path}' contains data from a prior build")
             }
-            _steps.error "Unstash location already exists: '${unstash_path}'"
+            return error_helper("Unstash location already exists: '${unstash_path}'")
         }
 
         _steps.dir(unstash_path) { _steps.unstash key }

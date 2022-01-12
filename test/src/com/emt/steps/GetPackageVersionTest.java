@@ -45,8 +45,8 @@ public class GetPackageVersionTest extends StepTestFixture {
     	
     	doReturn(getFileContent(state)).when(_steps).readFile(args.get("version_file"));
     	
-    	exception.expect(Exception.class);
     	execute(args);
+    	assertTrue(error_was_called());
     }
     
     @Theory
@@ -56,8 +56,8 @@ public class GetPackageVersionTest extends StepTestFixture {
     	
     	doReturn(getFileContent(state)).when(_steps).readFile(args.get("version_file"));
     	
-    	exception.expect(Exception.class);
     	execute(args);
+    	assertTrue(error_was_called());
     }
 
 }

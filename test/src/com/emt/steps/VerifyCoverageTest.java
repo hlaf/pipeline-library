@@ -1,5 +1,6 @@
 package com.emt.steps;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -83,10 +84,9 @@ public class VerifyCoverageTest extends StepTestFixture {
 		assumeTrue(previousBuildExists(state) && coverageDecreased(state));
     	commonSetup(args, state);
 
-    	exception.expect(RuntimeException.class);
     	execute(args);
-    	
-    	verify(_steps).error(anyString());
+
+    	assertTrue(error_was_called());
     }
 
 	@Theory
@@ -112,10 +112,9 @@ public class VerifyCoverageTest extends StepTestFixture {
                                               @FromDataPoints("state") Map state) {
 		assumeTrue(!previousBuildExists(state) && coverageDecreased(state));
 		commonSetup(args, state);
-		exception.expect(RuntimeException.class);
-		
+
 		execute(args);
-		
-		verify(_steps).error(anyString());
+
+		assertTrue(error_was_called());
 	}
 }

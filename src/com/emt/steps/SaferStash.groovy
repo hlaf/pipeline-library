@@ -8,7 +8,7 @@ class SaferStash extends BaseStep {
     Object execute(Map parameters=[:]) {
         validateParameters(parameters)
         if (_steps.stashExists(parameters.name)) {
-            _steps.error "The stash '${parameters.name}' already exists"
+            return error_helper("The stash '${parameters.name}' already exists")
         }
         _steps.stash name: parameters.name, includes: parameters.includes
     }

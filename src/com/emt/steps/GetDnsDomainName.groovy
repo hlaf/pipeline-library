@@ -6,11 +6,10 @@ class GetDnsDomainName extends BaseStep {
 		def domain_name
 		_steps.node ('linux') {
 			domain_name = _steps.sh(script: 'dnsdomainname', returnStdout: true).trim()
-			if (!domain_name) {
-			  _steps.error "Could not determine the DNS domain name"
-			}
 		}
-
+		if (!domain_name) {
+		  return error_helper("Could not determine the DNS domain name")
+		}
 		return domain_name
 	}
 }

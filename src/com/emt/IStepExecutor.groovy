@@ -20,7 +20,7 @@ abstract class IStepExecutor {
     Object dir(String path, Closure body) { return body() };
     abstract void echo(String message)
     abstract void emailext(Map);
-    void error(String message) { throw new RuntimeException(message); }
+    abstract void error(String message);
 	abstract boolean fileExists(String file_path);
 	abstract boolean isUnix();
 	abstract void junit(Map);

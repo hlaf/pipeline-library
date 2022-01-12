@@ -1,5 +1,6 @@
 package com.emt.steps;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,9 +30,6 @@ public class SaferStashTest extends StepTestFixture {
 	
 	private void commonSetup(Map args, Map state) {
 		when(_steps.stashExists(anyString())).thenReturn((boolean)state.get("StashExists"));
-		if ((boolean)state.get("StashExists")) {
-			exception.expect(Exception.class);
-		}
 	}
 
 	@Theory
@@ -49,6 +47,7 @@ public class SaferStashTest extends StepTestFixture {
 		assumeTrue((boolean)state.get("StashExists"));
 		commonSetup(args, state);
     	execute(args);
+    	assertTrue(error_was_called());
     }
 
 }
