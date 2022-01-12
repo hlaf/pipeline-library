@@ -7,9 +7,11 @@ class InitializeVirtualEnv extends BaseStep {
 
     private final static String venv_name = 'master_venv'
 
-    Object execute(Map params=[:]) {
+    def required_parameters = []
 
-        Map config = MapUtils.merge(_steps.getPipelineConfig(), params)
+    Object execute(Map parameters=[:]) {
+        Map config = MapUtils.merge(_steps.getPipelineConfig(), parameters)
+        validateParameters(config)
 
         if (_steps.fileExists(venv_name)) {
             return;

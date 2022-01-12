@@ -4,9 +4,12 @@ import com.emt.common.MapUtils
 
 @groovy.transform.InheritConstructors
 class BuildDockerImage extends BaseStep {
-	Object execute(Map parameters) {
+    
+    def required_parameters = ["image_name"]
+    
+	Object execute(Map parameters=[:]) {
 		Map config = MapUtils.merge(_steps.getPipelineConfig(), parameters)
-			
+        validateParameters(config)
 		String image_name = config.image_name
 		String image_user = config.image_user ?: 'root'
 		String manager_node = config.manager_node ?: 'puppet_management_node'
