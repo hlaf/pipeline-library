@@ -5,10 +5,15 @@ plugins {
   id 'net.saliman.cobertura' version "4.0.0" apply false
 }
 
+jacoco {
+  toolVersion = "0.8.7"
+}
+
 group 'emt'
 version '1.0-SNAPSHOT'
 
 def agent_archive = "test-agent.jar"
+def minimum_coverage = 0.89
 
 sourceCompatibility = 1.8
 
@@ -119,7 +124,7 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'LINE'
                 value   = 'COVEREDRATIO'
-                minimum = 0.95
+                minimum = minimum_coverage
             }
         }
     }
