@@ -109,7 +109,24 @@ jacocoTestReport {
         }))
     }
 
+    finalizedBy jacocoTestCoverageVerification
+
 }
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value   = 'COVEREDRATIO'
+                minimum = 0.95
+            }
+        }
+    }
+}
+
+// to run coverage verification during the build (and fail when appropriate)
+jacocoTestCoverageVerification.dependsOn jacocoTestReport
 
 compileGroovy {
     if (enable_cps.toBoolean() == true) {
