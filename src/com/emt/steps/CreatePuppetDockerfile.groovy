@@ -1,14 +1,12 @@
 package com.emt.steps
 
-import com.emt.common.MissingArgumentException
-
 @groovy.transform.InheritConstructors
 class CreatePuppetDockerfile extends BaseStep {
     Object execute(Map parameters=[:]) {
         def required_parameters = ["image_name"]
         for (p_name in required_parameters) {
             if (!parameters.containsKey(p_name)) {
-                throw new MissingArgumentException(
+                throw new Exception(
                         "The parameter '${p_name}' is mandatory");
             }
         }

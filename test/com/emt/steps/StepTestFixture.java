@@ -28,7 +28,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import com.emt.IStepExecutor;
-import com.emt.common.MissingArgumentException;
 import com.emt.ioc.IContext;
 import com.emt.util.Parameter;
 import com.emt.util.StateVar;
@@ -329,7 +328,8 @@ public abstract class StepTestFixture {
     @Theory
     public void testRequiredParameters(@FromDataPoints("missing_args") Map<String, Object> args) {
         if (!isEmptyArgSet(args)) {
-            exception.expect(MissingArgumentException.class);
+            exception.expect(Exception.class);
+            exception.expectMessage("TODO: Some message");
             execute(args);
         }
     }
