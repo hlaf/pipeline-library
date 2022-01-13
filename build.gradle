@@ -6,14 +6,18 @@ plugins {
 }
 
 jacoco {
-  toolVersion = "0.8.7"
+  toolVersion = jacoco_version
 }
 
 group 'emt'
 version '1.0-SNAPSHOT'
 
 def agent_archive = "test-agent.jar"
-def minimum_coverage = 0.89
+
+// Coverage settings
+def minimum_instruction_coverage = 0.99
+def minimum_branch_coverage = 0.98
+def coverage_include_classes = "com/emt/**"
 
 sourceCompatibility = 1.8
 
@@ -110,7 +114,7 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, include: [
-                "com/emt/**"
+                coverage_include_classes
             ])
         }))
     }
@@ -123,12 +127,32 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                counter = 'LINE'
+                counter = 'INSTRUCTION'
                 value   = 'COVEREDRATIO'
-                minimum = minimum_coverage
+                minimum = minimum_instruction_coverage
             }
+            limit {
+                counter = 'BRANCH'
+                value   = 'COVEREDRATIO'
+                minimum = minimum_branch_coverage
+            }
+            // JaCoCo isn't very reliable at reporting line coverage
+            //limit { 
+            //    counter = 'LINE'
+            //    value   = 'COVEREDRATIO'
+            //    minimum = 1.0
+            //}
         }
     }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, include: [
+                coverage_include_classes
+            ])
+        }))
+    }
+
 }
 
 // to run coverage verification during the build (and fail when appropriate)
