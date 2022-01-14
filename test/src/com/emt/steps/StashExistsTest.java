@@ -23,7 +23,7 @@ public class StashExistsTest extends StepTestFixture {
 
 	@StateVar boolean StashExists;
 	
-	private void commonSetup(Map args, Map state) {
+	protected void commonSetup(Map args, Map state) {
 		if ((boolean)state.get("StashExists") == false) {
 			try {
 				doThrow(hudson.AbortException.class).when(_steps).unstash(any(Map.class));

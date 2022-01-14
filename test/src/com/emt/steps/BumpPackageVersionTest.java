@@ -23,19 +23,21 @@ public class BumpPackageVersionTest extends StepTestFixture {
 	@Parameter(values="some_author") String author;
 	@Parameter(values="some_author@some_domain.com") String author_email;
 	
+	String bumped_version = "1.1.0";
+	
 	@Before
     public void setup() {
     	super.setup();
     	_steps.env = new HashMap<>();
     	_steps.env.put("JOB_NAME", "dummy_job");
+
+    	doReturn(bumped_version).when(_steps).sh(any(Map.class));
     }
 
     @Theory
     public void runsWithoutErrors(@FromDataPoints("args") Map args) {
-    	String bumped_version = "1.1.0";
-    	doReturn(bumped_version).when(_steps).sh(any(Map.class));
     	execute(args);
-    	
+
     	ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
     	verify(_steps).setPackageVersion(captor.capture());
     	assertTrue(captor.getValue().get("version").equals(bumped_version));    	

@@ -14,7 +14,7 @@ abstract class BaseStep implements Serializable {
     abstract Object execute(Map args=[:]);
 
     protected final void validateParameters(Map parameters) {
-        ValidationHelper.validateParameters(parameters, required_parameters);
+        ValidationHelper.validateParameters(this, parameters);
     }
 
     protected final Object error_helper(String message) {
@@ -35,12 +35,11 @@ class ErrorHelper {
 
 @CoverageIgnoreGenerated
 class ValidationHelper {
-  protected static void validateParameters(Map parameters,
-                                           Object required_parameters) {
-      for (p_name in required_parameters) {
+  protected static void validateParameters(BaseStep step,
+                                           Map parameters) {
+      for (p_name in step.required_parameters) {
           if (!parameters.containsKey(p_name)) {
-              throw new Exception(
-              "The parameter '${p_name}' is mandatory");
+              throw new RuntimeException("The parameter '${p_name}' is mandatory");
           }
       }
   }

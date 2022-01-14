@@ -35,6 +35,8 @@ public class VerifyCoverageTest extends StepTestFixture {
 	@StateVar(values = {"0.1", "1.0"}) double BranchRate;
 	@StateVar(values = {"0.1", "1.0"}) double LineRate;
 	
+    private Map _state, _args;
+	
     public static Object[] PreviousBuild_values() {
     	Map previous_build1 = new HashMap();
 		previous_build1.put("number", "123");
@@ -47,7 +49,7 @@ public class VerifyCoverageTest extends StepTestFixture {
     	_steps.currentBuild = mock(ICurrentBuildNamespace.class);
     }
 
-	private void commonSetup(Map args, Map state) {
+	protected void commonSetup(Map args, Map state) {
 		_args = args;
 		_state = state;
 	}

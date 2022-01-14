@@ -15,7 +15,8 @@ import com.emt.util.Parameter;
 
 public class PublishJUnitReportTest extends StepTestFixture {
 
-    @Parameter(values={"**/some_pattern.xml"}) String test_results;
+    @Parameter(values={"**/some_pattern.xml"}, optional=true)
+    String test_results;
 
     @Theory
     public void callsJunit(@FromDataPoints("args") Map args) {

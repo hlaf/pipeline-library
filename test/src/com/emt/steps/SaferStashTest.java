@@ -28,7 +28,7 @@ public class SaferStashTest extends StepTestFixture {
 	
 	@StateVar boolean StashExists;
 	
-	private void commonSetup(Map args, Map state) {
+	protected void commonSetup(Map args, Map state) {
 		when(_steps.stashExists(anyString())).thenReturn((boolean)state.get("StashExists"));
 	}
 

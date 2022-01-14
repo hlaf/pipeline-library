@@ -24,7 +24,7 @@ public class RunTestsTest extends StepTestFixture {
 	@StateVar boolean IsUnix;
 	@StateVar boolean ComputeCoverage;
 	
-	private void commonSetup(Map args, Map state) {
+	protected void commonSetup(Map args, Map state) {
 		when(_steps.isUnix()).thenReturn((boolean)state.get("IsUnix"));
 		Map config = new HashMap<>();
 		config.put("compute_coverage", (boolean) state.get("ComputeCoverage"));

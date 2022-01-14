@@ -24,7 +24,7 @@ import hudson.AbortException;
 
 public class PublishCoberturaReportTest extends StepTestFixture {
 
-	@Parameter List<String> results;
+	@Parameter(optional = true) List<String> results;
 
 	@StateVar boolean StashExists;
 
@@ -33,7 +33,7 @@ public class PublishCoberturaReportTest extends StepTestFixture {
         		             Arrays.asList("unit", "integration")};
     }
 	
-	private void commonSetup(Map args, Map state) {
+	protected void commonSetup(Map args, Map state) {
 		if ((boolean)state.get("StashExists")) {
 			try {
 				when(_steps.unstashCoverageResult(any(Map.class))).thenThrow(AbortException.class);

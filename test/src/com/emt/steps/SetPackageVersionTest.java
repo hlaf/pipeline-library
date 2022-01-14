@@ -32,6 +32,10 @@ public class SetPackageVersionTest extends StepTestFixture {
 	@StateVar(values={"1.0.0", "10.11.12"}) String file_version_value;
 	@StateVar boolean file_contains_version_info;
 	
+	protected void commonSetup(Map args, Map state) {
+    	doReturn(getFileContent(state)).when(_steps).readFile(args.get("version_file"));
+	}
+	
     @Theory
     public void setVersionSucceeds(@FromDataPoints("args") Map args,
     		                       @FromDataPoints("state") Map state) {
@@ -40,8 +44,8 @@ public class SetPackageVersionTest extends StepTestFixture {
    
     	String initial_content = getFileContent(state);
     	assertFalse(initial_content.contains((String) args.get("version")));
-    	doReturn(initial_content).when(_steps).readFile(args.get("version_file"));
-    	    	
+
+    	commonSetup(args, state);	
     	execute(args);
     	ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
     	verify(_steps).writeFile(captor.capture());
@@ -55,9 +59,8 @@ public class SetPackageVersionTest extends StepTestFixture {
     		                                @FromDataPoints("state") Map state) {
     	assumeFalse((boolean)state.get("file_contains_version_info"));
     	
-    	doReturn(getFileContent(state)).when(_steps).readFile(args.get("version_file"));
-    	
     	exception.expect(Exception.class);
+    	commonSetup(args, state);	
     	execute(args);
     }
 

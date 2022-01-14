@@ -34,7 +34,7 @@ public class SaferUnstashTest extends StepTestFixture {
 	@StateVar(values={"1", "2"}) String metadata_build_number;
 	@StateVar(values={"1", "2"}) String build_number;
 	
-	private void commonSetup(Map args, Map state) {
+	protected void commonSetup(Map args, Map state) {
 		when(_steps.fileExists((String)args.get("to"))).thenReturn((boolean)state.get("UnstashPathExists"));
     	when(_steps.fileExists(endsWith(SaferUnstash.METADATA_FILE_NAME))).thenReturn((boolean)state.get("MetadataExists"));
 		_steps.env.put("BUILD_NUMBER", state.get("build_number").toString());

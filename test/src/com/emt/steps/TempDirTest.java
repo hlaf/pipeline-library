@@ -34,7 +34,7 @@ public class TempDirTest extends StepTestFixture {
     	return new Object[] { noop_closure, throwing_closure };
     }
 
-	private void commonSetup(Map args) {
+    protected void commonSetup(Map args, Map state) {
 		if (closureThrows((Closure)args.get("body"))) {
 			exception.expect(RuntimeException.class);
 		}

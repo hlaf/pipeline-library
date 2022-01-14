@@ -25,7 +25,7 @@ public class InitializeVirtualEnvTest extends StepTestFixture {
     @StateVar boolean VenvExists;
     @StateVar boolean ModulesCommandAvailable;
 
-    private void commonSetup(Map args, Map state) {
+    protected void commonSetup(Map args, Map state) {
         when(_steps.fileExists(anyString())).thenReturn((boolean)state.get("VenvExists"));
         when(_steps.sh(any(Map.class))).thenReturn((boolean)state.get("ModulesCommandAvailable") ? 0:1);
     }
