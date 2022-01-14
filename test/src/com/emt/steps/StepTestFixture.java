@@ -309,31 +309,33 @@ public abstract class StepTestFixture {
     protected final Object execute(Map args) {
         boolean use_cps = Boolean.getBoolean("com.emt.use_cps");
         try {
+            BaseStep inst = inst();
+            Object res;
             if (use_cps) {
-                return _executeCps(args);
+                res = _executeCps(inst, args);
             } else {
-                BaseStep inst = inst();
-                Object res = inst.execute(args);
-                _called_error = inst._called_error;
-                _executed_successfully = !_called_error;
-                return res;
+                res = _executeNonCps(inst, args);
             }
+            _called_error = inst._called_error;
+            _executed_successfully = !_called_error;
+            return res;
         } catch (Exception e) {
             _executed_successfully = false;
             e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
+    
+    private final Object _executeNonCps(BaseStep inst, Map args) {
+        Object res = inst.execute(args);
+        return res;
+    }
 
-    private final Object _executeCps(Map args) {
+    private final Object _executeCps(BaseStep inst, Map args) {
         try {
-            BaseStep inst = inst();
             Object res = CPSUtils.invokeCPSMethod(inst, "execute", args);
-            _called_error = inst._called_error;
-            _executed_successfully = !_called_error;
             return res;
         } catch (InvalidCPSInvocation e) {
-            _executed_successfully = false;
             e.printStackTrace();
             throw new RuntimeException(e);
         }
