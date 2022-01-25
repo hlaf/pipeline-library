@@ -31,9 +31,6 @@ class DeletePuppetCertificate extends BaseStep {
         _steps.node(manager_node) {
 			_steps.sh """
 			curl -sS -f --insecure --cert ${ssl_cert_path} --key ${ssl_cert_key} \
-			     -d '{\"desired_state\":\"revoked\"}' -H 'Content-Type: text/pson' \
-			     -X PUT https://${master}:8140/${environment}/certificate_status/${certificate_name} && \
-			curl -sS -f --insecure --cert ${ssl_cert_path} --key ${ssl_cert_key} \
 			     -X DELETE https://${master}:8140/${environment}/certificate_status/${certificate_name}
 			"""
 		}
