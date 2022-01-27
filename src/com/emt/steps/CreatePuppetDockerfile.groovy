@@ -24,7 +24,7 @@ class CreatePuppetDockerfile extends BaseStep {
         gem install librarian-puppet --no-ri --no-rdoc
         cat <<EOF > Puppetfile
 mod 'nwolfe-image_build',    :git => 'https://github.com/hlaf/puppetlabs-image_build.git',
-                             :ref => 'v0.10.0_ruby18_compat-6'
+                             :ref => 'v0.10.0_ruby18_compat-8'
 EOF
         librarian-puppet install
         puppet docker dockerfile --master ${master} \
