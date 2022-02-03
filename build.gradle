@@ -87,10 +87,6 @@ test {
     }
 
     jvmArgs "-javaagent:$buildDir/libs/${agent_archive}"
-
-    if (use_jacoco.toBoolean()) {
-        finalizedBy jacocoTestReport
-    }
 }
 
 if (use_cobertura.toBoolean()) {
