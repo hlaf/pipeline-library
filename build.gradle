@@ -62,7 +62,7 @@ tasks.register('agentJar', Jar) {
     
     dependsOn 'compileTestJava', 'compileTestGroovy'
     
-    archiveName = agent_archive
+    archiveFileName = agent_archive
 
     from(['build/classes/java/test/com/emt/util/TestInstrumentationAgent.class'])
 
