@@ -31,7 +31,7 @@ node('docker-slave') {
       def target = 'jacocoTestReport'
       sh """
       chmod +x gradlew
-      ./gradlew ${target} -Puse_cobertura=false
+      ./gradlew ${target}
       """
     } finally {
       junit keepLongStdio: true, testResults: '**/build/test-results/test/TEST-*.xml'
@@ -65,7 +65,7 @@ node('docker-slave') {
       def target = 'cobertura'
       sh """
       chmod +x gradlew
-      ./gradlew ${target} -Puse_cobertura=true
+      ./gradlew ${target}
       """
     } finally {
       junit keepLongStdio: true, testResults: '**/build/test-results/test/TEST-*.xml'

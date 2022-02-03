@@ -2,11 +2,7 @@ plugins {
   id 'groovy'
   id 'java'
   id 'jacoco'
-  id 'net.saliman.cobertura' version "4.0.0" apply false
-}
-
-jacoco {
-  toolVersion = jacoco_version
+  id 'net.saliman.cobertura' version '4.0.0'
 }
 
 group 'emt'
@@ -78,6 +74,17 @@ tasks.register('agentJar', Jar) {
 
 }
 
+compileGroovy {
+	doFirst {
+		if (enable_cps) {
+			println 'Compiling Groovy with CPS'
+			groovyOptions.configurationScript = file("config/groovyCompilerConfig.groovy")
+			//horrible no-good hack to add groovy-cps to groovyClasspath
+			groovyClasspath += sourceSets.main.compileClasspath
+		}
+	}
+}
+
 test {
     dependsOn 'agentJar'
 
@@ -89,14 +96,15 @@ test {
     jvmArgs "-javaagent:$buildDir/libs/${agent_archive}"
 }
 
-if (use_cobertura.toBoolean()) {
-    apply plugin: 'net.saliman.cobertura' 
 
-    cobertura {
-        coverageIncludes = ['.*com.emt.*']
-        coverageFormats = ['html', 'xml']
-        coverageIgnoreMethodAnnotations = ['com.emt.common.CoverageIgnoreGenerated']
-    }
+cobertura {
+    coverageIncludes = ['.*com.emt.*']
+    coverageFormats = ['html', 'xml']
+    coverageIgnoreMethodAnnotations = ['com.emt.common.CoverageIgnoreGenerated']
+}
+
+jacoco {
+    toolVersion = jacoco_version
 }
 
 jacocoTestReport {
@@ -154,17 +162,6 @@ jacocoTestCoverageVerification {
 
 // to run coverage verification during the build (and fail when appropriate)
 jacocoTestCoverageVerification.dependsOn jacocoTestReport
-
-compileGroovy {
-    doFirst {
-        if (enable_cps) {
-            println 'Compiling Groovy with CPS'
-            groovyOptions.configurationScript = file("config/groovyCompilerConfig.groovy")
-            //horrible no-good hack to add groovy-cps to groovyClasspath
-            groovyClasspath += sourceSets.main.compileClasspath
-        }
-    }
-}
 
 // NOTE: Disable groovy optimizations to get more accurate coverage results
 // See https://pbetkier.github.io/2014/08/07/groovy-code-coverage-issues.html
