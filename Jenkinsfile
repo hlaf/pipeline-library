@@ -19,7 +19,7 @@ node('docker-slave') {
       def target = 'test'
       sh """
       chmod +x gradlew
-      ./gradlew ${target} -Penable_cps=true
+      ./gradlew ${target}
       """
     } finally {
       junit keepLongStdio: true, testResults: '**/build/test-results/test/TEST-*.xml'

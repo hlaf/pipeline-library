@@ -82,8 +82,10 @@ tasks.register('agentJar', Jar) {
 test {
     dependsOn 'agentJar'
 
-    systemProperty 'com.emt.use_cps', enable_cps.toBoolean()
-    systemProperty 'com.emt.unit_testing_enabled', true
+    doFirst {
+        systemProperty 'com.emt.use_cps', enable_cps
+        systemProperty 'com.emt.unit_testing_enabled', true
+    }
 
     jvmArgs "-javaagent:$buildDir/libs/${agent_archive}"
 
@@ -159,10 +161,13 @@ jacocoTestCoverageVerification {
 jacocoTestCoverageVerification.dependsOn jacocoTestReport
 
 compileGroovy {
-    if (enable_cps.toBoolean() == true) {
-        groovyOptions.configurationScript = file("config/groovyCompilerConfig.groovy")
-        //horrible no-good hack to add groovy-cps to groovyClasspath
-        groovyClasspath += sourceSets.main.compileClasspath
+    doFirst {
+        if (enable_cps) {
+            println 'Compiling Groovy with CPS'
+            groovyOptions.configurationScript = file("config/groovyCompilerConfig.groovy")
+            //horrible no-good hack to add groovy-cps to groovyClasspath
+            groovyClasspath += sourceSets.main.compileClasspath
+        }
     }
 }
 
@@ -171,5 +176,9 @@ compileGroovy {
 gradle.taskGraph.whenReady { graph ->
     if (graph.hasTask(':cobertura') || graph.hasTask(':jacocoTestReport')) {
         compileGroovy.groovyOptions.optimizationOptions.all = false
+        project.ext.enable_cps = false
+    } else if (graph.hasTask(test)) {
+        println 'Enabling CPS'
+        project.ext.enable_cps = true
     }
 }
