@@ -39,7 +39,9 @@ class ValidationHelper {
                                            Map parameters) {
       for (p_name in step.required_parameters) {
           if (!parameters.containsKey(p_name)) {
-              throw new RuntimeException("The parameter '${p_name}' is mandatory");
+			  Throwable e = new RuntimeException("The parameter '${p_name}' is mandatory");
+			  e.setStackTrace(new StackTraceElement[0]);
+              throw e;
           }
       }
   }
