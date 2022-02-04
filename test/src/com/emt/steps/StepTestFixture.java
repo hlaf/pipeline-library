@@ -383,8 +383,8 @@ public abstract class StepTestFixture {
     protected final boolean error_was_called() {
         return _called_error;
     }
-    
-    private Matcher<String> matchesRegex(final String regex) {
+ 
+    protected Matcher<String> matchesRegex(final String regex) {
         return new TypeSafeMatcher<String>() {
           @Override
           protected boolean matchesSafely(final String item) {

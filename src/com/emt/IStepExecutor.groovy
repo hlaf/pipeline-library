@@ -33,6 +33,7 @@ abstract class IStepExecutor {
 	abstract specific(String);
 	Object sshagent(List list, Closure body) { return body() }
 	abstract void step(Map);
+    abstract Object string(Map);
 	Object tempDir(Closure body) { return body() }
 	abstract void unstash(String stash_name);
 	abstract void unstash(Map) throws hudson.AbortException;
@@ -51,6 +52,7 @@ abstract class IStepExecutor {
 	abstract boolean dockerImageExists(String name);
 	abstract void createPuppetDockerfile(Map params=[:]);
 	abstract Object initializeVirtualEnv(Map params=[:]);
+    abstract Object input(Map);
 	abstract void saferStash(Map);
 	abstract void saferUnstash(Map);
 	abstract void setPackageVersion(Map);
