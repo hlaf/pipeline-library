@@ -15,7 +15,7 @@ def minimum_instruction_coverage = 0.99
 def minimum_branch_coverage = 0.98
 def coverage_include_classes = "com/emt/**"
 
-sourceCompatibility = 1.8
+sourceCompatibility = source_compatibility
 
 repositories {
     mavenCentral()
