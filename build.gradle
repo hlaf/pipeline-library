@@ -59,7 +59,7 @@ tasks.register('agentJar', Jar) {
     
     archiveFileName = agent_archive
 
-    from(['build/classes/java/test/com/emt/util/TestInstrumentationAgent.class'])
+    from(["${buildDir}/classes/java/test/com/emt/util/TestInstrumentationAgent.class"])
 
     manifest {
         attributes(
@@ -93,7 +93,7 @@ test {
         systemProperty 'com.emt.unit_testing_enabled', true
     }
 
-    jvmArgs "-javaagent:$buildDir/libs/${agent_archive}"
+    jvmArgs "-javaagent:${buildDir}/libs/${agent_archive}"
 }
 
 
