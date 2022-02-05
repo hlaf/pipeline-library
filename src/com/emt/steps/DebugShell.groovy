@@ -25,7 +25,7 @@ class DebugShell extends BaseStep {
                 break;
             } else {
                 try {
-                    def ret = Eval.x(_steps, cmd)
+                    def ret = Eval.x(_steps, "def code = { ${cmd} }; code.delegate = x; code.call()")
                     _steps.echo "${title} Return Value: $ret"
                 } catch (e) {
                     _steps.echo "${title} Error: $e"

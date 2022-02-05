@@ -1,6 +1,7 @@
 package com.emt.steps;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assume.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -26,6 +27,7 @@ public class DebugShellTest extends StepTestFixture {
     static final String CMD_CONTINUE = "continue";
     static final String CMD_DIV_BY_ZERO = "1 / 0";
     static final String CMD_SIMPLE_ARITHMETIC = "1 + 1";
+    static final String CMD_GET_ENV_VAR = "env.MY_VAR";
 
     static final Map<String, String> expected_output;
     static {
@@ -40,6 +42,7 @@ public class DebugShellTest extends StepTestFixture {
                 Lists.newArrayList(CMD_CONTINUE),
                 Lists.newArrayList(CMD_DIV_BY_ZERO, CMD_CONTINUE),
                 Lists.newArrayList(CMD_SIMPLE_ARITHMETIC, CMD_CONTINUE),
+                Lists.newArrayList(CMD_GET_ENV_VAR, CMD_CONTINUE),
         };
     }
 
@@ -52,6 +55,9 @@ public class DebugShellTest extends StepTestFixture {
         _state = state;
         _command_list = (List<String>) _state.get("commands");
         _captor = ArgumentCaptor.forClass(String.class);
+        String var_value = Double.toString(Math.random());
+        _steps.env.put("MY_VAR", var_value);
+        expected_output.put(CMD_GET_ENV_VAR, ".*" + var_value + "$");
     }
 
     @Override
@@ -86,6 +92,14 @@ public class DebugShellTest extends StepTestFixture {
     public void baseCase(@FromDataPoints("args") Map args,
                          @FromDataPoints("state") Map state) {
         commonSetup(args, state);
+        execute(args);
+    }
+
+    @Theory
+    public void canAccessPipelineScope(@FromDataPoints("args") Map args,
+                                       @FromDataPoints("state") Map state) {
+        commonSetup(args, state);
+        assumeTrue(_command_list.contains(CMD_GET_ENV_VAR));
         execute(args);
     }
 

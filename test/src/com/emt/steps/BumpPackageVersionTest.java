@@ -28,7 +28,6 @@ public class BumpPackageVersionTest extends StepTestFixture {
 	@Before
     public void setup() {
     	super.setup();
-    	_steps.env = new HashMap<>();
     	_steps.env.put("JOB_NAME", "dummy_job");
 
     	doReturn(bumped_version).when(_steps).sh(any(Map.class));
