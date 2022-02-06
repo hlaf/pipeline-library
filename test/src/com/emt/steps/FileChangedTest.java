@@ -5,6 +5,7 @@ import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,6 +32,7 @@ public class FileChangedTest extends StepTestFixture {
 
     @Parameter String name;
     @StateVar Set<String> change_set;
+    @StateVar boolean file_exists;
 
     private static String file_path_1 = "my/target/file.ext";
 
@@ -44,6 +46,8 @@ public class FileChangedTest extends StepTestFixture {
         };
     }
 
+    private Set<String> _c_set;
+
     @Before
     public void setup() {
         super.setup();
@@ -51,32 +55,50 @@ public class FileChangedTest extends StepTestFixture {
         _steps.currentBuild.changeSets = new ArrayList<ChangeLogSet>();;
     }
 
+    protected void commonSetup(Map args, Map state) {
+        when(_steps.fileExists((String)args.get("name"))).thenReturn((boolean)state.get("file_exists"));
+
+        _c_set = (Set<String>) state.get("change_set");
+        _steps.currentBuild.changeSets.add(buildChangeLogSet(_c_set));
+    }
+
     @Theory
     public void returnsTrueWhenFileIsInChangeLog(@FromDataPoints("args") Map args,
                                                  @FromDataPoints("state") Map state) {
-        Set<String> c_set = (Set<String>) state.get("change_set");
-        assumeTrue(c_set.contains(args.get("name")));
-        _steps.currentBuild.changeSets.add(buildChangeLogSet(c_set));
+        commonSetup(args, state);
+        assumeTrue((boolean)state.get("file_exists"));
+        assumeTrue(_c_set.contains(args.get("name")));
         assertTrue(execute(args).equals(true));
     }
 
     @Theory
     public void returnsFalseWhenFileNotInChangeLog(@FromDataPoints("args") Map args,
                                                    @FromDataPoints("state") Map state) {
-        Set<String> c_set = (Set<String>) state.get("change_set");
-        assumeFalse(c_set.contains(args.get("name")));
-        _steps.currentBuild.changeSets.add(buildChangeLogSet(c_set));
+        commonSetup(args, state);
+        assumeTrue((boolean)state.get("file_exists"));
+        assumeFalse(_c_set.contains(args.get("name")));
         assertTrue(execute(args).equals(false));
     }
 
     @Theory
     public void returnsFalseWhenChangeLogIsEmpty(@FromDataPoints("args") Map args,
                                                  @FromDataPoints("state") Map state) {
-        Set<String> c_set = (Set<String>) state.get("change_set");
-        assumeTrue(c_set.isEmpty());
-        _steps.currentBuild.changeSets.add(buildChangeLogSet(c_set));
+        commonSetup(args, state);
+        assumeTrue((boolean)state.get("file_exists"));
+        assumeTrue(_c_set.isEmpty());
         assertTrue(execute(args).equals(false));
     }
+
+    @Theory
+    public void failsWhenFileDoesNotExist(@FromDataPoints("args") Map args,
+                                          @FromDataPoints("state") Map state) {
+        commonSetup(args, state);
+        assumeFalse((boolean)state.get("file_exists"));
+        execute(args);
+
+        assertTrue(error_was_called());
+    }
+
 
     private static ChangeLogSet buildChangeLogSet(Collection<String> file_paths) {
         ChangeLogSet change_set = mock(ChangeLogSet.class);

@@ -10,6 +10,11 @@ class FileChanged extends BaseStep {
     Object execute(Map parameters=[:]) {
         validateParameters(parameters);
         String name = parameters.name
+
+        if (!_steps.fileExists(name)) {
+            return error_helper("The file '${name}' does not exist.")
+        }
+
         return getChangedFiles(_steps).any { it.path =~ /^${name}$/ }
     }
 
