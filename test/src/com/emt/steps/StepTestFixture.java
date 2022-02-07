@@ -33,7 +33,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import com.emt.IStepExecutor;
-import com.emt.ioc.IContext;
 import com.emt.util.Parameter;
 import com.emt.util.StateVar;
 
@@ -101,7 +100,6 @@ public abstract class StepTestFixture {
 
     public final static String MISSING_ARGS = "missing_args";
 
-    private IContext _context;
     protected IStepExecutor _steps;
     protected boolean _executed_successfully = false;
     private boolean _called_error = false;
@@ -279,11 +277,8 @@ public abstract class StepTestFixture {
 
     @Before
     public void setup() {
-        _context = mock(IContext.class);
         _steps = mock(IStepExecutor.class, Mockito.CALLS_REAL_METHODS);
         _steps.env = new HashMap<String, String>();
-
-        when(_context.getStepExecutor()).thenReturn(_steps);
     }
 
     public final BaseStep inst() {
