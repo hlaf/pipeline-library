@@ -39,6 +39,8 @@ import com.emt.util.StateVar;
 import groovy.lang.Closure;
 import support.cps.CPSUtils;
 import support.cps.InvalidCPSInvocation;
+import org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper;
+
 
 class Unassigned {
 };
@@ -279,6 +281,7 @@ public abstract class StepTestFixture {
     public void setup() {
         _steps = mock(IStepExecutor.class, Mockito.CALLS_REAL_METHODS);
         _steps.env = new HashMap<String, String>();
+        _steps.currentBuild = mock(RunWrapper.class);
     }
 
     public final BaseStep inst() {

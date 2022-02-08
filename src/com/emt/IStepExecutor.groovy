@@ -1,5 +1,7 @@
 package com.emt
 
+import org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper
+
 import com.emt.common.CoverageIgnoreGenerated
 
 /**
@@ -9,7 +11,7 @@ import com.emt.common.CoverageIgnoreGenerated
 abstract class IStepExecutor {
 	
 	public IDockerNamespace docker
-	public ICurrentBuildNamespace currentBuild;
+	public RunWrapper currentBuild;
 	public Map<String, String> env;
 	
 	abstract void archiveArtifacts(Map);
@@ -63,14 +65,6 @@ abstract class IStepExecutor {
     abstract void writeAsJson(Map);
 	abstract void publishJUnitReport();
 
-}
-
-@CoverageIgnoreGenerated
-abstract class ICurrentBuildNamespace {
-	abstract List<String> getBuildCauses(String cause);
-	abstract Object getPreviousBuild();
-	abstract Object getRawBuild();
-	public List changeSets;
 }
 
 interface IDockerNamespace {

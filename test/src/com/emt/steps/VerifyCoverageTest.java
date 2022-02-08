@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper;
 import org.junit.Before;
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
@@ -20,7 +21,6 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.mockito.AdditionalMatchers;
 
-import com.emt.ICurrentBuildNamespace;
 import com.emt.util.Parameter;
 import com.emt.util.StateVar;
 
@@ -43,12 +43,6 @@ public class VerifyCoverageTest extends StepTestFixture {
         return new Object[]{ previous_build1, new NullValue() };
     }
     
-	@Before
-    public void setup() {
-    	super.setup();
-    	_steps.currentBuild = mock(ICurrentBuildNamespace.class);
-    }
-
 	protected void commonSetup(Map args, Map state) {
 		_args = args;
 		_state = state;

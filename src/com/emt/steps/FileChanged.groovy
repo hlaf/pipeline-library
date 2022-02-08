@@ -1,6 +1,7 @@
 package com.emt.steps
 
 import groovy.transform.InheritConstructors
+import com.emt.common.ChangeSetUtils
 
 @groovy.transform.InheritConstructors
 class FileChanged extends BaseStep {
@@ -15,16 +16,9 @@ class FileChanged extends BaseStep {
             return error_helper("The file '${name}' does not exist.")
         }
 
-        return getChangedFiles(_steps).any { it.path =~ /^${name}$/ }
-    }
-
-    def getChangedFiles(context) {
-        List changeLogSets = context.currentBuild.changeSets
-        List res = []
-
-        changeLogSets.each { change_set ->
-            change_set.items.each { entry -> res.addAll(entry.affectedFiles) }
+        return ChangeSetUtils.getChangedFiles(_steps.currentBuild).any { 
+            it.path =~ /^${name}$/
         }
-        return res
     }
+
 }

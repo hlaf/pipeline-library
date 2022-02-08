@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper;
 import org.junit.Before;
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theory;
 import org.mockito.Mockito;
 
-import com.emt.ICurrentBuildNamespace;
 import com.emt.util.Parameter;
 import com.emt.util.StateVar;
 import com.google.common.collect.Sets;
@@ -51,15 +51,22 @@ public class FileChangedTest extends StepTestFixture {
     @Before
     public void setup() {
         super.setup();
-        _steps.currentBuild = mock(ICurrentBuildNamespace.class, Mockito.CALLS_REAL_METHODS);
-        _steps.currentBuild.changeSets = new ArrayList<ChangeLogSet>();;
+        try {
+            when(_steps.currentBuild.getChangeSets()).thenReturn(new ArrayList<ChangeLogSet<? extends ChangeLogSet.Entry>>());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected void commonSetup(Map args, Map state) {
         when(_steps.fileExists((String)args.get("name"))).thenReturn((boolean)state.get("file_exists"));
 
         _c_set = (Set<String>) state.get("change_set");
-        _steps.currentBuild.changeSets.add(buildChangeLogSet(_c_set));
+        try {
+            _steps.currentBuild.getChangeSets().add(buildChangeLogSet(_c_set));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Theory

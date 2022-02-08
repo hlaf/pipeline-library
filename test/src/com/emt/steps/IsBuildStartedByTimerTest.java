@@ -9,12 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper;
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theory;
 import org.mockito.Mockito;
 
-import com.emt.ICurrentBuildNamespace;
 import com.emt.util.StateVar;
+
+import net.sf.json.JSONArray;
 
 
 public class IsBuildStartedByTimerTest extends StepTestFixture {
@@ -27,16 +29,17 @@ public class IsBuildStartedByTimerTest extends StepTestFixture {
 		return new Object[] { Arrays.asList(timer_cause), Arrays.asList() };
     }
 
-    public void setup() {
-    	super.setup();
-    	_steps.currentBuild = mock(ICurrentBuildNamespace.class, Mockito.CALLS_REAL_METHODS);
-    }
-
     @Theory
     public void predicateWorks(@FromDataPoints("state") Map state) {
         List<String> build_cause = (List<String>) state.get("build_cause");
     	final boolean expected_res = build_cause.contains(timer_cause);
-        when(_steps.currentBuild.getBuildCauses(timer_cause)).thenReturn(build_cause);
+    	JSONArray a = new JSONArray();
+        for (String cause: build_cause) a.add(cause);
+        try {
+            when(_steps.currentBuild.getBuildCauses(timer_cause)).thenReturn(a);
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
     	assertTrue(execute(new HashMap()).equals(expected_res));
     }
 
