@@ -55,6 +55,8 @@ sourceSets {
     }
 }
 
+import org.apache.tools.ant.taskdefs.condition.Os
+
 tasks.register('agentJar', Jar) {
     description 'Assembles a jar archive containing the Java agent.'
     
@@ -96,9 +98,14 @@ test {
         systemProperty 'com.emt.unit_testing_enabled', true
     }
 
-    jvmArgs "-javaagent:${buildDir}/libs/${agent_archive}"
+    doFirst {
+        jvmArgs = ["-javaagent:${buildDir}/libs/${agent_archive}"]
+        if (project.os == 'linux') {
+            // Fix for 'com.sun.tools.attach.AttachNotSupportedException at LinuxVirtualMachine.java'
+            jvmArgs += ['-XX:+StartAttachListener']
+        }
+    }
 }
-
 
 cobertura {
     coverageIncludes = ['.*com.emt.*']
@@ -169,6 +176,12 @@ jacocoTestCoverageVerification.dependsOn jacocoTestReport
 // NOTE: Disable groovy optimizations to get more accurate coverage results
 // See https://pbetkier.github.io/2014/08/07/groovy-code-coverage-issues.html
 gradle.taskGraph.whenReady { graph ->
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        project.ext.os = 'windows'
+    } else if (Os.isFamily(Os.FAMILY_UNIX) && !Os.isFamily(Os.FAMILY_MAC)) {
+        project.ext.os = 'linux'
+    }
+
     if (graph.hasTask(':cobertura') || graph.hasTask(':jacocoTestReport')) {
         compileGroovy.groovyOptions.optimizationOptions.all = false
         project.ext.enable_cps = false
