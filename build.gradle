@@ -139,6 +139,10 @@ jacocoTestReport {
 }
 
 jacocoTestCoverageVerification {
+
+    // to run coverage verification during the build (and fail when appropriate)
+    dependsOn jacocoTestReport
+
     violationRules {
         rule {
             limit {
@@ -169,9 +173,6 @@ jacocoTestCoverageVerification {
     }
 
 }
-
-// to run coverage verification during the build (and fail when appropriate)
-jacocoTestCoverageVerification.dependsOn jacocoTestReport
 
 // NOTE: Disable groovy optimizations to get more accurate coverage results
 // See https://pbetkier.github.io/2014/08/07/groovy-code-coverage-issues.html
