@@ -45,11 +45,7 @@ node('docker-slave') {
                                                           [failUnhealthy: true,
                                                           thresholdTarget: 'Conditional',
                                                           unhealthyThreshold: 95.0,
-                                                          unstableThreshold: 95.0],
-                                                          [failUnhealthy: true,
-                                                          thresholdTarget: 'Function',
-                                                          unhealthyThreshold: 100.0,
-                                                          unstableThreshold: 100.0]
+                                                          unstableThreshold: 95.0]
                                              ]
                                )
                     ],
@@ -80,11 +76,7 @@ node('docker-slave') {
                                               [failUnhealthy: true,
                                               thresholdTarget: 'Conditional',
                                               unhealthyThreshold: 95.0,
-                                              unstableThreshold: 95.0],
-                                              [failUnhealthy: true,
-                                              thresholdTarget: 'Function',
-                                              unhealthyThreshold: 100.0,
-                                              unstableThreshold: 100.0]
+                                              unstableThreshold: 95.0]
                                  ]
                                )
                     ],
