@@ -1,20 +1,21 @@
 package com.emt.common;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper;
 
+import com.cloudbees.groovy.cps.NonCPS
+
+import groovy.transform.CompileStatic
 import hudson.scm.ChangeLogSet;
 import hudson.scm.ChangeLogSet.AffectedFile;
 import hudson.scm.ChangeLogSet.Entry;
 
+@CompileStatic
 class ChangeSetUtils implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @CoverageIgnoreGenerated
+    @NonCPS
     static List<AffectedFile> getChangedFiles(RunWrapper build) {
         List<ChangeLogSet<? extends Entry>> changeLogSets;
         try {
