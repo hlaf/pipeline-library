@@ -80,10 +80,14 @@ tasks.register('agentJar', Jar) {
 }
 
 compileGroovy {
+
+    String compiler_config_file = 'config/groovyCompilerConfig.groovy'
+    inputs.file(compiler_config_file)
+
 	doFirst {
 		if (enable_cps) {
 			println 'Compiling Groovy with CPS'
-			groovyOptions.configurationScript = file("config/groovyCompilerConfig.groovy")
+			groovyOptions.configurationScript = file(compiler_config_file)
 			//horrible no-good hack to add groovy-cps to groovyClasspath
 			groovyClasspath += sourceSets.main.compileClasspath
 		}
