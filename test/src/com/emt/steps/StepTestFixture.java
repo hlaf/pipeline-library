@@ -41,6 +41,8 @@ import support.cps.CPSUtils;
 import support.cps.InvalidCPSInvocation;
 import org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper;
 
+import org.mockito.ArgumentCaptor;
+
 
 class Unassigned {
 };
@@ -105,6 +107,7 @@ public abstract class StepTestFixture {
     protected IStepExecutor _steps;
     protected boolean _executed_successfully = false;
     private boolean _called_error = false;
+    protected ArgumentCaptor<Map> _captor_map;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -282,6 +285,7 @@ public abstract class StepTestFixture {
         _steps = mock(IStepExecutor.class, Mockito.CALLS_REAL_METHODS);
         _steps.env = new HashMap<String, String>();
         _steps.currentBuild = mock(RunWrapper.class);
+        _captor_map = ArgumentCaptor.forClass(Map.class);
     }
 
     public final BaseStep inst() {

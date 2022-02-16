@@ -12,7 +12,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theory;
-import org.mockito.ArgumentCaptor;
 
 import com.emt.util.Parameter;
 
@@ -37,9 +36,8 @@ public class BumpPackageVersionTest extends StepTestFixture {
     public void runsWithoutErrors(@FromDataPoints("args") Map args) {
     	execute(args);
 
-    	ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
-    	verify(_steps).setPackageVersion(captor.capture());
-    	assertTrue(captor.getValue().get("version").equals(bumped_version));    	
+    	verify(_steps).setPackageVersion(_captor_map.capture());
+    	assertTrue(_captor_map.getValue().get("version").equals(bumped_version));    	
     	verify(_steps).sh(anyString());
     }
 }

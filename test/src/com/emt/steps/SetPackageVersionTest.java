@@ -14,7 +14,6 @@ import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 
 import com.emt.util.Parameter;
 import com.emt.util.StateVar;
@@ -47,9 +46,8 @@ public class SetPackageVersionTest extends StepTestFixture {
 
     	commonSetup(args, state);	
     	execute(args);
-    	ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
-    	verify(_steps).writeFile(captor.capture());
-    	String final_content = (String) captor.getValue().get("text");
+    	verify(_steps).writeFile(_captor_map.capture());
+    	String final_content = (String) _captor_map.getValue().get("text");
     	
     	assertTrue(final_content.contains((String)args.get("version")));
     }

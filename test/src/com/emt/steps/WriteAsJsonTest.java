@@ -11,7 +11,6 @@ import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 
 import com.emt.util.Parameter;
 
@@ -31,9 +30,8 @@ public class WriteAsJsonTest extends StepTestFixture {
     public void writesDataAsJSON(@FromDataPoints("args") Map args) {
     	execute(args);
 
-    	ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
-    	verify(_steps, times(1)).writeFile(captor.capture());
-    	assertTrue(captor.getValue().get("text") instanceof String);
+    	verify(_steps, times(1)).writeFile(_captor_map.capture());
+    	assertTrue(_captor_map.getValue().get("text") instanceof String);
     }
 
 }
