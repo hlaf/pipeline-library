@@ -15,15 +15,16 @@ class CustomHandler extends Handler implements Serializable {
     @Override
     public void publish(LogRecord record) {
         if (isLoggable(record)) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(record.getMillis())
-              .append(" - ")
-              .append(record.getSourceClassName())
-              .append("#")
-              .append(record.getSourceMethodName())
-              .append(" - ")
-              .append(record.getMessage());
-            _steps.echo(sb.toString());
+            _steps.echo("HELLO WORLD");
+            //StringBuilder sb = new StringBuilder();
+            //sb.append(record.getMillis())
+            //  .append(" - ")
+            //  .append(record.getSourceClassName())
+            //  .append("#")
+            //  .append(record.getSourceMethodName())
+            //  .append(" - ")
+            //  .append(record.getMessage());
+            //_steps.echo(sb.toString());
         }
     }
 
