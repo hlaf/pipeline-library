@@ -1,8 +1,6 @@
 package com.emt.common;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Logger
 
 import org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper;
 
@@ -13,6 +11,7 @@ import hudson.scm.ChangeLogSet.Entry;
 class ChangeSetUtils implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static final Logger logger = Logger.getLogger(ChangeSetUtils.class.getName());
 
     @CoverageIgnoreGenerated
     static List<AffectedFile> getChangedFiles(RunWrapper build) {
@@ -22,6 +21,7 @@ class ChangeSetUtils implements Serializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        logger.severe("Found " + changeLogSets.size() + " change sets");
         List<AffectedFile> res = new ArrayList();
 
         for (ChangeLogSet change_set: changeLogSets) {
