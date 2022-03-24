@@ -1,5 +1,6 @@
 package com.emt.steps
 
+import java.util.logging.Level
 import java.util.logging.Logger
 
 import com.emt.common.ChangeSetUtils
@@ -15,8 +16,9 @@ class FileChanged extends BaseStep {
     Object execute(Map parameters=[:]) {
         validateParameters(parameters);
         String name = parameters.name
-
-        Logger.getLogger("com.emt.common.ChangeSetUtils").addHandler(new CustomHandler(_steps));
+        def handler = new CustomHandler(_steps);
+        handler.setLevel(Level.ALL);
+        Logger.getLogger("com.emt.common.ChangeSetUtils").addHandler(handler);
 
         if (!_steps.fileExists(name)) {
             return error_helper("The file '${name}' does not exist.")
