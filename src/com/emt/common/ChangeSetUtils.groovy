@@ -10,7 +10,7 @@ import hudson.scm.ChangeLogSet.Entry;
 
 class ChangeSetUtils implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
     private static final transient Logger logger = Logger.getLogger("com.emt.common.ChangeSetUtils");
 
     @CoverageIgnoreGenerated

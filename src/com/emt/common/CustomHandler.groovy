@@ -5,9 +5,9 @@ import java.util.logging.LogRecord
 
 class CustomHandler extends Handler implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private Object _steps;
-    
+    private static final long serialVersionUID = 2L;
+    private transient Object _steps;
+
     public CustomHandler(Object steps) {
         _steps = steps;
     }
