@@ -1,5 +1,6 @@
 package com.emt.steps
 
+import java.util.logging.Handler
 import java.util.logging.Level
 import java.util.logging.Logger
 import java.util.logging.SimpleFormatter
@@ -20,8 +21,19 @@ class FileChanged extends BaseStep {
         def handler = new CustomHandler(_steps);
         handler.setLevel(Level.ALL);
         handler.setFormatter(new SimpleFormatter());
-        Logger.getLogger("com.emt.common.ChangeSetUtils").addHandler(handler);
-        //Logger.getLogger("").addHandler(handler);
+
+        def logger = Logger.getLogger("com.emt.common.ChangeSetUtils")
+
+        boolean add_handler = true;
+        for (Handler h: logger.getHandlers()) {
+            if (h instanceof CustomHandler) {
+                add_handler = false;
+            }
+        }
+
+        if (add_handler) {
+          Logger.getLogger("com.emt.common.ChangeSetUtils").addHandler(handler);
+        }
 
         if (!_steps.fileExists(name)) {
             return error_helper("The file '${name}' does not exist.")
