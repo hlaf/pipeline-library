@@ -15,11 +15,12 @@ class CustomHandler extends Handler implements Serializable {
     @Override
     public void publish(LogRecord record) {
         if (isLoggable(record)) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(record.getLevel())
-              .append(" - ")
-              .append(record.getMessage());
-            _steps.echo(sb.toString());
+            //StringBuilder sb = new StringBuilder();
+            //sb.append(record.getLevel())
+            //  .append(" - ")
+            //  .append(record.getMessage());
+            //_steps.echo(sb.toString());
+            _steps.echo(getFormatter().format(record))
         }
     }
 
@@ -29,6 +30,7 @@ class CustomHandler extends Handler implements Serializable {
 
     @Override
     public void close() throws SecurityException {
+        _steps = null;
     }
-    
+   
 }
