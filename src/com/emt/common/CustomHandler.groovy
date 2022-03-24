@@ -14,7 +14,6 @@ class CustomHandler extends Handler implements Serializable {
     
     @Override
     public void publish(LogRecord record) {
-        1 / 0;
         if (isLoggable(record)) {
             _steps.echo("HELLO WORLD");
             //StringBuilder sb = new StringBuilder();
