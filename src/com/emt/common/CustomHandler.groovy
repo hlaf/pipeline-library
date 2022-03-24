@@ -23,7 +23,7 @@ class CustomHandler extends Handler implements Serializable {
           .append(" - ")
           .append(record.getMessage());
         //System.out.println(sb.toString());
-        steps.echo(sb.toString());
+        _steps.echo(sb.toString());
     }
 
     @Override
