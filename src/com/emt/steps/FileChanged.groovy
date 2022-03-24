@@ -16,8 +16,7 @@ class FileChanged extends BaseStep {
         validateParameters(parameters);
         String name = parameters.name
 
-        Logger logger = Logger.getLogger("com.emt.common.ChangeSetUtils");
-        logger.addHandler(new CustomHandler(_steps));
+        Logger.getLogger("com.emt.common.ChangeSetUtils").addHandler(new CustomHandler(_steps));
 
         if (!_steps.fileExists(name)) {
             return error_helper("The file '${name}' does not exist.")
