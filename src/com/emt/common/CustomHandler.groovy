@@ -22,7 +22,6 @@ class CustomHandler extends Handler implements Serializable {
           .append(record.getSourceMethodName())
           .append(" - ")
           .append(record.getMessage());
-        //System.out.println(sb.toString());
         _steps.echo(sb.toString());
     }
 
