@@ -25,10 +25,12 @@ class ChangeSetUtils implements Serializable {
         List<AffectedFile> changed_files = new ArrayList();
 
         for (ChangeLogSet change_set: changeLogSets) {
+            logger.config("The change set contains " + 
+                          change_set.getItems().length + " entries.");
             for (Object entry: change_set) {
                 List<AffectedFile> tmp = new ArrayList();
                 tmp.addAll(((ChangeLogSet.Entry)entry).getAffectedFiles());
-                logger.config("The change set contains " + tmp.size() + " changed files");
+                logger.config("The entry contains " + tmp.size() + " changed files");
                 for (AffectedFile f: tmp) {
                     logger.config("Affected file: " + f.getPath());
                     changed_files.add(f);
