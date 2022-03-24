@@ -22,15 +22,18 @@ class ChangeSetUtils implements Serializable {
             throw new RuntimeException(e);
         }
         logger.severe("Found " + changeLogSets.size() + " change sets");
-        List<AffectedFile> res = new ArrayList();
+        List<AffectedFile> changed_files = new ArrayList();
 
         for (ChangeLogSet change_set: changeLogSets) {
             for (Object entry: change_set) {
-                res.addAll(((ChangeLogSet.Entry)entry).getAffectedFiles());
+                List<AffectedFile> tmp = new ArrayList();
+                tmp.addAll(((ChangeLogSet.Entry)entry).getAffectedFiles());
+                logger.severe("The change set contains " + tmp.size() + "changed files");
+                changed_files.addAll(tmp); 
             }
         }
 
-        return res;
+        return changed_files;
     }
 
 }
