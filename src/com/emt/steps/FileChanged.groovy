@@ -18,7 +18,8 @@ class FileChanged extends BaseStep {
         String name = parameters.name
         def handler = new CustomHandler(_steps);
         handler.setLevel(Level.ALL);
-        Logger.getLogger("com.emt.common.ChangeSetUtils").addHandler(handler);
+        //Logger.getLogger("com.emt.common.ChangeSetUtils").addHandler(handler);
+        Logger.getLogger("").addHandler(handler);
 
         if (!_steps.fileExists(name)) {
             return error_helper("The file '${name}' does not exist.")
