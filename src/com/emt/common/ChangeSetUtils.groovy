@@ -12,10 +12,9 @@ class ChangeSetUtils implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger("com.emt.common.ChangeSetUtils");
-
-    static {
-        logger.addHandler(new CustomHandler());
-    }
+    //static {
+    //    logger.addHandler(new CustomHandler());
+    //}
 
     @CoverageIgnoreGenerated
     static List<AffectedFile> getChangedFiles(RunWrapper build) {

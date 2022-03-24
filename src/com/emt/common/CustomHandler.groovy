@@ -6,6 +6,11 @@ import java.util.logging.LogRecord
 class CustomHandler extends Handler implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private Object _steps;
+    
+    public CustomHandler(Object steps) {
+        _steps = steps;
+    }
     
     @Override
     public void publish(LogRecord record) {
@@ -17,7 +22,8 @@ class CustomHandler extends Handler implements Serializable {
           .append(record.getSourceMethodName())
           .append(" - ")
           .append(record.getMessage());
-        System.out.println(sb.toString());
+        //System.out.println(sb.toString());
+        steps.echo(sb.toString());
     }
 
     @Override
