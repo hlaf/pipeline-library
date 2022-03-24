@@ -22,17 +22,17 @@ class FileChanged extends BaseStep {
         handler.setLevel(Level.ALL);
         handler.setFormatter(new SimpleFormatter());
 
-        def logger = Logger.getLogger("com.emt.common.ChangeSetUtils")
-
+        String logger_name = "com.emt.common.ChangeSetUtils"
+        
         boolean add_handler = true;
-        for (Handler h: logger.getHandlers()) {
+        for (Handler h: Logger.getLogger(logger_name).getHandlers()) {
             if (h instanceof CustomHandler) {
                 add_handler = false;
             }
         }
 
         if (add_handler) {
-          Logger.getLogger("com.emt.common.ChangeSetUtils").addHandler(handler);
+          Logger.getLogger(logger_name).addHandler(handler);
         }
 
         if (!_steps.fileExists(name)) {
