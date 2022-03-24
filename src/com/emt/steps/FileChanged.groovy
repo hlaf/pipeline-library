@@ -22,7 +22,7 @@ class FileChanged extends BaseStep {
         handler.setLevel(Level.ALL);
         handler.setFormatter(new SimpleFormatter());
 
-        String logger_name = "com.emt.common.ChangeSetUtils"
+        String logger_name = "com.emt.common.ChangeSetUtilsXX"
         
         boolean add_handler = true;
         for (Handler h: Logger.getLogger(logger_name).getHandlers()) {
