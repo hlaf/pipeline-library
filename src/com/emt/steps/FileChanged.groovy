@@ -24,11 +24,13 @@ class FileChanged extends BaseStep {
 
         String logger_name = "com.emt.common"
 
-        for (Handler h: Logger.getLogger(logger_name).getHandlers()) {
+        Handler[] handlers = Logger.getLogger(logger_name).getHandlers();
+        for (Handler h: handlers) {
             if (h instanceof CustomHandler) {
                 Logger.getLogger(logger_name).removeHandler(h);
             }
         }
+        handlers = null;
         Logger.getLogger(logger_name).addHandler(handler);
 
         if (!_steps.fileExists(name)) {
