@@ -24,16 +24,12 @@ class FileChanged extends BaseStep {
 
         String logger_name = "com.emt.common.ChangeSetUtilsXX"
         
-        boolean add_handler = true;
         for (Handler h: Logger.getLogger(logger_name).getHandlers()) {
             if (h instanceof CustomHandler) {
-                add_handler = false;
+                Logger.getLogger(logger_name).removeHandler(h);
             }
         }
-
-        if (add_handler) {
-          Logger.getLogger(logger_name).addHandler(handler);
-        }
+        Logger.getLogger(logger_name).addHandler(handler);
 
         if (!_steps.fileExists(name)) {
             return error_helper("The file '${name}' does not exist.")
