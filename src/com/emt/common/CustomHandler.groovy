@@ -7,11 +7,13 @@ class CustomHandler extends Handler {
 
     private Object script;
 
+    @CoverageIgnoreGenerated
     public CustomHandler(Object script) {
         this.script = script;
     }
 
     @Override
+    @CoverageIgnoreGenerated
     public void publish(LogRecord record) {
         if (isLoggable(record)) {
             this.script.echo(getFormatter().format(record))
@@ -19,9 +21,11 @@ class CustomHandler extends Handler {
     }
 
     @Override
+    @CoverageIgnoreGenerated
     public void flush() {}
 
     @Override
+    @CoverageIgnoreGenerated
     public void close() throws SecurityException {}
 
 }
