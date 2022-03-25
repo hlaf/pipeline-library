@@ -6,7 +6,7 @@ import java.util.logging.Logger
 import java.util.logging.SimpleFormatter
 
 import com.emt.common.ChangeSetUtils
-import com.emt.common.CustomHandler
+import com.emt.common.CustomLogHandler
 
 import groovy.transform.InheritConstructors
 
