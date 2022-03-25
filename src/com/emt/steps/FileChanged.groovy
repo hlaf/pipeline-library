@@ -10,6 +10,8 @@ import com.emt.common.CustomHandler
 
 import groovy.transform.InheritConstructors
 
+import groovy.transform.InheritConstructors
+
 @groovy.transform.InheritConstructors
 class FileChanged extends BaseStep {
 
