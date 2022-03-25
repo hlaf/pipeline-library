@@ -37,9 +37,8 @@ class ChangeSetUtils implements Serializable {
         return changed_files;
     }
 
-    static boolean getFilesNotInWorkspace(RunWrapper build, Object script) {
-        def changed_files = getChangedFiles(build);
-        return changed_files.collect { it.path }.findAll {  !script.fileExists(it) }
+    static Collection<String> getFilesNotInWorkspace(RunWrapper build, Object script) {
+        return getChangedFiles(build).collect { it.path }.findAll {  !script.fileExists(it) }
     }
 
 }
