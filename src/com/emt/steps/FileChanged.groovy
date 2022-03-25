@@ -25,7 +25,10 @@ class FileChanged extends BaseStep {
         // Find files that are not mapped to the pipeline workspace
         Collection<String> unmapped_file_paths = ChangeSetUtils.getFilesNotInWorkspace(_steps.currentBuild, _steps)
         if (unmapped_file_paths.size() > 0) {
-            return error_helper("The change log contains unmapped files: " + unmapped_file_paths.join(','))
+            return error_helper(
+                "The change log contains unmapped files: " + 
+                unmapped_file_paths.join(' ,')
+            )
         }
 
         return ChangeSetUtils.getChangedFiles(_steps.currentBuild).any { 
