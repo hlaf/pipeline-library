@@ -23,9 +23,7 @@ class FileChanged extends BaseStep {
         }
 
         // Find files that are not mapped to the pipeline workspace
-        def missing_files = ChangeSetUtils.getFilesNotInWorkspace(_steps.currentBuild, _steps)
-
-        if (missing_files.size() > 0) {
+        if (ChangeSetUtils.getFilesNotInWorkspace(_steps.currentBuild, _steps).size() > 0) {
             return error_helper("The change log contains unmapped files!")
         }
 
