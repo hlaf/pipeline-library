@@ -121,7 +121,9 @@ public class FileChangedTest extends StepTestFixture {
         }
 
         doReturn(affected_files).when(entry).getAffectedFiles();
-        doReturn(entries.iterator()).when(change_set).iterator();
+        when(change_set.iterator()).
+          thenReturn(entries.iterator()).
+          thenReturn(entries.iterator());
 
         return change_set;
     }
