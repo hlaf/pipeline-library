@@ -3,7 +3,7 @@ package com.emt.common;
 import java.util.logging.Handler
 import java.util.logging.LogRecord
 
-class CustomHandler extends Handler {
+class CustomLogHandler extends Handler {
 
     private Object script;
 
