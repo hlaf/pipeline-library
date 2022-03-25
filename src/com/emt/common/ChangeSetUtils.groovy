@@ -13,7 +13,7 @@ class ChangeSetUtils implements Serializable {
     private static final long serialVersionUID = 2L;
     private static final transient Logger logger = Logger.getLogger("com.emt.common.ChangeSetUtils");
 
-    @CoverageIgnoreGenerated
+    //@CoverageIgnoreGenerated
     static List<AffectedFile> getChangedFiles(RunWrapper build) {
         List<ChangeLogSet<? extends Entry>> changeLogSets;
         try {
@@ -25,11 +25,8 @@ class ChangeSetUtils implements Serializable {
         List<AffectedFile> changed_files = new ArrayList();
 
         for (ChangeLogSet change_set: changeLogSets) {
-            if (change_set.getItems() != null) {
-                logger.fine("The change set contains " + 
-                            change_set.getItems().length + " entries.");
-            }
-
+            logger.fine("The change set contains " + 
+                        (change_set.getItems()?.length || 0) + " entries.");
             for (Object entry: change_set) {
                 List<AffectedFile> tmp = new ArrayList();
                 tmp.addAll(((ChangeLogSet.Entry)entry).getAffectedFiles());
