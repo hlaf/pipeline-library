@@ -1,6 +1,7 @@
 package com.emt.steps
 
 import com.emt.common.CoverageIgnoreGenerated
+import com.emt.common.ExecutionError
 
 abstract class BaseStep implements Serializable {
 
@@ -20,6 +21,7 @@ abstract class BaseStep implements Serializable {
     protected final Object error_helper(String message) {
         _called_error = true;
         ErrorHelper.error(_steps, message);
+        return new ExecutionError(message);
     }
 
 }

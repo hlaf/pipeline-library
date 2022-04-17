@@ -48,22 +48,18 @@ public class FileChangedTest extends StepTestFixture {
 
     private Set<String> _c_set;
 
-    @Before
-    public void setup() {
-        super.setup();
-        try {
-            when(_steps.currentBuild.getChangeSets()).thenReturn(new ArrayList<ChangeLogSet<? extends ChangeLogSet.Entry>>());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     protected void commonSetup(Map args, Map state) {
+
         when(_steps.fileExists((String)args.get("name"))).thenReturn((boolean)state.get("file_exists"));
 
+        List<ChangeLogSet<? extends Entry>> change_sets = new ArrayList<ChangeLogSet<? extends ChangeLogSet.Entry>>();
         _c_set = (Set<String>) state.get("change_set");
+        change_sets.add(buildChangeLogSet(_c_set));
+
         try {
-            _steps.currentBuild.getChangeSets().add(buildChangeLogSet(_c_set));
+            when(_steps.currentBuild.getChangeSets())
+             .thenReturn(change_sets)
+             .thenReturn(change_sets);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -75,7 +71,8 @@ public class FileChangedTest extends StepTestFixture {
         commonSetup(args, state);
         assumeTrue((boolean)state.get("file_exists"));
         assumeTrue(_c_set.contains(args.get("name")));
-        assertTrue(execute(args).equals(true));
+        boolean res = (boolean) execute(args);
+        assertTrue(res);
     }
 
     @Theory
