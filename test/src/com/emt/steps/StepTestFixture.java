@@ -318,7 +318,7 @@ public abstract class StepTestFixture {
             } else {
                 res = _executeNonCps(inst, args);
             }
-            _called_error = inst._called_error;
+            _called_error = inst._execution_error;
             _executed_successfully = !_called_error;
             return res;
         } catch (Exception e) {

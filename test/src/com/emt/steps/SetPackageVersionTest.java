@@ -57,9 +57,9 @@ public class SetPackageVersionTest extends StepTestFixture {
     		                                @FromDataPoints("state") Map state) {
     	assumeFalse((boolean)state.get("file_contains_version_info"));
     	
-    	exception.expect(Exception.class);
     	commonSetup(args, state);	
     	execute(args);
+    	assertTrue(error_was_called());
     }
 
 }
