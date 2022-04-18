@@ -22,18 +22,12 @@ class FileChanged extends BaseStep {
             return error_helper("The file '${name}' does not exist.")
         }
 
-        // Find files that are not mapped to the pipeline workspace
-        Collection<String> unmapped_file_paths = ChangeSetUtils.getFilesNotInWorkspace(_steps.currentBuild, _steps)
-        if (unmapped_file_paths.size() > 0) {
-            return error_helper(
-                "The change log contains unmapped files: " + 
-                unmapped_file_paths.join(' ,')
-            )
+        def changed_files = ChangeSetUtils.getChangeLog(_steps, this)
+        if (this.executionFailed()) {
+            return this._execution_error_info;
         }
 
-        return ChangeSetUtils.getChangedFiles(_steps.currentBuild).any { 
-            it.path =~ /^${name}$/
-        }
+        return changed_files.any { it.path =~ /^${name}$/ }
     }
 
 }
