@@ -22,9 +22,12 @@ class FileChanged extends BaseStep {
             return error_helper("The file '${name}' does not exist.")
         }
 
-        return ChangeSetUtils.getChangedFiles(_steps.currentBuild).any { 
-            it.path =~ /^${name}$/
+        def changed_files = ChangeSetUtils.getChangeLog(_steps, this)
+        if (this.executionFailed()) {
+            return this._execution_error_info;
         }
+
+        return changed_files.any { it.path =~ /^${name}$/ }
     }
 
 }
