@@ -1,11 +1,13 @@
 package com.emt.steps
 
 import com.emt.common.CoverageIgnoreGenerated
+import com.emt.common.ExecutionError
 
 abstract class BaseStep implements Serializable {
 
     protected Object _steps;
-    protected boolean _called_error = false;
+    protected boolean _execution_error = false;
+    protected ExecutionError _execution_error_info = null;
 
     BaseStep(Object executor) {
         _steps = executor
@@ -17,10 +19,14 @@ abstract class BaseStep implements Serializable {
         ValidationHelper.validateParameters(this, parameters);
     }
 
-    protected final Object error_helper(String message) {
-        _called_error = true;
+    protected final ExecutionError error_helper(String message) {
+        _execution_error = true;
         ErrorHelper.error(_steps, message);
+        _execution_error_info = new ExecutionError(message);
+        return _execution_error_info;
     }
+
+    public final boolean executionFailed() { return _execution_error; }
 
 }
 
