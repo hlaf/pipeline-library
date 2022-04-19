@@ -26,13 +26,13 @@ class ChangeSetUtils implements Serializable {
         // Find files that are not mapped to the pipeline workspace
         List<String> unmapped_file_paths = changed_files.findAll { !script.fileExists(it) }
         logger.fine("Unmapped file paths: " + unmapped_file_paths);
-        if (unmapped_file_paths.size() > 0) {
-            step.error_helper(
-                "The change log contains unmapped files: " +
-                unmapped_file_paths.join(' ,')
-            )
-            return;
-        }
+//        if (unmapped_file_paths.size() > 0) {
+//            step.error_helper(
+//                "The change log contains unmapped files: " +
+//                unmapped_file_paths.join(', ')
+//            )
+//            return;
+//        }
         return changed_files
     }
 
