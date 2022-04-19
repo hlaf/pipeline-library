@@ -23,6 +23,11 @@ class FileChanged extends BaseStep {
             return this._execution_error_info;
         }
 
+        _steps.echo("My Changelog:")
+        for (String cf: changed_files) {
+            _steps.echo("Changed file: ${cf}")
+        }
+
         if (!_steps.fileExists(name)) {
             return error_helper("The file '${name}' does not exist.")
         }
