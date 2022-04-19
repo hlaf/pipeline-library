@@ -11,10 +11,8 @@ class FileChanged extends BaseStep {
         validateParameters(parameters);
         String name = parameters.name
 
-        def changed_files = new ChangeSetUtils(_steps).getChangeLog(this)
-        if (this.executionFailed()) {
-            return this._execution_error_info;
-        }
+        //def changed_files = new ChangeSetUtils(_steps).getChangeLog()
+        def changed_files = _steps.changeSetUtils.getChangeLog()
 
         if (!_steps.fileExists(name)) {
             return error_helper("The file '${name}' does not exist.")

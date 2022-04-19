@@ -3,27 +3,20 @@ package com.emt.steps;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theory;
 
+import com.emt.IChangeSetUtils;
 import com.emt.util.Parameter;
 import com.emt.util.StateVar;
 import com.google.common.collect.Sets;
-
-import hudson.scm.ChangeLogSet;
-import hudson.scm.EditType;
-import hudson.scm.ChangeLogSet.AffectedFile;
-import hudson.scm.ChangeLogSet.Entry;
 
 public class FileChangedTest extends StepTestFixture {
 
@@ -48,6 +41,8 @@ public class FileChangedTest extends StepTestFixture {
     private Set<String> _c_set;
 
     protected void commonSetup(Map args, Map state) {
+        _steps.changeSetUtils = mock(IChangeSetUtils.class);
+
         _c_set = (Set<String>) state.get("change_set");
 
         when(_steps.fileExists((String)args.get("name")))
@@ -58,12 +53,9 @@ public class FileChangedTest extends StepTestFixture {
             }
         }
 
-        List<ChangeLogSet<? extends Entry>> change_sets = new ArrayList<ChangeLogSet<? extends ChangeLogSet.Entry>>();
-        change_sets.add(buildChangeLogSet(_c_set));
-
         try {
-            when(_steps.currentBuild.getChangeSets())
-             .thenReturn(change_sets);
+            when(_steps.changeSetUtils.getChangeLog())
+             .thenReturn(new ArrayList<>(_c_set));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -144,57 +136,13 @@ public class FileChangedTest extends StepTestFixture {
         assertTrue(error_was_called());
     }
     
-    @Theory
-    public void failsWhenTheChangeLogIsNotValid(@FromDataPoints("args") Map args,
-                                                @FromDataPoints("state") Map state) {
-        commonSetup(args, state);
-        assumeFalse(changeLogIsValid(args, state));
-        execute(args);
-
-        assertTrue(error_was_called());
-    }
-
-    private static ChangeLogSet buildChangeLogSet(Collection<String> file_paths) {
-        ChangeLogSet change_set = mock(ChangeLogSet.class);
-
-        List<Entry> entries = new ArrayList<Entry>();
-        ChangeLogSet.Entry entry = mock(ChangeLogSet.Entry.class);
-        entries.add(entry);
-
-        List<AffectedFile> affected_files = new ArrayList<AffectedFile>();
-        for (String file_path : file_paths) {
-            AffectedFileMock f = new AffectedFileMock(file_path, EditType.EDIT);
-            affected_files.add(f);
-        }
-
-        doReturn(affected_files).when(entry).getAffectedFiles();
-        when(change_set.iterator()).
-          thenReturn(entries.iterator()).
-          thenReturn(entries.iterator());
-
-        return change_set;
-    }
-
-}
-
-class AffectedFileMock implements ChangeLogSet.AffectedFile {
-
-    private final String _path;
-    private final EditType _edit_type;
-
-    AffectedFileMock(String path, EditType edit_type) {
-        _path = path;
-        _edit_type = edit_type;
-    }
-
-    @Override
-    public String getPath() {
-        return _path;
-    }
-
-    @Override
-    public EditType getEditType() {
-        return _edit_type;
-    }
-
+//    @Theory
+//    public void failsWhenTheChangeLogIsNotValid(@FromDataPoints("args") Map args,
+//                                                @FromDataPoints("state") Map state) {
+//        commonSetup(args, state);
+//        assumeFalse(changeLogIsValid(args, state));
+//        execute(args);
+//
+//        assertTrue(error_was_called());
+//    }
 }
