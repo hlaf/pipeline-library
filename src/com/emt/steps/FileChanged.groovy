@@ -27,7 +27,7 @@ class FileChanged extends BaseStep {
             return this._execution_error_info;
         }
 
-        return changed_files.any { it.path =~ /^${name}$/ }
+        return changed_files.any { it =~ /^${name}$/ }
     }
 
 }

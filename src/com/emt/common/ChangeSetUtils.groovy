@@ -14,7 +14,7 @@ class ChangeSetUtils implements Serializable {
     private static final long serialVersionUID = 2L;
     private static final transient Logger logger = Logger.getLogger("com.emt.common.ChangeSetUtils");
 
-    static List<AffectedFile> getChangeLog(Object script, Object step) {
+    static List<String> getChangeLog(Object script, Object step) {
         List<AffectedFile> changed_files = getChangedFiles(script.currentBuild);
         logger.fine("Changed files: " + changed_files);
 
@@ -29,7 +29,7 @@ class ChangeSetUtils implements Serializable {
             )
             return;
         }
-        return changed_files;
+        return changed_files.collect { it.path }
     }
 
     private static List<AffectedFile> getChangedFiles(RunWrapper build) {
