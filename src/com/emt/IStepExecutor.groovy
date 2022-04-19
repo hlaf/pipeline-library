@@ -65,6 +65,7 @@ abstract class IStepExecutor {
     abstract void writeAsJson(Map);
 	abstract void publishJUnitReport();
 
+    public IChangeSetUtils changeSetUtils;
 }
 
 interface IDockerNamespace {
@@ -72,4 +73,8 @@ interface IDockerNamespace {
 	Object build(String image_name, String extra_options)
 	Object image(String image_name)
 
+}
+
+interface IChangeSetUtils {
+    Object getChangeLog()
 }

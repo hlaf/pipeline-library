@@ -328,6 +328,24 @@ public abstract class StepTestFixture {
         }
     }
     
+    protected final Object invokeLibFunction(Object library, String function_name) {
+        if (Boolean.getBoolean("com.emt.use_cps")) {
+            try {
+                return CPSUtils.invokeCPSMethod(library, function_name);
+            } catch (InvalidCPSInvocation e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        } else {
+            Method m = ReflectionUtils.getMethod(library.getClass(), function_name);
+            try {
+                return m.invoke(library);
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    
     private final Object _executeNonCps(BaseStep inst, Map args) {
         Object res = inst.execute(args);
         return res;

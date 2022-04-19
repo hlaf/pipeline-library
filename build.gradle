@@ -27,11 +27,13 @@ dependencies {
     implementation 'org.eclipse.hudson:hudson-core:3.2.1'
     implementation 'org.jenkins-ci.plugins.workflow:workflow-support:2.22@jar'
     implementation 'com.cloudbees:groovy-cps:1.32@jar'
+
+    testImplementation 'com.lesfurets:jenkins-pipeline-unit:1.14'
     testImplementation 'junit:junit:4.13'
     testImplementation 'net.sf.json-lib:json-lib:2.4:jdk15'
     testImplementation 'org.spockframework:spock-core:1.3-groovy-2.4'
-    testImplementation 'org.mockito:mockito-core:2.+'
-    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    testImplementation 'org.mockito:mockito-core:4.5.0'
+    testImplementation 'org.mockito:mockito-inline:4.5.0'
     testImplementation 'com.google.guava:guava:23.5-jre'
     testImplementation 'net.bytebuddy:byte-buddy:1.9.10'
 }
