@@ -1,9 +1,10 @@
 package com.emt.common;
 
 import java.util.logging.Logger
-import java.util.stream.StreamSupport
 
 import org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper;
+
+import com.cloudbees.groovy.cps.NonCPS
 
 import hudson.scm.ChangeLogSet;
 import hudson.scm.ChangeLogSet.AffectedFile;
@@ -15,12 +16,11 @@ class ChangeSetUtils implements Serializable {
     private static final transient Logger logger = Logger.getLogger("com.emt.common.ChangeSetUtils");
 
     static List<String> getChangeLog(Object script, Object step) {
-        List<AffectedFile> changed_files = getChangedFiles(script.currentBuild);
+        List<String> changed_files = getChangedFiles(script.currentBuild);
         logger.fine("Changed files: " + changed_files);
 
         // Find files that are not mapped to the pipeline workspace
-        List<String> unmapped_file_paths = changed_files.collect {
-            it.path }.findAll { !script.fileExists(it) }
+        List<String> unmapped_file_paths = changed_files.findAll { !script.fileExists(it) }
         logger.fine("Unmapped file paths: " + unmapped_file_paths);
         if (unmapped_file_paths.size() > 0) {
             step.error_helper(
@@ -29,10 +29,11 @@ class ChangeSetUtils implements Serializable {
             )
             return;
         }
-        return changed_files.collect { it.path }
+        return changed_files
     }
 
-    private static List<AffectedFile> getChangedFiles(RunWrapper build) {
+    @NonCPS
+    private static List<String> getChangedFiles(RunWrapper build) {
         List<ChangeLogSet<? extends Entry>> changeLogSets = build.getChangeSets();
         logger.fine("Found " + changeLogSets.size() + " change sets");
         List<AffectedFile> changed_files = new ArrayList();
@@ -52,7 +53,7 @@ class ChangeSetUtils implements Serializable {
             }
         }
 
-        return changed_files;
+        return changed_files.collect { it.path };
     }
 
 }
