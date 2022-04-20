@@ -6,17 +6,12 @@ import static org.junit.Assume.assumeTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theory;
 
 import com.emt.IChangeSetUtils;
 import com.emt.util.Parameter;
 import com.emt.util.StateVar;
-import com.google.common.collect.Sets;
 
 public class FileChangedTest extends StepTestFixture {
 
@@ -31,11 +26,11 @@ public class FileChangedTest extends StepTestFixture {
     
     public static Object[] change_set_values() {
         return [
-          Sets.newHashSet("a", "b", file_path_1, "c"),
-          Sets.newHashSet("a", "b", "c"),
-          Sets.newHashSet(),
-          Sets.newHashSet(file_path_1),
-        ].toArray()
+          ["a", "b", file_path_1, "c"],
+          ["a", "b", "c"],
+          [],
+          [file_path_1],
+        ].collect { it.toSet() }.toArray()
     }
 
     private Set<String> _c_set;
@@ -53,8 +48,7 @@ public class FileChangedTest extends StepTestFixture {
         }
 
         try {
-            when(_steps.changeSetUtils.getChangeLog())
-             .thenReturn(new ArrayList<>(_c_set));
+            when(_steps.changeSetUtils.getChangeLog()).thenReturn(_c_set.toList());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
