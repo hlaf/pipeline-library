@@ -27,15 +27,15 @@ public class FileChangedTest extends StepTestFixture {
 
     private static String file_path_1 = "my/target/file.ext";
 
-    public static Object[] name_values() { return new String[] { file_path_1 }; }
+    public static Object[] name_values() { [file_path_1].toArray() }
     
     public static Object[] change_set_values() {
-        return new Object[] {
+        return [
           Sets.newHashSet("a", "b", file_path_1, "c"),
           Sets.newHashSet("a", "b", "c"),
           Sets.newHashSet(),
           Sets.newHashSet(file_path_1),
-        };
+        ].toArray()
     }
 
     private Set<String> _c_set;
@@ -43,13 +43,12 @@ public class FileChangedTest extends StepTestFixture {
     protected void commonSetup(Map args, Map state) {
         _steps.changeSetUtils = mock(IChangeSetUtils.class);
 
-        _c_set = (Set<String>) state.get("change_set");
+        _c_set = state['change_set']
 
-        when(_steps.fileExists((String)args.get("name")))
-          .thenReturn((boolean)state.get("input_file_exists"));
+        when(_steps.fileExists(args['name'])).thenReturn(state['input_file_exists'])
         for (String file_path: _c_set) {
-            if (file_path != (String)args.get("name")) {
-                when(_steps.fileExists(file_path)).thenReturn((boolean)state.get("other_files_exist"));
+            if (file_path != args['name']) {
+                when(_steps.fileExists(file_path)).thenReturn(state['other_files_exist'])
             }
         }
 
@@ -71,15 +70,15 @@ public class FileChangedTest extends StepTestFixture {
                 ||
                 (
                  implies(changeLogContainsInputFile(args, state),
-                        (boolean) state.get("input_file_exists")) &&
+                         state['input_file_exists']) &&
                  implies(changeLogContainsOtherFiles(args, state),
-                        (boolean) state.get("other_files_exist"))
+                         state['other_files_exist'])
                 )
         );               
     }
 
     boolean changeLogContainsInputFile(Map args, Map state) {
-        return _c_set.contains(args.get("name"));
+        return _c_set.contains(args['name'])
     }
 
     boolean changeLogContainsOtherFiles(Map args, Map state) {
@@ -99,43 +98,42 @@ public class FileChangedTest extends StepTestFixture {
     @Theory
     public void returnsTrueWhenFileIsInChangeLog(@FromDataPoints("args") Map args,
                                                  @FromDataPoints("state") Map state) {
-        commonSetup(args, state);
-        assumeTrue((boolean)state.get("input_file_exists"));
-        assumeTrue((boolean)state.get("other_files_exist"));
-        assumeTrue(changeLogContainsInputFile(args, state));
-        boolean res = (boolean) execute(args);
-        assertTrue(res);
+        commonSetup(args, state)
+        assumeTrue(state['input_file_exists'])
+        assumeTrue(state['other_files_exist'])
+        assumeTrue(changeLogContainsInputFile(args, state))
+        boolean res = execute(args)
+        assertTrue(res)
     }
 
     @Theory
     public void returnsFalseWhenFileNotInChangeLog(@FromDataPoints("args") Map args,
                                                    @FromDataPoints("state") Map state) {
         commonSetup(args, state);
-        assumeTrue((boolean)state.get("input_file_exists"));
-        assumeTrue((boolean)state.get("other_files_exist"));
-        assumeFalse(changeLogContainsInputFile(args, state));
-        assertTrue(execute(args).equals(false));
+        assumeTrue(state['input_file_exists'])
+        assumeTrue(state['other_files_exist'])
+        assumeFalse(changeLogContainsInputFile(args, state))
+        assertTrue(execute(args).equals(false))
     }
 
     @Theory
     public void returnsFalseWhenChangeLogIsEmpty(@FromDataPoints("args") Map args,
                                                  @FromDataPoints("state") Map state) {
         commonSetup(args, state);
-        assumeTrue((boolean)state.get("input_file_exists"));
-        assumeTrue(_c_set.isEmpty());
-        assertTrue(execute(args).equals(false));
+        assumeTrue(state['input_file_exists'])
+        assumeTrue(_c_set.isEmpty())
+        assertTrue(execute(args).equals(false))
     }
 
     @Theory
     public void failsWhenFileDoesNotExist(@FromDataPoints("args") Map args,
                                           @FromDataPoints("state") Map state) {
         commonSetup(args, state);
-        assumeFalse((boolean)state.get("input_file_exists"));
-        execute(args);
-
+        assumeFalse(state['input_file_exists'])
+        execute(args)
         assertTrue(error_was_called());
     }
-    
+
 //    @Theory
 //    public void failsWhenTheChangeLogIsNotValid(@FromDataPoints("args") Map args,
 //                                                @FromDataPoints("state") Map state) {
