@@ -16,6 +16,7 @@ public class CheckoutFromGitTest extends StepTestFixture {
     @Parameter(values={"https://some.url.com/path/to/repo"}) String repo_url;
     @Parameter(values={"some_credentials_id"}, optional=true) String repo_creds;
     @Parameter(values={"my_branch"}, optional=true) String branch;
+    @Parameter(values={"some/relative/target/dir"}, optional=true) String target_dir;
 
     @Theory
     public void callsCheckout(@FromDataPoints("args") Map args) {

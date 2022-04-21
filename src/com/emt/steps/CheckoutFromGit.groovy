@@ -1,5 +1,7 @@
 package com.emt.steps
 
+import org.apache.xalan.lib.Extensions
+
 @groovy.transform.InheritConstructors
 class CheckoutFromGit extends BaseStep {
 
@@ -8,13 +10,20 @@ class CheckoutFromGit extends BaseStep {
     Object execute(Map parameters=[:]) {
         validateParameters(parameters)
 
+        def extensions = [
+            [$class: 'LocalBranch', localBranch: '**'],
+            [$class: 'WipeWorkspace'],
+        ]
+
+        if (parameters.target_dir) {
+            extensions.add([$class: 'RelativeTargetDirectory',
+                            relativeTargetDir: parameters.target_dir])
+        }
+
         _steps.checkout([$class: 'GitSCM',
             branches: [[name: "*/${parameters.branch}"]],
             doGenerateSubmoduleConfigurations: false,
-            extensions: [
-                [$class: 'LocalBranch', localBranch: '**'],
-                [$class: 'WipeWorkspace']
-            ],
+            extensions: extensions,
             submoduleCfg: [],
             userRemoteConfigs: [
                 [
