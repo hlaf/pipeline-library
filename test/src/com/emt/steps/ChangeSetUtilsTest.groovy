@@ -17,6 +17,8 @@ import org.mockito.ArgumentCaptor
 import com.emt.common.ChangeSetUtils
 import com.emt.util.StateVar
 
+import support.cps.CPSUtils
+
 public class ChangeSetUtilsTest extends StepTestFixture {
 
     @StateVar Set<String> change_set
@@ -45,8 +47,8 @@ public class ChangeSetUtilsTest extends StepTestFixture {
         assumeFalse(state['has_unmapped_files'])
 
         commonSetup(args, state)
-        def sut = new ChangeSetUtils(_steps)
-        def change_log = sut.getChangeLog()
+        def change_log = invokeLibFunction(new ChangeSetUtils(_steps), 'getChangeLog')
+
         assertNotNull(change_log)
         assertTrue(change_log.size() == state['change_set'].size())
     }
@@ -57,8 +59,8 @@ public class ChangeSetUtilsTest extends StepTestFixture {
         assumeTrue(state['has_unmapped_files'] && !state['change_set'].isEmpty())
 
         commonSetup(args, state)
-        def sut = new ChangeSetUtils(_steps)
-        def change_log = sut.getChangeLog()
+
+        invokeLibFunction(new ChangeSetUtils(_steps), 'getChangeLog')
         def captor = ArgumentCaptor.forClass(String.class)
         verify(_steps, times(1)).error(captor.capture())
         assertTrue(captor.getValue().contains('unmapped files'))
