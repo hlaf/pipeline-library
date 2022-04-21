@@ -27,7 +27,7 @@ class ChangeSetUtils implements Serializable {
         List<String> unmapped_file_paths = changed_files.findAll { !script.fileExists(it) }
         logger.fine("Unmapped file paths: " + unmapped_file_paths);
         if (unmapped_file_paths.size() > 0) {
-            script.error("The change log contains unmapped files: " + unmapped_file_paths.join(', '))
+            return script.error("The change log contains unmapped files: " + unmapped_file_paths.join(', '))
         }
         return changed_files
     }
