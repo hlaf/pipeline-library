@@ -32,6 +32,16 @@ public class ChangeSetUtilsTest extends StepTestFixture {
         ].collect { it.toSet() }.toArray()
     }
 
+    // Predicate
+    boolean changeLogIsValid(Map args, Map state) {
+        return changeLogIsEmpty(args, state) || !state['has_unmapped_files']
+    }
+
+    // Predicate
+    boolean changeLogIsEmpty(Map args, Map state) {
+        return state['change_set'].isEmpty()
+    }
+
     protected void commonSetup(Map args, Map state) {
         for (String file_path: state['change_set']) {
             when(_steps.fileExists(file_path)).thenReturn(!state['has_unmapped_files'])
@@ -44,7 +54,7 @@ public class ChangeSetUtilsTest extends StepTestFixture {
     @Theory
     public void retrievesChangeLog(@FromDataPoints("args") Map args,
                                    @FromDataPoints("state") Map state) {
-        assumeFalse(state['has_unmapped_files'])
+        assumeTrue(changeLogIsValid(args, state))
 
         commonSetup(args, state)
         def change_log = invokeLibFunction(new ChangeSetUtils(_steps), 'getChangeLog')
@@ -56,7 +66,7 @@ public class ChangeSetUtilsTest extends StepTestFixture {
     @Theory
     public void failsWhenChangeLogIsNotValid(@FromDataPoints("args") Map args,
                                              @FromDataPoints("state") Map state) {
-        assumeTrue(state['has_unmapped_files'] && !state['change_set'].isEmpty())
+        assumeFalse(changeLogIsValid(args, state))
 
         commonSetup(args, state)
 

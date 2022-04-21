@@ -18,5 +18,10 @@ public class TestUtils {
     	);
 		return file_content;
 	}
+	
+	// Logic
+    private static boolean implies(boolean a, boolean b) {
+        return (!a) || b;
+    }
 
 }
