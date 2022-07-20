@@ -26,7 +26,7 @@ class RunTests extends BaseStep {
                 _steps.bat """
 			${_steps.env.WORKSPACE}/master_venv/Scripts/activate.bat && \
 			pip install tox --upgrade && \
-			tox ${environment}
+			tox --recreate ${environment}
 			"""
             }
 
